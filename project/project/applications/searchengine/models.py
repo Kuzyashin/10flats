@@ -52,6 +52,46 @@ class Search(models.Model):
         return 'Поиск юзером' + self.telegram_user.first_name
 
 
+class TgSearch(models.Model):
+    user = models.ForeignKey(
+        User, models.CASCADE,
+        null=True, blank=True,
+        verbose_name='Аккаунт в телеграм'
+    )
+    telegram_user = models.ForeignKey(
+        TelegramUser, models.CASCADE,
+        null=True, blank=True,
+        verbose_name='Аккаунт в телеграм'
+    )
+    progress = models.TextField(
+        null=True, blank=True,
+        verbose_name='Прогресс'
+    )
+    last_step = models.CharField(
+        null=True, blank=True, max_length=20,
+        verbose_name='Текущий шаг'
+    )
+    created_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name='Начало поиска'
+    )
+    finished_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name='Конец поиска'
+    )
+    is_cancelled = models.BooleanField(
+        default=False,
+        verbose_name='Отменен?'
+    )
+
+    class Meta:
+        verbose_name = "Поиск web"
+        verbose_name_plural = "Поиски web"
+
+    def __str__(self):
+        return 'Поиск юзером' + self.telegram_user.first_name
+
+
 class DistanceChoose(models.Model):
     text = models.CharField(
         null=True, blank=True, max_length=100,

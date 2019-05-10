@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls import url
 from typeform.views import TypeformViewSet
 from realty import urls as realty_urls
+from profiles import urls as profiles_urls
+from django.conf.urls import url
 
 
 admin.site.site_header = 'E-Mlak Tech Admin Panel'
@@ -28,8 +29,10 @@ urlpatterns = [
     path('', include('urlshortener.urls')),
     url(r'^api/typeform_hook/$', TypeformViewSet.as_view()),
     url(r'^bot/', include('messenegers.urls')),
+    url(r'^auth/', include('djoser.urls.authtoken')),
     # path('grappelli/', include('grappelli.urls')),
     # path(r'^docs/', include('rest_framework_swagger.urls')),
 ]
 
 urlpatterns += realty_urls.urlpatterns
+urlpatterns += profiles_urls.urlpatterns

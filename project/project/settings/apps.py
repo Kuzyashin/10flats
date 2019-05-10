@@ -16,7 +16,11 @@ INSTALLED_APPS = [
     'dal',
     'dal_select2',
     'channels',
+
+    'django.contrib.auth',
+
     'rest_framework',
+    'djoser',
     'rest_framework.authtoken',
     'rest_framework_swagger',
 
@@ -24,7 +28,6 @@ INSTALLED_APPS = [
 
 
     'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',

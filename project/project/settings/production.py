@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]  # must specify domain for production
 

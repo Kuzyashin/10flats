@@ -9,7 +9,6 @@ from .base import *
 from .apps import *
 from .auth import *
 from .datetime import *
-from .development import *
 from .languages import *
 from .middlewares import *
 from .logging import *
