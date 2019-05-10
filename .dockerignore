@@ -1,0 +1,4 @@
+app/tickets/debug.log
+__pycache__/
+venv/
+.env/
