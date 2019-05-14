@@ -28,7 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('urlshortener.urls')),
     url(r'^api/typeform_hook/$', TypeformViewSet.as_view()),
-    url(r'^bot/', include('messenegers.urls')),
+    # url(r'^bot/', include('messenegers.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
     # path('grappelli/', include('grappelli.urls')),
     # path(r'^docs/', include('rest_framework_swagger.urls')),

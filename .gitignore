@@ -176,6 +176,7 @@ pip-selfcheck.json
 /project/project/settings/local.py
 /project/project/settings/secret.py
 dev.env
+/scrap
 prod.env
 .idea
 .DS_Store

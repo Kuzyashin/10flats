@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 bot = telebot.TeleBot(os.environ['TG_BOT_TOKEN'])
 
+
 if not bot.get_webhook_info().url \
         or bot.get_webhook_info().url != os.environ['TG_WEB_HOOK_ADDRESS'] + os.environ['TG_BOT_TOKEN'] + '/':
     try:

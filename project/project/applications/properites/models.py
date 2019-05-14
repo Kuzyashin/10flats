@@ -4,162 +4,109 @@ from django.utils.translation import ugettext_lazy as _
 # Create your models here.
 
 
-class ManagementCompany(models.Model):
+class EnergyClass(models.Model):
+    e_class = models.CharField(
+        max_length=90,
+        null=True, blank=True,
+        verbose_name=_('Energy class')
+    )
+
+    def __str__(self):
+        return self.e_class
+
+    class Meta:
+        verbose_name = _("Energy class")
+        verbose_name_plural = _("Energy classes")
+
+
+class CustomDescription(models.Model):
     name = models.CharField(
         max_length=90,
         null=True, blank=True,
         verbose_name=_('Name')
     )
-    site_url = models.URLField(
-        null=True, blank=True,
-        verbose_name=_('Site url')
-    )
-    phone = models.CharField(
-        max_length=20,
-        null=True, blank=True,
-        verbose_name=_('Contact phone')
-    )
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = _("Management company")
-        verbose_name_plural = _("Management companies")
-
-
-class EthnicGroup(models.Model):
-    name = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name=_('Group')
-    )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _("Ethnic Group")
-        verbose_name_plural = _("Ethnic Groups")
-
-
-class HeatingConditioning(models.Model):
-    type = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name=_('Heating/Conditioning type')
-    )
-
-    def __str__(self):
-        return self.type
-
-    class Meta:
-        verbose_name = _("Heating/Conditioning type")
-        verbose_name_plural = _("Heating/Conditioning types")
-
-
-class WaterSupply(models.Model):
-    type = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name=_('Water supply type')
-    )
-
-    def __str__(self):
-        return self.type
-
-    class Meta:
-        verbose_name = _("Water supply type")
-        verbose_name_plural = _("Water supply types")
-
-
-class HotWaterSupply(models.Model):
-    type = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name=_('Water supply type')
-    )
-
-    def __str__(self):
-        return self.type
-
-    class Meta:
-        verbose_name = _("Hot water supply type")
-        verbose_name_plural = _("Hot water supply type")
-
-
-class PropertyType(models.Model):
-    type = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name=_('Property type')
-    )
-
-    def __str__(self):
-        return self.type
-
-    class Meta:
-        verbose_name = _("Property type")
-        verbose_name_plural = _("Property types")
-
-
-class PropertyFormat(models.Model):
-    type = models.CharField(
-        max_length=10,
-        null=True, blank=True,
-        verbose_name=_('Property format')
-    )
-
-    def __str__(self):
-        return self.type
-
-    class Meta:
-        verbose_name = _("Property formats")
-        verbose_name_plural = _("Property formats")
-
-
-class ObjectPaymentOrder(models.Model):
-    type = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name=_('Payment order')
-    )
-
-    def __str__(self):
-        return self.type
-
-    class Meta:
-        verbose_name = _("Payment order")
-        verbose_name_plural = _("Payment orders")
-
-
-class InfoSource(models.Model):
-    type = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name=_('Info source')
-    )
-
-    def __str__(self):
-        return self.type
-
-    class Meta:
-        verbose_name = _("Info source")
-        verbose_name_plural = _("Info sources")
+        verbose_name = _("Custom Description")
+        verbose_name_plural = _("Custom Descriptions")
 
 
 class AdditionalInfo(models.Model):
-    type = models.CharField(
-        null=True, blank=True, max_length=40,
-        verbose_name=_('Info')
+    name = models.CharField(
+        max_length=90,
+        null=True, blank=True,
+        verbose_name=_('Lisainfo')
     )
 
     def __str__(self):
-        return self.type
+        return self.name
 
     class Meta:
-        verbose_name = _("Additional info")
-        verbose_name_plural = _("Additional info")
+        verbose_name = _("Lisainfo")
+        verbose_name_plural = _("Lisainfo")
+
+
+class KitchenInfo(models.Model):
+    name = models.CharField(
+        max_length=90,
+        null=True, blank=True,
+        verbose_name=_('Köök')
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Köök")
+        verbose_name_plural = _("Köök")
+
+
+class WCInfo(models.Model):
+    name = models.CharField(
+        max_length=90,
+        null=True, blank=True,
+        verbose_name=_('Sanruum')
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Sanruum")
+        verbose_name_plural = _("Sanruum")
+
+
+class HeatingInfo(models.Model):
+    name = models.CharField(
+        max_length=90,
+        null=True, blank=True,
+        verbose_name=_('Küte ja ventilatsioon')
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Küte ja ventilatsioon")
+        verbose_name_plural = _("Küte ja ventilatsioon")
+
+
+class ObjectInfo(models.Model):
+    name = models.CharField(
+        max_length=90,
+        null=True, blank=True,
+        verbose_name=_('Side ja turvalisus')
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Side ja turvalisus")
+        verbose_name_plural = _("Side ja turvalisus")
 
 
 class PlaceType(models.Model):

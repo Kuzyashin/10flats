@@ -8,7 +8,7 @@ INSTALLED_APPS = [
     'realty',
     'properites',
     'rewievs',
-    'messenegers',
+    #'messenegers',
     'urlshortener',
     'typeform',
     'searchengine',

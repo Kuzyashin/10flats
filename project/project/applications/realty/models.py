@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from properites.models import ManagementCompany, EthnicGroup, HeatingConditioning,  \
-    WaterSupply, HotWaterSupply, PropertyFormat, PropertyType,  \
-    ObjectPaymentOrder, InfoSource, Region, City, Area
+from properites.models import Region, City, Area, EnergyClass, CustomDescription, AdditionalInfo, KitchenInfo, WCInfo, HeatingInfo, ObjectInfo
 from core.models import DistanceMatrix
 from django.core.exceptions import ValidationError
 from core.mixins.model_mixins import ModelDiffMixin
@@ -14,11 +12,6 @@ class RealtyComplex(models.Model):
         User, models.CASCADE,
         blank=True, null=True,
         verbose_name="Добавил"
-    )
-    name = models.CharField(
-        max_length=90,
-        null=True, blank=True,
-        verbose_name='Название комплекса'
     )
     region = models.ForeignKey(
         Region, models.CASCADE,
@@ -35,18 +28,10 @@ class RealtyComplex(models.Model):
         null=True, blank=True,
         verbose_name='Район'
     )
-    site_url = models.URLField(
-        null=True, blank=True,
-        verbose_name='Ссылка на комплекс'
-    )
     address = models.CharField(
-        max_length=180,
+        max_length=255,
         null=True, blank=True,
         verbose_name='Полный адрес'
-    )
-    photo = models.ImageField(
-        null=True, blank=True,
-        verbose_name='Фото'
     )
     google_maps_url = models.URLField(
         null=False, blank=False,
@@ -54,159 +39,82 @@ class RealtyComplex(models.Model):
         verbose_name='Ссылка на google maps'
     )
     lat = models.CharField(
-        max_length=10,
+        max_length=20,
         null=True, blank=True,
         verbose_name='Широта'
     )
     lng = models.CharField(
-        max_length=10,
+        max_length=20,
         null=True, blank=True,
         verbose_name='Долгота'
-    )
-    passenger_elevator = models.IntegerField(
-        null=False, blank=False, default=0,
-        verbose_name='Количество пассажирских лифтов'
-    )
-    service_lift = models.IntegerField(
-        null=False, blank=False, default=0,
-        verbose_name='Количество грузовых лифтов'
-    )
-    management_company = models.ForeignKey(
-        ManagementCompany, models.CASCADE,
-        null=True, blank=True,
-        verbose_name='Управляющая компания'
-    )
-    hoa = models.CharField(
-        max_length=50,
-        null=True, blank=True,
-        verbose_name='ТСЖ'
     )
     year_built = models.IntegerField(
         null=True, blank=True,
         verbose_name='Год постройки'
     )
-    ethnic_profile = models.ManyToManyField(
-        EthnicGroup,
-        blank=True,
-        verbose_name='Этнический профиль дома'
-    )
-    pet_allowed = models.NullBooleanField(
-        verbose_name='Возможно с животными'
-    )
-    heating_conditioning = models.ForeignKey(
-        HeatingConditioning, models.CASCADE,
-        null=True, blank=True,
-        verbose_name='Отопление, вентиляция и кондиционирование'
-    )
-    water_supply = models.ForeignKey(
-        WaterSupply, models.CASCADE,
-        null=True, blank=True,
-        verbose_name='Водоснабжение'
-    )
-    hot_water_supply = models.ForeignKey(
-        HotWaterSupply, models.CASCADE,
-        null=True, blank=True,
-        verbose_name='Горячее водоснабжение'
-    )
-    internet = models.NullBooleanField(
-        verbose_name='Интернет'
-    )
-    cctv = models.NullBooleanField(
-        verbose_name='Видеонаблюдение'
-    )
-    satellite_tv = models.NullBooleanField(
-        verbose_name='Спутниковое телевидение'
-    )
-    public_wifi = models.NullBooleanField(
-        verbose_name='Wi-Fi в местах общего пользования'
-    )
-    floors = models.IntegerField(
-        null=False, blank=False, default=1,
+    floors = models.CharField(
+        null=True, blank=True, max_length=80,
         verbose_name='Количество Этажей'
     )
-    fenced_area = models.NullBooleanField(
-        verbose_name='Огороженная территория'
-    )
-    parking = models.NullBooleanField(
-        verbose_name='Парковка'
-    )
-    number_of_cases = models.IntegerField(
-        null=False, blank=False, default=1,
-        verbose_name='Количество Корпусов'
-    )
-    security = models.NullBooleanField(
-        verbose_name='Наличие охраны'
-    )
-    intercom = models.NullBooleanField(
-        verbose_name='Наличие домофона'
-    )
-    concierge = models.NullBooleanField(
-        verbose_name='Наличие консъержа'
-    )
-    bbq_area = models.NullBooleanField(
-        verbose_name='Наличие барбекю зоны'
-    )
-    room_service = models.NullBooleanField(
-        verbose_name='Наличие рум-сервиса'
-    )
+
 
     @property
     def school_dist(self):
-        return DistanceMatrix.objects.filter(complex__name=self.name,
+        return DistanceMatrix.objects.filter(complex_id=self.pk,
                                              place__place_type__type='school').earliest('duration').distance
 
     @property
     def market_dist(self):
-        return DistanceMatrix.objects.filter(complex__name=self.name,
+        return DistanceMatrix.objects.filter(complex_id=self.pk,
                                              place__place_type__type='supermarket').earliest('duration').distance
 
     @property
     def pharmacy_dist(self):
-        return DistanceMatrix.objects.filter(complex__name=self.name,
+        return DistanceMatrix.objects.filter(complex_id=self.pk,
                                              place__place_type__type='pharmacy').earliest('duration').distance
 
     @property
     def park_dist(self):
-        return DistanceMatrix.objects.filter(complex__name=self.name,
+        return DistanceMatrix.objects.filter(complex_id=self.pk,
                                              place__place_type__type='park').earliest('duration').distance
 
     @property
     def nightclub_dist(self):
-        return DistanceMatrix.objects.filter(complex__name=self.name,
+        return DistanceMatrix.objects.filter(complex_id=self.pk,
                                              place__place_type__type='nightclub').earliest('duration').distance
 
     def get_nearest_supermarket(self):
-        places = DistanceMatrix.objects.filter(complex__name=self.name,
+        places = DistanceMatrix.objects.filter(complex_id=self.pk,
                                                place__place_type__type='supermarket').earliest('duration')
         return places.place.name + ' - ' + places.place.address + \
                ' - {}'.format(places.distance) + ' метров - {}'.format(places.duration) + ' секунд'
 
     def get_nearest_school(self):
-        places = DistanceMatrix.objects.filter(complex__name=self.name,
+        places = DistanceMatrix.objects.filter(complex_id=self.pk,
                                                place__place_type__type='school').earliest('duration')
         return places.place.name + ' - ' + places.place.address + \
                ' - {}'.format(places.distance) + ' метров - {}'.format(places.duration) + ' секунд'
 
     def get_nearest_pharmacy(self):
-        places = DistanceMatrix.objects.filter(complex__name=self.name,
+        places = DistanceMatrix.objects.filter(complex_id=self.pk,
                                                place__place_type__type='pharmacy').earliest('duration')
         return places.place.name + ' - ' + places.place.address + \
                ' - {}'.format(places.distance) + ' метров - {}'.format(places.duration) + ' секунд'
 
     def get_nearest_park(self):
-        places = DistanceMatrix.objects.filter(complex__name=self.name,
+        places = DistanceMatrix.objects.filter(complex_id=self.pk,
                                                place__place_type__type='park').earliest('duration')
         return places.place.name + ' - ' + places.place.address + \
                ' - {}'.format(places.distance) + ' метров - {}'.format(places.duration) + ' секунд'
 
     def get_nearest_nightclub(self):
-        places = DistanceMatrix.objects.filter(complex__name=self.name,
+        places = DistanceMatrix.objects.filter(complex_id=self.pk,
                                                place__place_type__type='night_club').earliest('duration')
         return places.place.name + ' - ' + places.place.address + \
                ' - {}'.format(places.distance) + ' метров - {}'.format(places.duration) + ' секунд'
 
     def __str__(self):
-        return self.name
+        return self.address
 
     class Meta:
         verbose_name = "Жилой комплекс"
@@ -224,9 +132,13 @@ class RealtyObject(models.Model, ModelDiffMixin):
         null=True, blank=True,
         verbose_name='Комплекс/Сите'
     )
-    photo = models.ImageField(
+    photo = models.TextField(
         null=True, blank=True,
         verbose_name='Фото'
+    )
+
+    info = models.TextField(
+        null=True, blank=True
     )
     agency = models.ForeignKey(
         RealtyAgency, models.CASCADE,
@@ -237,63 +149,69 @@ class RealtyObject(models.Model, ModelDiffMixin):
         null=True, blank=True,
         verbose_name='URL на сайте размещения'
     )
+    site_id = models.CharField(
+        null=True, blank=True, max_length=80,
+        verbose_name='ID на сайте размещения',
+    )
     rent_available = models.BooleanField(
         default=False,
         verbose_name='Возможна аренда'
     )
-    property_type = models.ForeignKey(
-        PropertyType, models.CASCADE,
+    energy_class = models.ForeignKey(
+        EnergyClass, models.CASCADE,
         null=True, blank=True,
-        verbose_name='Тип недвижимости'
+        verbose_name='Класс энергоэффективности'
     )
-    property_format = models.ForeignKey(
-        PropertyFormat, models.CASCADE,
+    custom_description = models.ManyToManyField(
+        CustomDescription,
         null=True, blank=True,
-        verbose_name='Формат недвижимости'
+        verbose_name='Кастомные поля'
+    )
+    additional_info = models.ManyToManyField(
+        AdditionalInfo,
+        null=True, blank=True,
+        verbose_name='Доп инфо'
+    )
+    kitchen = models.ManyToManyField(
+        KitchenInfo,
+        null=True, blank=True,
+        verbose_name='Кухня'
+    )
+    wc = models.ManyToManyField(
+        WCInfo,
+        null=True, blank=True,
+        verbose_name='Туалет'
+    )
+    heating = models.ManyToManyField(
+        HeatingInfo,
+        null=True, blank=True,
+        verbose_name='Отопление'
+    )
+    object_info = models.ManyToManyField(
+        ObjectInfo,
+        null=True, blank=True,
+        verbose_name='инфраструктура'
+    )
+    rooms_count = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='Количество комнат'
     )
     flat_number = models.CharField(
-        null=False, blank=False, max_length=5,
+        null=False, blank=False, max_length=80,
         verbose_name='Номер квартиры',
         help_text='0 если это дом'
     )
-    square = models.IntegerField(
-        null=True, blank=True,
+    square = models.CharField(
+        null=True, blank=True, max_length=80,
         verbose_name='Площадь'
     )
     rent_price_eur = models.IntegerField(
         null=True, blank=True,
         verbose_name='Стоимость аренды в EUR'
     )
-    payment_order = models.ForeignKey(
-        ObjectPaymentOrder, models.CASCADE,
-        null=True, blank=True,
-        verbose_name='Порядок оплаты'
-    )
     floor = models.IntegerField(
         null=True, blank=True,
         verbose_name='Этаж'
-    )
-    bathrooms = models.IntegerField(
-        null=True, blank=True,
-        verbose_name='Кол-во ванных комнат'
-    )
-    bath = models.NullBooleanField(
-        verbose_name='Наличие ванны'
-    )
-    loggia = models.NullBooleanField(
-        verbose_name='Наличие лоджии'
-    )
-    furnished = models.NullBooleanField(
-        verbose_name='Мебелирована?'
-    )
-    appliances = models.NullBooleanField(
-        verbose_name='Наличие бытовой техники'
-    )
-
-    source = models.ForeignKey(
-        InfoSource, models.CASCADE,
-        null=True, blank=True,
-        verbose_name='Источник информации'
     )
     created_at = models.DateTimeField(
         auto_created=True,
@@ -308,8 +226,7 @@ class RealtyObject(models.Model, ModelDiffMixin):
                     "Не установлена цена аренды")
 
     def __str__(self):
-        return self.realty_complex.name + ' - ' + self.property_type.type \
-               + ' ' + self.property_format.type
+        return self.realty_complex.address
 
     class Meta:
         verbose_name = "Объект недвижимости"

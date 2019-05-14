@@ -1,12 +1,12 @@
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-import messenegers.routing
+from core import routing as core_ws
 
 application = ProtocolTypeRouter({
     # (http->django views is added by default)
     'websocket': AuthMiddlewareStack(
         URLRouter(
-            messenegers.routing.websocket_urlpatterns
+            core_ws.websocket_urlpatterns
         )
     ),
 })

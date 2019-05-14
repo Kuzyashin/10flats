@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from messenegers.models import TelegramUser
+#from messenegers.models import TelegramUser
 from properites.models import Region
 from urlshortener.models import ShortUrl
 from django.utils.safestring import mark_safe
@@ -53,11 +53,6 @@ class Profile(models.Model):
         choices=_PROFILE_LEVELS,
         verbose_name='Status',
         default=UNKNOWN
-    )
-    telegram_account = models.ForeignKey(
-        TelegramUser, models.CASCADE,
-        null=True, blank=True,
-        verbose_name='Telegram account'
     )
 
     class Meta:

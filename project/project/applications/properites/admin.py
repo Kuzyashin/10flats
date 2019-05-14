@@ -46,15 +46,6 @@ class AreaAdmin(admin.ModelAdmin):
     search_fields = ['area']
 
 
-admin.site.register(ManagementCompany)
-admin.site.register(EthnicGroup)
-admin.site.register(HeatingConditioning)
-admin.site.register(WaterSupply)
-admin.site.register(HotWaterSupply)
-admin.site.register(PropertyType)
-admin.site.register(PropertyFormat)
-admin.site.register(ObjectPaymentOrder)
-admin.site.register(InfoSource)
 admin.site.register(PlaceType)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(City, CityAdmin)

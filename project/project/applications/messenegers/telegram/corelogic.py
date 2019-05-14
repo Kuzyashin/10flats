@@ -8,7 +8,7 @@ from django.utils import timezone
 from core.models import Currency, DistanceMatrix
 from messenegers.models import TelegramUser
 import os
-from properites.models import City, Area, PropertyType, PropertyFormat
+from properites.models import City, Area
 from realty.models import RealtyObject
 from searchengine.models import Search, DistanceChoose
 from .templates import *
@@ -149,7 +149,7 @@ def start_search(call):
     data = json.loads(call.data)
     telegram_user = TelegramUser.objects.get(pk=data.get('telegram_user'))
     new_search = Search.objects.create(
-        telegram_user=telegram_user,
+        #telegram_user=telegram_user,
         last_step=1,
         created_at=timezone.now(),
     )
@@ -186,7 +186,9 @@ def start_search(call):
         reply_markup=reply_markup
     )
 
-
+def choose_property_type(call):
+    pass
+"""
 def choose_property_type(call):
     data = json.loads(call.data)
     search = Search.objects.get(pk=data.get('s'))
@@ -219,7 +221,7 @@ def choose_property_type(call):
         message_id=call.message.message_id,
         reply_markup=reply_markup
     )
-
+"""
 
 def search_city(call):
     data = json.loads(call.data)
@@ -350,7 +352,13 @@ def continue_search_region(call):
         reply_markup=reply_markup
     )
 
+def start_search_format(call):
+    pass
 
+def continue_search_format(call):
+    pass
+
+"""
 def start_search_format(call):
     data = json.loads(call.data)
     search = Search.objects.get(pk=data.get('s'))
@@ -441,7 +449,7 @@ def continue_search_format(call):
         message_id=call.message.message_id,
         reply_markup=reply_markup
     )
-
+"""
 
 def select_cash(call):
     data = json.loads(call.data)
@@ -530,7 +538,6 @@ def start_select_complex_environment(message, s_pk):
 
 def continue_select_complex_environment(call):
     pass
-
 
 #TODO: Normalno sdelat eto govno
 """
@@ -827,14 +834,14 @@ def search_calculate(call):
     else:
         _step_1 = 'rent'
         qs = qs.filter(rent_available=True)
-    _prop_type = PropertyType.objects.get(pk=int(progress.get('step_1_1')))
-    qs = qs.filter(property_type=_prop_type)
+    #_prop_type = PropertyType.objects.get(pk=int(progress.get('step_1_1')))
+    #qs = qs.filter(property_type=_prop_type)
     _city = City.objects.get(pk=int(progress.get('step_2')))
     qs = qs.filter(realty_complex__area__city=_city)
     _area_list = Area.objects.filter(pk__in=progress.get('step_3'))
     qs = qs.filter(realty_complex__city__area__in=_area_list)
-    _format_list = PropertyFormat.objects.filter(pk__in=progress.get('step_4'))
-    qs = qs.filter(property_format__in=_format_list)
+    #_format_list = PropertyFormat.objects.filter(pk__in=progress.get('step_4'))
+    #qs = qs.filter(property_format__in=_format_list)
     _currency = Currency.objects.get(pk=int(progress.get('step_5')))
     _min_price_eur = int(progress.get('step_5_1')) * _currency.to_eur_price
     if _min_price_eur > 0:

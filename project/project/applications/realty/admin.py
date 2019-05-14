@@ -7,9 +7,9 @@ from .forms import RealtyComplexForm
 
 class RealtyComplexAdmin(admin.ModelAdmin):
     form = RealtyComplexForm
-    list_display = ['name', ]
     list_filter = ['region', 'city', 'area', ]
-    search_fields = ['name', ]
+    list_display = ['region', 'city', 'area', 'address', ]
+    search_fields = ['address', ]
     autocomplete_fields = ('region', 'city', 'area', )
     readonly_fields = ['lat', 'lng', 'get_nearest_supermarket', 'get_nearest_school',
                        'get_nearest_park',
@@ -18,24 +18,13 @@ class RealtyComplexAdmin(admin.ModelAdmin):
                        ]
     fieldsets = (
         (None, {
-            'fields': (('name', ),
-                       ('region', 'city', 'area', 'address', 'photo', ),
-                       ('site_url', 'google_maps_url', 'lat', 'lng',),
+            'fields': (
+                       ('region', 'city', 'area', 'address', ),
+                       ('google_maps_url', 'lat', 'lng',),
                        )
         }),
         ('Базовый', {
-            'fields': (('number_of_cases', 'floors', 'passenger_elevator', 'service_lift',),
-                       ('management_company', 'hoa',),
-                       ('ethnic_profile',),
-                       ('pet_allowed',),
-                       ('heating_conditioning', 'water_supply', 'hot_water_supply',),
-                       ('stage_of_construction', 'year_built',),
-                       )
-        }),
-        ('Инфраструктура', {
-            'fields': (('internet', 'cctv', 'satellite_tv', 'public_wifi', ),
-                       ('parking',  'security', 'bbq_area',),
-                       ('intercom', 'concierge', 'room_service',),
+            'fields': (('floors', 'year_built',),
                        )
         }),
         ('Рядом', {
@@ -82,33 +71,27 @@ class RealtyComplexAdmin(admin.ModelAdmin):
 
 class RealtyObjectAdmin(admin.ModelAdmin):
 
-    list_display = ['realty_complex', 'property_type', 'property_format',
+    list_display = ['realty_complex',
                     'square', 'rent_available',
                     'floor', 'flat_number', 'rent_price_eur']
     search_fields = ['realty_complex', ]
     autocomplete_fields = ('realty_complex', )
     fieldsets = (
         (None, {
-            'fields': (('realty_complex', 'source', 'created_at', 'photo', ),
+            'fields': (('realty_complex', 'created_at', 'photo', ),
                        ('site_url', ),
-                       ('property_type', 'property_format', 'floor', 'flat_number', 'square',),
-                       ('payment_order',),
+                       ('rooms_count', 'floor', 'flat_number', 'square',),
                        ('rent_price_eur', 'rent_available'),
-                       ('bathrooms', 'bath', 'loggia',),
-                       ('furnished', 'appliances',)
                        )
         }),
     )
 
     admin_fieldsets = (
         (None, {
-            'fields': (('realty_complex', 'source', 'created_at', 'photo',),
+            'fields': (('realty_complex', 'created_at', 'photo',),
                        ('agency', 'site_url',),
-                       ('property_type', 'property_format', 'floor', 'flat_number', 'square',),
-                       ('payment_order',),
+                       ('rooms_count', 'floor', 'flat_number', 'square',),
                        ('rent_price_eur', 'rent_available'),
-                       ('bathrooms', 'bath', 'loggia', ),
-                       ('furnished', 'appliances',)
                        )
         }),
     )
