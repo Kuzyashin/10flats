@@ -104,7 +104,7 @@ class SearchViewSet(views.APIView):
                 rent_price_eur__lte=max_price
             )
             count = realty_objects.count()
-            choices_list = DistanceChooseSerializer(DistanceChoose.objects.all())
+            choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 4,
                          "answers": choices_list.data,
                          "count": count}
