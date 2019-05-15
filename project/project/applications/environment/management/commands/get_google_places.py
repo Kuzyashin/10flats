@@ -20,7 +20,7 @@ class Command(BaseCommand):
         try:
             places = gmaps.places_nearby(
                 location=(lat, lng),
-                radius=20000,
+                radius=5000,
                 type=place_type,
                 page_token=next_token
             )
@@ -71,7 +71,7 @@ class Command(BaseCommand):
         for place_type in types:
             places = gmaps.places_nearby(
                 location=(realty_complex.lat, realty_complex.lng),
-                radius=20000,
+                radius=5000,
                 type=place_type
             )
             next_page_token = places.get('next_page_token', None)

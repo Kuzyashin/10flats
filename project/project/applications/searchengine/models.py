@@ -14,13 +14,45 @@ class Search(models.Model):
         null=True, blank=True, max_length=255,
         verbose_name='Идентификатор юзера'
     )
-    progress = models.TextField(
+    step_1 = models.TextField(
         null=True, blank=True,
-        verbose_name='Прогресс'
+        verbose_name='Шаг 1'
     )
-    last_step = models.CharField(
-        null=True, blank=True, max_length=20,
-        verbose_name='Текущий шаг'
+    step_2 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 2'
+    )
+    step_3 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 3'
+    )
+    step_4 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 4'
+    )
+    step_5 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 5'
+    )
+    step_6 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 6'
+    )
+    step_7 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 7'
+    )
+    step_8 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 8'
+    )
+    step_9 = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 9'
+    )
+    last_step = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='Последний шаг'
     )
     created_at = models.DateTimeField(
         null=True, blank=True,
