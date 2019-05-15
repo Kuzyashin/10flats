@@ -32,7 +32,6 @@ urlpatterns = [
     url(r'^api/typeform_hook/$', TypeformViewSet.as_view()),
     # url(r'^bot/', include('messenegers.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
-    path('api/', include('searchengine.urls')),
     url(r'^api/search/$', SearchViewSet.as_view({"post": "post"})),
     # url(r'^api/search/$', SearchView, basename= ''),
     # path('grappelli/', include('grappelli.urls')),
