@@ -20,10 +20,15 @@ from realty import urls as realty_urls
 from profiles import urls as profiles_urls
 from django.conf.urls import url
 from searchengine.views import SearchView
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter()
 
 admin.site.site_header = 'E-Mlak Tech Admin Panel'
 admin.site.site_title = 'E-Mlak Tech Admin Panel'
+
+router.register(r'^api/search/$', SearchView)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,10 +36,11 @@ urlpatterns = [
     url(r'^api/typeform_hook/$', TypeformViewSet.as_view()),
     # url(r'^bot/', include('messenegers.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
-    url(r'^api/search/$', SearchView.as_view()),
+    # url(r'^api/search/$', SearchView, basename= ''),
     # path('grappelli/', include('grappelli.urls')),
     # path(r'^docs/', include('rest_framework_swagger.urls')),
 ]
 
 urlpatterns += realty_urls.urlpatterns
 urlpatterns += profiles_urls.urlpatterns
+urlpatterns += router.urls
