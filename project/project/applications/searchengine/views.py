@@ -32,8 +32,6 @@ class SearchViewSet(viewsets.ViewSet):
     _step_8 = {}
     _step_9 = {}
     """
-    def get(self, request, format=None):
-        pass
 
     def post(self, request, format=None):
         data = request.data
