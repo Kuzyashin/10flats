@@ -10,6 +10,8 @@ from .models import Search
 from realty.models import RealtyObject
 from properites.models import Area
 from properites.serializers import AreaSerializer
+from .models import DistanceChoose
+from .serializers import DistanceChooseSerializer
 
 # Create your views here.
 import logging
@@ -85,7 +87,27 @@ class SearchViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '3' or data.get('step') == 3:
-            pass
+            search = Search.objects.filter(
+                user_identify=user_id,
+                last_step=3
+            ).last()
+            min_price = data.get('data').get('min_price')
+            max_price = data.get('data').get('max_price')
+            search.step_3 = {"min_price": min_price, "max_price": max_price}
+            search.last_step = 4
+            search.save()
+            realty_objects = RealtyObject.objects.filter(
+                realty_complex__area_id__in=ast.literal_eval(search.step_1),
+                rooms_count__in=ast.literal_eval(search.step_2),
+                rent_price_eur__gte=min_price,
+                rent_price_eur__lte=max_price
+            )
+            count = realty_objects.count()
+            choices_list = DistanceChooseSerializer(DistanceChoose.objects.all())
+            resp_data = {"step": 4,
+                         "answers": choices_list.data,
+                         "count": count}
+            return Response(data=resp_data, status=200)
         elif data.get('step') == '4' or data.get('step') == 4:
             pass
         elif data.get('step') == '5' or data.get('step') == 5:
