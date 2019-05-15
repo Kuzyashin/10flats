@@ -29,7 +29,7 @@ class SearchViewSet(views.APIView):
 
     def post(self, request, format=None):
         data = request.data
-        if data.get('step') == 0:
+        if data.get('step') == '0':
             user_id = data.get('user_id')
             search = Search.objects.create(
                 user_identify=user_id,
