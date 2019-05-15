@@ -53,4 +53,4 @@ class SearchView(views.APIView):
             area_list = Area.objects.all()
             response = {"step": 1,
                         "answers": AreaSerializer(area_list).data}
-            return HttpResponse(response, status=200)
+            return Response(json.dumps(response), status=200)
