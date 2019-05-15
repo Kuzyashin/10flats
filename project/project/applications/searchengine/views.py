@@ -1,22 +1,21 @@
-from django.utils import timezone
-from rest_framework.response import Response
-from rest_framework import permissions
-from rest_framework import views
-from django.db.models import Max, Min
 import ast
 import json
-
-from .models import Search
-
-from realty.models import RealtyObject
-from properites.models import Area
-from properites.serializers import AreaSerializer
-from .models import DistanceChoose
-from core.models import DistanceMatrix
-from .serializers import DistanceChooseSerializer
-
 # Create your views here.
 import logging
+
+from django.db.models import Max, Min
+from django.utils import timezone
+from rest_framework import permissions
+from rest_framework import views
+from rest_framework.response import Response
+
+from core.models import DistanceMatrix
+from properites.models import Area
+from properites.serializers import AreaSerializer
+from realty.models import RealtyObject
+from .models import DistanceChoose
+from .models import Search
+from .serializers import DistanceChooseSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -410,7 +409,12 @@ class SearchViewSet(views.APIView):
                                   int(_market_percent_list.get(realty_object.pk))) / 5
                     }
                 }
-                _final_json.update(_object_json)
+                if (int(_school_percent_list.get(realty_object.pk)) +
+                    int(_park_percent_list.get(realty_object.pk)) +
+                    int(_pharmacy_percent_list.get(realty_object.pk)) +
+                    int(_nightclub_percent_list.get(realty_object.pk)) +
+                    int(_market_percent_list.get(realty_object.pk))) / 5 > 80:
+                        _final_json.update(_object_json)
             return Response(data=_final_json, status=200)
         else:
             return Response(request.data)
