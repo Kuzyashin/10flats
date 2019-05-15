@@ -12,6 +12,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class SearchViewSet(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
     """
@@ -43,4 +44,4 @@ class SearchViewSet(views.APIView):
                          "answers": serialized.data}
             return Response(data=resp_data, status=200)
         else:
-            return Response('OK')
+            return Response(request.data)
