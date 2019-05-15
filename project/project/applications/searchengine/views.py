@@ -1,21 +1,16 @@
-from django.views.generic import View
 import json
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.http import HttpResponse, HttpResponseForbidden
 from .models import Search
 from properites.models import Area
-from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
-from rest_framework import  viewsets, views, status
+from rest_framework import viewsets, views, status
 from properites.serializers import AreaSerializer
 # Create your views here.
 
 
 class SearchView(views.APIView):
-    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
     """
     _step_1 - Выбор районов
     _step_2 - Выбор кол-ва комнат
