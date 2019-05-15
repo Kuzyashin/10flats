@@ -306,12 +306,12 @@ class SearchViewSet(views.APIView):
             _step_9 - Спортзалы
             """
 
-            _school_distance = DistanceChoose.objects.get(pk=search.step_4)
-            _park_distance = DistanceChoose.objects.get(pk=search.step_5)
-            _pharmacy_distance = DistanceChoose.objects.get(pk=search.step_7)
-            _night_distance = DistanceChoose.objects.get(pk=search.step_8)
-            _market_distance = DistanceChoose.objects.get(pk=search.step_6)
-            _gym_distance = DistanceChoose.objects.get(pk=search.step_9)
+            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
+            _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
+            _pharmacy_distance = DistanceChoose.objects.get(pk=int(search.step_7))
+            _night_distance = DistanceChoose.objects.get(pk=int(search.step_8))
+            _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
+            _gym_distance = DistanceChoose.objects.get(pk=int(search.step_9))
 
             _school_percent_list = dict()
             _park_percent_list = dict()
