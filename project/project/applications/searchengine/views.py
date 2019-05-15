@@ -9,7 +9,7 @@ from properites.serializers import AreaSerializer
 # Create your views here.
 
 
-class SearchView(views.APIView):
+class SearchView(viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     """
     _step_1 - Выбор районов
@@ -32,10 +32,10 @@ class SearchView(views.APIView):
     _step_8 = {}
     _step_9 = {}
     """
-    def get(self, request):
+    def get(self, request, format=None):
         pass
 
-    def post(self, request):
+    def post(self, request, format=None):
         data = request.data
         if data.get('step') == 0:
             user_id = data.get('user_id')
