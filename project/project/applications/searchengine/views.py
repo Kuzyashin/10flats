@@ -36,7 +36,7 @@ class SearchViewSet(views.APIView):
             search = Search.objects.create(
                 user_identify=user_id,
                 created_at=timezone.now(),
-                last_step=0
+                last_step=1
             )
             search.save()
             area_list = Area.objects.all()
