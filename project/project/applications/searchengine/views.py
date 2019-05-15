@@ -5,11 +5,12 @@ from properites.models import Area
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework import viewsets, views, status
+from rest_framework.decorators import api_view
 from properites.serializers import AreaSerializer
 # Create your views here.
 
 
-class SearchViewSet(viewsets.ViewSet):
+class SearchViewSet(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
     """
     _step_1 - Выбор районов
@@ -21,16 +22,6 @@ class SearchViewSet(viewsets.ViewSet):
     _step_7 - Аптеки
     _step_8 - Ночная жизнь
     _step_9 - Спортзалы
-
-    _step_1 = {}
-    _step_2 = {}
-    _step_3 = {}
-    _step_4 = {}
-    _step_5 = {}
-    _step_6 = {}
-    _step_7 = {}
-    _step_8 = {}
-    _step_9 = {}
     """
 
     def post(self, request, format=None):
