@@ -3,7 +3,6 @@ stages:
 deploy:
   stage: deploy
   script:
-    - cd 10flats
     - git pull
     - docker-compose stop
     - docker-compose up -d --force-recreate
