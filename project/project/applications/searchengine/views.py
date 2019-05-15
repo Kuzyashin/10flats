@@ -41,7 +41,7 @@ class SearchView(views.APIView):
         pass
 
     def post(self, request):
-        data = request.data.json()
+        data = request.data
         if data.get('step') == 0:
             user_id = data.get('user_id')
             search = Search.objects.create(
