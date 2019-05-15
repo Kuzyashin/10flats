@@ -9,7 +9,7 @@ from properites.serializers import AreaSerializer
 # Create your views here.
 
 
-class SearchView(viewsets.ViewSet):
+class SearchViewSet(viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     """
     _step_1 - Выбор районов
