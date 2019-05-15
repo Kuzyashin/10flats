@@ -8,7 +8,9 @@ from rest_framework import viewsets, views, status
 from rest_framework.decorators import api_view
 from properites.serializers import AreaSerializer
 # Create your views here.
+import logging
 
+logger = logging.getLogger(__name__)
 
 class SearchViewSet(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -35,7 +37,10 @@ class SearchViewSet(views.APIView):
             )
             search.save()
             area_list = Area.objects.all()
+            logger.info(area_list)
+            serialized = AreaSerializer(area_list)
+            logger.info(serialized.data)
             resp_data = {"step": 1,
-                         "answers": AreaSerializer(area_list).data}
-            print(resp_data)
+                         "answers": "SUKABLAT"}
+            logger.info(resp_data)
             return Response(data=resp_data, status=200)
