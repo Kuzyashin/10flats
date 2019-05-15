@@ -37,8 +37,8 @@ class SearchViewSet(views.APIView):
                 last_step=0
             )
             search.save()
-            serialized = AreaSerializer(True, Area.objects.all())
-            logger.info(serialized)
+            area_list = Area.objects.all()
+            serialized = AreaSerializer(area_list, many=True)
             logger.info(serialized.data)
             resp_data = {"step": 1,
                          "answers": serialized.data}
