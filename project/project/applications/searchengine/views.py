@@ -46,6 +46,7 @@ class SearchViewSet(viewsets.ViewSet):
             )
             search.save()
             area_list = Area.objects.all()
-            response = {"step": 1,
-                        "answers": AreaSerializer(area_list).data}
-            return Response(response)
+            resp_data = {"step": 1,
+                         "answers": AreaSerializer(area_list).data}
+            print(resp_data)
+            return Response(data=resp_data, status=200)
