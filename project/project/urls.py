@@ -33,7 +33,7 @@ urlpatterns = [
     # url(r'^bot/', include('messenegers.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
     path('api/', include('searchengine.urls')),
-    url(r'^api/s/search/$', SearchViewSet.as_view({"post": "create"})),
+    url(r'^api/search/$', SearchViewSet.as_view({"post": "post"})),
     # url(r'^api/search/$', SearchView, basename= ''),
     # path('grappelli/', include('grappelli.urls')),
     # path(r'^docs/', include('rest_framework_swagger.urls')),
