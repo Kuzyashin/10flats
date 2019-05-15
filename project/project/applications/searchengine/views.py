@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import views
+from django.db.models import Max, Min
 import ast
 
 from .models import Search
@@ -64,7 +65,25 @@ class SearchViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '2':
-            pass
+            search = Search.objects.filter(
+                user_identify=user_id,
+                last_step=2
+            ).last()
+            rooms_count = ast.literal_eval(data.get('data'))
+            search.step_2 = rooms_count
+            search.last_step = 3
+            search.save()
+            realty_objects = RealtyObject.objects.filter(
+                realty_complex__area_id__in=ast.literal_eval(search.step_1),
+                rooms_count__in=rooms_count
+            )
+            count = realty_objects.count()
+            min_price = realty_objects.aggregate(Min('rent_price_eur'))
+            max_price = realty_objects.aggregate(Max('rent_price_eur'))
+            resp_data = {"step": 3,
+                         "answers": {"min_price": min_price, "max_price": max_price},
+                         "count": count}
+            return Response(data=resp_data, status=200)
         elif data.get('step') == '3':
             pass
         elif data.get('step') == '4':
