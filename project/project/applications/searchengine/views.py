@@ -34,7 +34,7 @@ class SearchViewSet(views.APIView):
     def post(self, request, format=None):
         data = request.data
         user_id = data.get('user_id')
-        if data.get('step') == '0':
+        if data.get('step') == '0' or data.get('step') == 0:
             search = Search.objects.create(
                 user_identify=user_id,
                 created_at=timezone.now(),
@@ -48,7 +48,7 @@ class SearchViewSet(views.APIView):
                          "answers": serialized.data,
                          "count": RealtyObject.objects.all().count()}
             return Response(data=resp_data, status=200)
-        elif data.get('step') == '1':
+        elif data.get('step') == '1' or data.get('step') == 1:
             search = Search.objects.filter(
                 user_identify=user_id,
                 last_step=1
@@ -64,7 +64,7 @@ class SearchViewSet(views.APIView):
                          "answers": room_list,
                          "count": count}
             return Response(data=resp_data, status=200)
-        elif data.get('step') == '2':
+        elif data.get('step') == '2' or data.get('step') == 2:
             search = Search.objects.filter(
                 user_identify=user_id,
                 last_step=2
@@ -84,17 +84,19 @@ class SearchViewSet(views.APIView):
                          "answers": {"min_price": min_price, "max_price": max_price},
                          "count": count}
             return Response(data=resp_data, status=200)
-        elif data.get('step') == '3':
+        elif data.get('step') == '3' or data.get('step') == 3:
             pass
-        elif data.get('step') == '4':
+        elif data.get('step') == '4' or data.get('step') == 4:
             pass
-        elif data.get('step') == '5':
+        elif data.get('step') == '5' or data.get('step') == 5:
             pass
-        elif data.get('step') == '6':
+        elif data.get('step') == '6' or data.get('step') == 6:
             pass
-        elif data.get('step') == '7':
+        elif data.get('step') == '7' or data.get('step') == 7:
             pass
-        elif data.get('step') == '8':
+        elif data.get('step') == '8' or data.get('step') == 8:
+            pass
+        elif data.get('step') == '9' or data.get('step') == 9:
             pass
         else:
             return Response(request.data)
