@@ -13,31 +13,8 @@ from properites.serializers import AreaSerializer
 # Create your views here.
 
 
-class SearchView(viewsets.ViewSet):
-    queryset = []
-    serializer_class = AreaSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    http_method_names = ['post']
-
-    @action(detail=True, methods=['post'])
-    def step_0(self, request):
-        data = request.data.json()
-        user_id = data.get('user_id')
-        search = Search.objects.create(
-            user_identify=user_id,
-            created_at=timezone.now(),
-            last_step=0
-        )
-        search.save()
-        area_list = Area.objects.all()
-        response = {"step": 1,
-                    "answers": AreaSerializer(area_list)}
-        return Response(response, status=200)
-
-
-"""
 class SearchView(View):
-
+    """
     _step_1 - Выбор районов
     _step_2 - Выбор кол-ва комнат
     _step_3 - Выбор мин/макс суммы
@@ -57,7 +34,7 @@ class SearchView(View):
     _step_7 = {}
     _step_8 = {}
     _step_9 = {}
-
+    """
     def get(self, request):
         pass
 
@@ -73,6 +50,5 @@ class SearchView(View):
             search.save()
             area_list = Area.objects.all()
             response = {"step": 1,
-                        "answers": area_list}
+                        "answers": AreaSerializer(area_list).data}
             return HttpResponse(response, status=200)
-"""

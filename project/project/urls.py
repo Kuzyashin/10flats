@@ -19,6 +19,7 @@ from typeform.views import TypeformViewSet
 from realty import urls as realty_urls
 from profiles import urls as profiles_urls
 from django.conf.urls import url
+from searchengine.views import SearchView
 
 
 admin.site.site_header = 'E-Mlak Tech Admin Panel'
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^api/typeform_hook/$', TypeformViewSet.as_view()),
     # url(r'^bot/', include('messenegers.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
+    url(r'^api/search/$', SearchView.as_view()),
     # path('grappelli/', include('grappelli.urls')),
     # path(r'^docs/', include('rest_framework_swagger.urls')),
 ]
