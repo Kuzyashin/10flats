@@ -1,8 +1,8 @@
 from .views import SearchViewSet
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 
-router = DefaultRouter()
+router = SimpleRouter()
 
-router.register(r'search', SearchViewSet, basename='search_view')
+router.register(r'search', SearchViewSet)
 
 urlpatterns = router.urls
