@@ -409,11 +409,7 @@ class SearchViewSet(views.APIView):
                                   int(_market_percent_list.get(realty_object.pk))) / 5
                     }
                 }
-                if (int(_school_percent_list.get(realty_object.pk)) +
-                    int(_park_percent_list.get(realty_object.pk)) +
-                    int(_pharmacy_percent_list.get(realty_object.pk)) +
-                    int(_nightclub_percent_list.get(realty_object.pk)) +
-                    int(_market_percent_list.get(realty_object.pk))) / 5 > 80:
+                if int(_object_json.get(realty_object.pk).get('total')) > 80:
                         _final_json.update(_object_json)
             return Response(data=_final_json, status=200)
         else:
