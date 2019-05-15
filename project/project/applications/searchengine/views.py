@@ -192,7 +192,7 @@ class SearchViewSet(views.APIView):
                 last_step=6
             ).last()
             search.step_6 = data.get('data')
-            search.last_step = 6
+            search.last_step = 7
             search.save()
             try:
                 realty_objects = RealtyObject.objects.filter(
@@ -332,7 +332,6 @@ class SearchViewSet(views.APIView):
                     _school_json = {realty_object.pk: _percent}
                     _school_percent_list.update(_school_json)
                 except DistanceMatrix.DoesNotExist:
-                    print('No dist for complex {} school'.format(realty_object.realty_complex.name))
                     _school_json = {realty_object.pk: 0}
                     _school_percent_list.update(_school_json)
                 try:
@@ -346,7 +345,6 @@ class SearchViewSet(views.APIView):
                     _park_json = {realty_object.pk: _percent}
                     _park_percent_list.update(_park_json)
                 except DistanceMatrix.DoesNotExist:
-                    print('No dist for complex {} park'.format(realty_object.realty_complex.name))
                     _park_json = {realty_object.pk: 0}
                     _park_percent_list.update(_park_json)
                     ##
@@ -361,7 +359,6 @@ class SearchViewSet(views.APIView):
                     _pharmacy_json = {realty_object.pk: _percent}
                     _pharmacy_percent_list.update(_pharmacy_json)
                 except DistanceMatrix.DoesNotExist:
-                    print('No dist for complex {} pharmacy'.format(realty_object.realty_complex.name))
                     _pharmacy_json = {realty_object.pk: 0}
                     _pharmacy_percent_list.update(_pharmacy_json)
                     ##
@@ -376,7 +373,6 @@ class SearchViewSet(views.APIView):
                     _nightclub_json = {realty_object.pk: _percent}
                     _nightclub_percent_list.update(_nightclub_json)
                 except DistanceMatrix.DoesNotExist:
-                    print('No dist for complex {} park'.format(realty_object.realty_complex.name))
                     _nightclub_json = {realty_object.pk: 0}
                     _nightclub_percent_list.update(_nightclub_json)
                     ##
@@ -391,7 +387,6 @@ class SearchViewSet(views.APIView):
                     _market_json = {realty_object.pk: _percent}
                     _market_percent_list.update(_market_json)
                 except DistanceMatrix.DoesNotExist:
-                    print('No dist for complex {} market'.format(realty_object.realty_complex.name))
                     _market_json = {realty_object.pk: 0}
                     _market_percent_list.update(_market_json)
             _school_percent_list = _school_percent_list
