@@ -39,4 +39,3 @@ urlpatterns = [
 
 urlpatterns += realty_urls.urlpatterns
 urlpatterns += profiles_urls.urlpatterns
-urlpatterns += router.urls
