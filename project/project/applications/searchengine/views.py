@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import views
+import ast
 
 from .models import Search
 
@@ -51,7 +52,7 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 last_step=1
             ).last()
-            areas_pk = data.get('data')
+            areas_pk = ast.literal_eval(data.get('data'))
             search.step_1 = areas_pk
             search.last_step = 2
             search.save()
