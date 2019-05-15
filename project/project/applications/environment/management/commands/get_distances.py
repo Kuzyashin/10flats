@@ -38,5 +38,5 @@ class Command(BaseCommand):
                     distance=result.get('rows')[0].get('elements')[0].get('distance').get('value'),
                     duration=result.get('rows')[0].get('elements')[0].get('duration').get('value'),
                 )
-            print('Current {} / Total {} / {}'.format(i, places_count, compl.name))
+            print('Current {} / Total {} / {}'.format(i, places_count, compl.address))
 
