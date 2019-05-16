@@ -158,11 +158,11 @@ class SearchViewSet(views.APIView):
                 )
             _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
             percent = PercentPass.objects.last().percent
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
+            search.step_4_data = [r_obj.pk for r_obj in realty_objects
                         if r_obj.realty_complex.school_dist is not None
-                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
-
+                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100]
+            search.save()
+            realty_objects = realty_objects.filter(pk__in=search.step_4_data)
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,
@@ -178,31 +178,14 @@ class SearchViewSet(views.APIView):
             search.step_5 = data.get('data')
             search.last_step = 6
             search.save()
-            try:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=ast.literal_eval(search.step_2),
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            except ValueError:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=search.step_2,
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
+            realty_objects = RealtyObject.objects.filter(pk__in=search.step_4_data)
             _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
             percent = PercentPass.objects.last().percent
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.school_dist is not None
-                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
+            search.step_5_data = [r_obj.pk for r_obj in realty_objects
                         if r_obj.realty_complex.park_dist is not None
-                        and r_obj.realty_complex.park_dist <= _park_distance.distance / percent * 100])
+                        and r_obj.realty_complex.park_dist <= _park_distance.distance / percent * 100]
+            search.save()
+            realty_objects = realty_objects.filter(pk__in=search.step_5_data)
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 6,
@@ -218,36 +201,14 @@ class SearchViewSet(views.APIView):
             search.step_6 = data.get('data')
             search.last_step = 7
             search.save()
-            try:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=ast.literal_eval(search.step_2),
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            except ValueError:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=search.step_2,
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
-            _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
+            realty_objects = RealtyObject.objects.filter(pk__in=search.step_5_data)
             _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
             percent = PercentPass.objects.last().percent
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.school_dist is not None
-                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.park_dist is not None
-                        and r_obj.realty_complex.park_dist <= _park_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
+            search.step_6_data = [r_obj.pk for r_obj in realty_objects
                         if r_obj.realty_complex.market_dist is not None
-                        and r_obj.realty_complex.market_dist <= _market_distance.distance / percent * 100])
+                        and r_obj.realty_complex.market_dist <= _market_distance.distance / percent * 100]
+            search.save()
+            realty_objects = realty_objects.filter(pk__in=search.step_6_data)
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 7,
@@ -263,41 +224,14 @@ class SearchViewSet(views.APIView):
             search.step_7 = data.get('data')
             search.last_step = 8
             search.save()
-            try:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=ast.literal_eval(search.step_2),
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            except ValueError:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=search.step_2,
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
-            _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
-            _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
+            realty_objects = RealtyObject.objects.filter(pk__in=search.step_6_data)
             _pharmacy_distance = DistanceChoose.objects.get(pk=int(search.step_7))
             percent = PercentPass.objects.last().percent
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.school_dist is not None
-                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.park_dist is not None
-                        and r_obj.realty_complex.park_dist <= _park_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.market_dist is not None
-                        and r_obj.realty_complex.market_dist <= _market_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
+            search.step_7_data = [r_obj.pk for r_obj in realty_objects
                         if r_obj.realty_complex.pharmacy_dist is not None
-                        and r_obj.realty_complex.pharmacy_dist <= _pharmacy_distance.distance / percent * 100])
+                        and r_obj.realty_complex.pharmacy_dist <= _pharmacy_distance.distance / percent * 100]
+            search.save()
+            realty_objects = realty_objects.filter(pk__in=search.step_7_data)
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 8,
@@ -313,46 +247,14 @@ class SearchViewSet(views.APIView):
             search.step_8 = data.get('data')
             search.last_step = 9
             search.save()
-            try:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=ast.literal_eval(search.step_2),
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            except ValueError:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=search.step_2,
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
-            _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
-            _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
-            _pharmacy_distance = DistanceChoose.objects.get(pk=int(search.step_7))
+            realty_objects = RealtyObject.objects.filter(pk__in=search.step_7_data)
             _night_distance = DistanceChoose.objects.get(pk=int(search.step_8))
             percent = PercentPass.objects.last().percent
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.school_dist is not None
-                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.park_dist is not None
-                        and r_obj.realty_complex.park_dist <= _park_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.market_dist is not None
-                        and r_obj.realty_complex.market_dist <= _market_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.pharmacy_dist is not None
-                        and r_obj.realty_complex.pharmacy_dist <= _pharmacy_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
+            search.step_8_data = [r_obj.pk for r_obj in realty_objects
                         if r_obj.realty_complex.nightclub_dist is not None
-                        and r_obj.realty_complex.nightclub_dist <= _night_distance.distance / percent * 100])
+                        and r_obj.realty_complex.nightclub_dist <= _night_distance.distance / percent * 100]
+            search.save()
+            realty_objects = realty_objects.filter(pk__in=search.step_8_data)
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 9,
@@ -369,52 +271,31 @@ class SearchViewSet(views.APIView):
             search.last_step = 10
             search.finished_at = timezone.now()
             search.save()
-            try:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=ast.literal_eval(search.step_2),
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            except ValueError:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=search.step_2,
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
-                )
-            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
-            _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
-            _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
-            _pharmacy_distance = DistanceChoose.objects.get(pk=int(search.step_7))
-            _night_distance = DistanceChoose.objects.get(pk=int(search.step_8))
+            realty_objects = RealtyObject.objects.filter(pk__in=search.step_8_data)
             _gym_distance = DistanceChoose.objects.get(pk=int(search.step_9))
             percent = PercentPass.objects.last().percent
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.school_dist is not None
-                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.park_dist is not None
-                        and r_obj.realty_complex.park_dist <= _park_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.market_dist is not None
-                        and r_obj.realty_complex.market_dist <= _market_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.pharmacy_dist is not None
-                        and r_obj.realty_complex.pharmacy_dist <= _pharmacy_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.nightclub_dist is not None
-                        and r_obj.realty_complex.nightclub_dist <= _night_distance.distance / percent * 100])
-            realty_objects = realty_objects.filter(
-                pk__in=[r_obj.pk for r_obj in realty_objects
+            search.step_9_data = [r_obj.pk for r_obj in realty_objects
                         if r_obj.realty_complex.gym_dist is not None
-                        and r_obj.realty_complex.gym_dist <= _gym_distance.distance / percent * 100])
-
+                        and r_obj.realty_complex.gym_dist <= _gym_distance.distance / percent * 100]
+            search.save()
+            """
+            _step_1 - Выбор районов
+            _step_2 - Выбор кол-ва комнат
+            _step_3 - Выбор мин/макс суммы
+            _step_4 - Школы
+            _step_5 - парки
+            _step_6 - Супермаркеты
+            _step_7 - Аптеки
+            _step_8 - Ночная жизнь
+            _step_9 - Спортзалы
+            """
+            realty_objects = realty_objects.filter(pk__in=search.step_9_data)
+            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
+            _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
+            _pharmacy_distance = DistanceChoose.objects.get(pk=int(search.step_7))
+            _night_distance = DistanceChoose.objects.get(pk=int(search.step_8))
+            _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
+            _gym_distance = DistanceChoose.objects.get(pk=int(search.step_9))
             _school_percent_list = dict()
             _park_percent_list = dict()
             _pharmacy_percent_list = dict()
@@ -528,7 +409,7 @@ class SearchViewSet(views.APIView):
                                       int(_gym_percent_list.get(realty_object.pk)) +
                                       int(_market_percent_list.get(realty_object.pk))) / 6
                         },
-                       # "info": RealtyObjectSerializer(realty_object).data
+                            "info": RealtyObjectSerializer(realty_object).data
                     }
                 }
                 _final_json.update(_object_json)

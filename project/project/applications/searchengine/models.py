@@ -30,25 +30,50 @@ class Search(models.Model):
         null=True, blank=True,
         verbose_name='Шаг 4'
     )
+    step_4_data = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 4'
+    )
     step_5 = models.TextField(
         null=True, blank=True,
         verbose_name='Шаг 5'
+    )
+    step_5_data = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 4'
     )
     step_6 = models.TextField(
         null=True, blank=True,
         verbose_name='Шаг 6'
     )
+    step_6_data = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 4'
+    )
     step_7 = models.TextField(
         null=True, blank=True,
         verbose_name='Шаг 7'
+    )
+
+    step_7_data = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 4'
     )
     step_8 = models.TextField(
         null=True, blank=True,
         verbose_name='Шаг 8'
     )
+    step_8_data = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 4'
+    )
     step_9 = models.TextField(
         null=True, blank=True,
         verbose_name='Шаг 9'
+    )
+    step_9_data = models.TextField(
+        null=True, blank=True,
+        verbose_name='Шаг 4'
     )
     last_step = models.IntegerField(
         null=True, blank=True,
