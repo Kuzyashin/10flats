@@ -155,7 +155,7 @@ class SearchViewSet(views.APIView):
             _school_percent_list = dict()
             percent = PercentPass.objects.last().percent
 ########
-            realty_objects = realty_objects.filter(realty_complex__school_dist__lte=_school_distance/percent)
+            realty_objects = realty_objects.filter(realty_complex__school_dist__lte=_school_distance.distance/percent)
 
             count = realty_objects.count()
 
