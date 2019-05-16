@@ -13,6 +13,7 @@ from core.models import DistanceMatrix
 from properites.models import Area
 from properites.serializers import AreaSerializer
 from realty.models import RealtyObject
+from realty.serializers import RealtyObjectSerializer
 from .models import DistanceChoose
 from .models import Search, PercentPass
 from .serializers import DistanceChooseSerializer
@@ -513,18 +514,21 @@ class SearchViewSet(views.APIView):
             for realty_object in realty_objects:
                 _object_json = {
                     realty_object.pk: {
-                        "gym": _gym_percent_list.get(realty_object.pk),
-                        "school": _school_percent_list.get(realty_object.pk),
-                        "park": _park_percent_list.get(realty_object.pk),
-                        "pharmacy": _pharmacy_percent_list.get(realty_object.pk),
-                        "nightclub": _nightclub_percent_list.get(realty_object.pk),
-                        "market": _market_percent_list.get(realty_object.pk),
-                        "total": (int(_school_percent_list.get(realty_object.pk)) +
-                                  int(_park_percent_list.get(realty_object.pk)) +
-                                  int(_pharmacy_percent_list.get(realty_object.pk)) +
-                                  int(_nightclub_percent_list.get(realty_object.pk)) +
-                                  int(_gym_percent_list.get(realty_object.pk)) +
-                                  int(_market_percent_list.get(realty_object.pk))) / 6
+                        "scoring": {
+                            "gym": _gym_percent_list.get(realty_object.pk),
+                            "school": _school_percent_list.get(realty_object.pk),
+                            "park": _park_percent_list.get(realty_object.pk),
+                            "pharmacy": _pharmacy_percent_list.get(realty_object.pk),
+                            "nightclub": _nightclub_percent_list.get(realty_object.pk),
+                            "market": _market_percent_list.get(realty_object.pk),
+                            "total": (int(_school_percent_list.get(realty_object.pk)) +
+                                      int(_park_percent_list.get(realty_object.pk)) +
+                                      int(_pharmacy_percent_list.get(realty_object.pk)) +
+                                      int(_nightclub_percent_list.get(realty_object.pk)) +
+                                      int(_gym_percent_list.get(realty_object.pk)) +
+                                      int(_market_percent_list.get(realty_object.pk))) / 6
+                        },
+                        "info": RealtyObjectSerializer(realty_object).data
                     }
                 }
                 _final_json.update(_object_json)
