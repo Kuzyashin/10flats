@@ -16,7 +16,7 @@ class Command(BaseCommand):
         parser.add_argument('complex_id')
         parser.add_argument('complex_id_end')
 
-    def get_dist(self, place_pk, complex_pk):
+    def get_dist(self, place_pk, complex_pk, ti, tt):
         token = os.environ['GOOGLE_API_KEY']
         gmaps = googlemaps.Client(key=token)
         compl = RealtyComplex.objects.get(pk=complex_pk)
@@ -40,9 +40,9 @@ class Command(BaseCommand):
                 distance=result.get('rows')[0].get('elements')[0].get('distance').get('value'),
                 duration=result.get('rows')[0].get('elements')[0].get('duration').get('value'),
             )
-            print('Created place {} / complex {}'.format(place.pk, compl.pk))
+            print('Created place {} / complex {} / {} / {}'.format(place.pk, compl.pk, ti, tt))
 
-    def get_places(self, token, next_token, place_type, lat, lng, complex_pk):
+    def get_places(self, token, next_token, place_type, lat, lng, complex_pk, ti, tt):
         time.sleep(3)
         gmaps = googlemaps.Client(key=token)
         try:
@@ -85,9 +85,9 @@ class Command(BaseCommand):
                                 new_type.save()
                                 new_place.place_type.add(PlaceType.objects.get(type=pl_type))
                         new_place.save()
-                        self.get_dist(new_place.pk, complex_pk)
+                        self.get_dist(new_place.pk, complex_pk, ti, tt)
             if next_page_token:
-                self.get_places(token, next_page_token, place_type, lat, lng, complex_pk)
+                self.get_places(token, next_page_token, place_type, lat, lng, complex_pk, ti , tt)
         except Exception as e:
             print(e)
 
@@ -98,8 +98,10 @@ class Command(BaseCommand):
 
         for i in range(int(options['complex_id']), int(options['complex_id_end'])):
             realty_complex = RealtyComplex.objects.get(pk=options['complex_id'])
-
+            count_types = types.count()
+            ti = 0
             for place_type in types:
+                ti += 1
                 places = gmaps.places_nearby(
                     location=(realty_complex.lat, realty_complex.lng),
                     radius=3000,
@@ -138,6 +140,6 @@ class Command(BaseCommand):
                                     new_type.save()
                                     new_place.place_type.add(PlaceType.objects.get(type=pl_type))
                             new_place.save()
-                            self.get_dist(new_place.pk, realty_complex.pk)
+                            self.get_dist(new_place.pk, realty_complex.pk, ti, count_types)
                 if next_page_token:
-                    self.get_places(token, next_page_token, place_type, realty_complex.lat, realty_complex.lng, realty_complex.pk)
+                    self.get_places(token, next_page_token, place_type, realty_complex.lat, realty_complex.lng, realty_complex.pk, ti , count_types)
