@@ -61,9 +61,9 @@ class RealtyComplex(models.Model):
     @property
     def school_dist(self):
         dist = DistanceMatrix.objects.filter(complex_id=self.pk,
-                                             place__place_type__type='school').earliest('duration').distance
+                                             place__place_type__type='school').earliest('duration')
         if dist:
-            return dist
+            return dist.distance
         else:
             return None
 
