@@ -58,7 +58,7 @@ class Command(BaseCommand):
                 for place in results:
                     try:
                         Place.objects.get(google_place_id=place.get('place_id'))
-                        self.get_dist(Place.objects.get(google_place_id=place.get('place_id')).pk, complex_pk)
+                        self.get_dist(Place.objects.get(google_place_id=place.get('place_id')).pk, complex_pk, ti, tt)
                     except Place.DoesNotExist:
                         if place.get('plus_code'):
                             new_place = Place.objects.create(
@@ -113,7 +113,7 @@ class Command(BaseCommand):
                     for place in results:
                         try:
                             Place.objects.get(google_place_id=place.get('place_id'))
-                            self.get_dist(Place.objects.get(google_place_id=place.get('place_id')).pk, realty_complex.pk)
+                            self.get_dist(Place.objects.get(google_place_id=place.get('place_id')).pk, realty_complex.pk, ti, count_types)
                         except Place.DoesNotExist:
                             if place.get('plus_code'):
                                 new_place = Place.objects.create(
