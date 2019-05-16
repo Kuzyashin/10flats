@@ -69,28 +69,47 @@ class RealtyComplex(models.Model):
 
     @property
     def market_dist(self):
-        return DistanceMatrix.objects.filter(complex_id=self.pk,
-                                             place__place_type__type='supermarket').earliest('duration').distance
+        dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='supermarket')
+        if dist_list.count() > 0:
+            return dist_list.earliest('duration').distance
+        else:
+            return None
+
 
     @property
     def pharmacy_dist(self):
-        return DistanceMatrix.objects.filter(complex_id=self.pk,
-                                             place__place_type__type='pharmacy').earliest('duration').distance
+        dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='pharmacy')
+        if dist_list.count() > 0:
+            return dist_list.earliest('duration').distance
+        else:
+            return None
+
 
     @property
     def park_dist(self):
-        return DistanceMatrix.objects.filter(complex_id=self.pk,
-                                             place__place_type__type='park').earliest('duration').distance
+        dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='park')
+        if dist_list.count() > 0:
+            return dist_list.earliest('duration').distance
+        else:
+            return None
+
 
     @property
     def nightclub_dist(self):
-        return DistanceMatrix.objects.filter(complex_id=self.pk,
-                                             place__place_type__type='nightclub').earliest('duration').distance
+        dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='nightclub')
+        if dist_list.count() > 0:
+            return dist_list.earliest('duration').distance
+        else:
+            return None
+
 
     @property
     def gym_dist(self):
-        return DistanceMatrix.objects.filter(complex_id=self.pk,
-                                             place__place_type__type='gym').earliest('duration').distance
+        dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='gym')
+        if dist_list.count() > 0:
+            return dist_list.earliest('duration').distance
+        else:
+            return None
 
 
     def get_nearest_supermarket(self):
