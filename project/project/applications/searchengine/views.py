@@ -330,7 +330,7 @@ class SearchViewSet(views.APIView):
             _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
             _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
             _pharmacy_distance = DistanceChoose.objects.get(pk=int(search.step_7))
-            _night_distance = DistanceChoose.objects.get(pk=int(search.step_8))
+            _gym_distance = DistanceChoose.objects.get(pk=int(search.step_8))
             percent = PercentPass.objects.last().percent
             realty_objects = realty_objects.filter(
                 pk__in=[r_obj.pk for r_obj in realty_objects
@@ -350,8 +350,8 @@ class SearchViewSet(views.APIView):
                         and r_obj.realty_complex.pharmacy_dist <= _pharmacy_distance.distance / percent * 100])
             realty_objects = realty_objects.filter(
                 pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.nightclub_dist is not None
-                        and r_obj.realty_complex.nightclub_dist <= _night_distance.distance / percent * 100])
+                        if r_obj.realty_complex.gym_dist is not None
+                        and r_obj.realty_complex.gym_dist <= _gym_distance.distance / percent * 100])
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 9,
