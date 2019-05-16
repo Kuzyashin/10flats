@@ -48,6 +48,7 @@ class SearchViewSet(views.APIView):
             serialized = AreaSerializer(area_list, many=True)
             logger.info(serialized.data)
             resp_data = {"step": 1,
+                         "template": "step_1",
                          "answers": serialized.data,
                          "count": RealtyObject.objects.all().count()}
             return Response(data=resp_data, status=200)
@@ -67,6 +68,7 @@ class SearchViewSet(views.APIView):
             count = realty_objects.count()
             room_list = realty_objects.distinct('rooms_count').values('rooms_count')
             resp_data = {"step": 2,
+                         "template": "step_2",
                          "answers": room_list,
                          "count": count}
             return Response(data=resp_data, status=200)
@@ -96,6 +98,7 @@ class SearchViewSet(views.APIView):
             min_price = realty_objects.aggregate(Min('rent_price_eur'))
             max_price = realty_objects.aggregate(Max('rent_price_eur'))
             resp_data = {"step": 3,
+                         "template": "step_3",
                          "answers": {"min_price": min_price, "max_price": max_price},
                          "count": count}
             return Response(data=resp_data, status=200)
@@ -126,6 +129,7 @@ class SearchViewSet(views.APIView):
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 4,
+                         "template": "step_4",
                          "answers": choices_list.data,
                          "count": count}
             return Response(data=resp_data, status=200)
@@ -161,6 +165,7 @@ class SearchViewSet(views.APIView):
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,
+                         "template": "step_5",
                          "answers": choices_list.data,
                          "count": count}
             return Response(data=resp_data, status=200)
@@ -200,6 +205,7 @@ class SearchViewSet(views.APIView):
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 6,
+                         "template": "step_6",
                          "answers": choices_list.data,
                          "count": count}
             return Response(data=resp_data, status=200)
@@ -244,6 +250,7 @@ class SearchViewSet(views.APIView):
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 7,
+                         "template": "step_7",
                          "answers": choices_list.data,
                          "count": count}
             return Response(data=resp_data, status=200)
@@ -293,6 +300,7 @@ class SearchViewSet(views.APIView):
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 8,
+                         "template": "step_8",
                          "answers": choices_list.data,
                          "count": count}
             return Response(data=resp_data, status=200)
@@ -347,6 +355,7 @@ class SearchViewSet(views.APIView):
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 9,
+                         "template": "step_9",
                          "answers": choices_list.data,
                          "count": count}
             return Response(data=resp_data, status=200)
