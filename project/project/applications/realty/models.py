@@ -60,8 +60,13 @@ class RealtyComplex(models.Model):
 
     @property
     def school_dist(self):
-        return DistanceMatrix.objects.filter(complex_id=self.pk,
+        dist = DistanceMatrix.objects.filter(complex_id=self.pk,
                                              place__place_type__type='school').earliest('duration').distance
+        if dist.count():
+            return dist
+        else:
+            return None
+
 
     @property
     def market_dist(self):

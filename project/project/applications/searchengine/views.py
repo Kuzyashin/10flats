@@ -156,7 +156,8 @@ class SearchViewSet(views.APIView):
 ########
             realty_objects = realty_objects.filter(
                 pk__in=[r_obj.pk for r_obj in realty_objects
-                        if r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
+                        if r_obj.realty_complex.school_dist is not None
+                        and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
 
             count = realty_objects.count()
 
