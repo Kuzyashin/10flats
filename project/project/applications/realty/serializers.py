@@ -3,9 +3,9 @@ from .models import RealtyComplex, RealtyObject
 
 
 class RealtyComplexSerializer(serializers.ModelSerializer):
-    region = serializers.StringRelatedField(many=True)
-    city = serializers.StringRelatedField(many=True)
-    area = serializers.StringRelatedField(many=True)
+    region = serializers.StringRelatedField()
+    city = serializers.StringRelatedField()
+    area = serializers.StringRelatedField()
 
     class Meta:
         model = RealtyComplex
@@ -19,7 +19,7 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
     wc = serializers.StringRelatedField(many=True)
     heating = serializers.StringRelatedField(many=True)
     object_info = serializers.StringRelatedField(many=True)
-    realty_complex = RealtyComplexSerializer(many=True, read_only=True)
+    realty_complex = RealtyComplexSerializer(read_only=True)
 
     class Meta:
         model = RealtyObject
