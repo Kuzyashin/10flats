@@ -6,4 +6,4 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RealtyObject
-        fields = __all__
+        fields = '__all__'
