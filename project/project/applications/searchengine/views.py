@@ -152,10 +152,11 @@ class SearchViewSet(views.APIView):
                     rent_price_eur__lte=json.loads(search.step_3).get('max_price')
                 )
             _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
-            _school_percent_list = dict()
             percent = PercentPass.objects.last().percent
 ########
-            realty_objects = realty_objects.filter(realty_complex__school_dist__lte=_school_distance.distance/percent)
+            realty_objects = realty_objects.filter(
+                pk__in=[r_obj.pk for r_obj in realty_objects
+                        if r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100])
 
             count = realty_objects.count()
 
