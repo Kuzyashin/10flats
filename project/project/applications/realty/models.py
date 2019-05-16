@@ -83,9 +83,21 @@ class RealtyComplex(models.Model):
         return DistanceMatrix.objects.filter(complex_id=self.pk,
                                              place__place_type__type='nightclub').earliest('duration').distance
 
+    @property
+    def gym_dist(self):
+        return DistanceMatrix.objects.filter(complex_id=self.pk,
+                                             place__place_type__type='gym').earliest('duration').distance
+
+
     def get_nearest_supermarket(self):
         places = DistanceMatrix.objects.filter(complex_id=self.pk,
                                                place__place_type__type='supermarket').earliest('duration')
+        return places.place.name + ' - ' + places.place.address + \
+               ' - {}'.format(places.distance) + ' метров - {}'.format(places.duration) + ' секунд'
+
+    def get_nearest_gym(self):
+        places = DistanceMatrix.objects.filter(complex_id=self.pk,
+                                               place__place_type__type='gym').earliest('duration')
         return places.place.name + ' - ' + places.place.address + \
                ' - {}'.format(places.distance) + ' метров - {}'.format(places.duration) + ' секунд'
 

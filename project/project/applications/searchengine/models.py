@@ -108,6 +108,7 @@ class TgSearch(models.Model):
         return 'Поиск юзером' + self.telegram_user.first_name
 """
 
+
 class DistanceChoose(models.Model):
     text = models.CharField(
         null=True, blank=True, max_length=100,
@@ -124,3 +125,17 @@ class DistanceChoose(models.Model):
 
     def __str__(self):
         return self.text + ' - {} м'.format(self.distance)
+
+
+class PercentPass(models.Model):
+    percent = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='% при котором мы учитываем результат'
+    )
+
+    class Meta:
+        verbose_name = "Процент прохождения"
+        verbose_name_plural = "Проценты прохождения"
+
+    def __str__(self):
+        return '{}'.format(self.percent)

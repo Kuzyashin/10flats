@@ -14,7 +14,7 @@ from properites.models import Area
 from properites.serializers import AreaSerializer
 from realty.models import RealtyObject
 from .models import DistanceChoose
-from .models import Search
+from .models import Search, PercentPass
 from .serializers import DistanceChooseSerializer
 
 logger = logging.getLogger(__name__)
@@ -151,7 +151,15 @@ class SearchViewSet(views.APIView):
                     rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
                     rent_price_eur__lte=json.loads(search.step_3).get('max_price')
                 )
+            _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
+            _school_percent_list = dict()
+            percent = PercentPass.objects.last().percent
+########
+            realty_objects = realty_objects.filter(realty_complex__school_dist__lte=_school_distance/percent)
+
             count = realty_objects.count()
+
+########
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,
                          "answers": choices_list.data,
@@ -321,6 +329,19 @@ class SearchViewSet(views.APIView):
 
             for realty_object in qs:
                 try:
+                    _distance = realty_object.realty_complex.gym_dist
+                    if _gym_distance.distance > _distance:
+                        _percent = 100
+                    else:
+                        _percent = 100 - (_distance - _gym_distance.distance) / _gym_distance.distance * 100
+                        if _percent < 0:
+                            _percent = 0
+                    _gym_json = {realty_object.pk: _percent}
+                    _gym_percent_list.update(_gym_json)
+                except DistanceMatrix.DoesNotExist:
+                    _gym_json = {realty_object.pk: 0}
+                    _gym_percent_list.update(_gym_json)
+                try:
                     _distance = realty_object.realty_complex.school_dist
                     if _school_distance.distance > _distance:
                         _percent = 100
@@ -393,10 +414,12 @@ class SearchViewSet(views.APIView):
             _pharmacy_percent_list = _pharmacy_percent_list
             _nightclub_percent_list = _nightclub_percent_list
             _market_percent_list = _market_percent_list
+            _gym_percent_list = _gym_percent_list
             _final_json = dict()
             for realty_object in qs:
                 _object_json = {
                     realty_object.pk: {
+                        "gym": _gym_percent_list.get(realty_object.pk),
                         "school": _school_percent_list.get(realty_object.pk),
                         "park": _park_percent_list.get(realty_object.pk),
                         "pharmacy": _pharmacy_percent_list.get(realty_object.pk),
@@ -406,7 +429,8 @@ class SearchViewSet(views.APIView):
                                   int(_park_percent_list.get(realty_object.pk)) +
                                   int(_pharmacy_percent_list.get(realty_object.pk)) +
                                   int(_nightclub_percent_list.get(realty_object.pk)) +
-                                  int(_market_percent_list.get(realty_object.pk))) / 5
+                                  int(_gym_percent_list.get(realty_object.pk)) +
+                                  int(_market_percent_list.get(realty_object.pk))) / 6
                     }
                 }
                 if int(_object_json.get(realty_object.pk).get('total')) > 60:
