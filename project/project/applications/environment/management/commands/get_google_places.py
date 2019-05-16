@@ -19,7 +19,6 @@ class Command(BaseCommand):
     def get_dist(self, place_pk, complex_pk):
         token = os.environ['GOOGLE_API_KEY']
         gmaps = googlemaps.Client(key=token)
-        i = 0
         compl = RealtyComplex.objects.get(pk=complex_pk)
         place = Place.objects.get(pk=place_pk)
         try:
@@ -40,7 +39,7 @@ class Command(BaseCommand):
                 distance=result.get('rows')[0].get('elements')[0].get('distance').get('value'),
                 duration=result.get('rows')[0].get('elements')[0].get('duration').get('value'),
             )
-        print('Current {} / place {} / complex {}'.format(i, place.pk, compl.pk))
+        print('place {} / complex {}'.format( place.pk, compl.pk))
 
     def get_places(self, token, next_token, place_type, lat, lng, complex_pk):
         time.sleep(3)
@@ -48,7 +47,7 @@ class Command(BaseCommand):
         try:
             places = gmaps.places_nearby(
                 location=(lat, lng),
-                radius=5000,
+                radius=3000,
                 type=place_type,
                 page_token=next_token
             )
@@ -97,13 +96,12 @@ class Command(BaseCommand):
         gmaps = googlemaps.Client(key=token)
 
         for i in range(int(options['complex_id']), int(options['complex_id_end'])):
-            print(i)
             realty_complex = RealtyComplex.objects.get(pk=options['complex_id'])
 
             for place_type in types:
                 places = gmaps.places_nearby(
                     location=(realty_complex.lat, realty_complex.lng),
-                    radius=5000,
+                    radius=3000,
                     type=place_type
                 )
                 next_page_token = places.get('next_page_token', None)
