@@ -28,7 +28,7 @@ class SearchViewSet(views.APIView):
     _step_2 - Выбор кол-ва комнат
     _step_3 - Выбор мин/макс суммы
     _step_4 - Школы
-    _step_5 - Детские парки
+    _step_5 - парки
     _step_6 - Супермаркеты
     _step_7 - Аптеки
     _step_8 - Ночная жизнь
@@ -528,7 +528,7 @@ class SearchViewSet(views.APIView):
                                       int(_gym_percent_list.get(realty_object.pk)) +
                                       int(_market_percent_list.get(realty_object.pk))) / 6
                         },
-                        "info": RealtyObjectSerializer(realty_object).data
+                       # "info": RealtyObjectSerializer(realty_object).data
                     }
                 }
                 _final_json.update(_object_json)
