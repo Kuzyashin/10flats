@@ -3,6 +3,7 @@ import time
 from django.core.management.base import BaseCommand
 
 from environment.models import Place
+from core.models import DistanceMatrix
 from properites.models import PlaceType
 from realty.models import RealtyComplex
 import os
@@ -15,7 +16,33 @@ class Command(BaseCommand):
         parser.add_argument('complex_id')
         parser.add_argument('complex_id_end')
 
-    def get_places(self, token, next_token, place_type, lat, lng):
+    def get_dist(self, place_pk, complex_pk):
+        token = os.environ['GOOGLE_API_KEY']
+        gmaps = googlemaps.Client(key=token)
+        i = 0
+        compl = RealtyComplex.objects.get(pk=complex_pk)
+        place = Place.objects.get(pk=place_pk)
+        try:
+            DistanceMatrix.objects.get(place=place, complex=compl)
+        except DistanceMatrix.MultipleObjectsReturned:
+            print('Need to FIX THIS SHEET',
+                  DistanceMatrix.objects.filter(place=place, complex=compl))
+        except DistanceMatrix.DoesNotExist:
+            result = gmaps.distance_matrix(
+                origins=(compl.lat, compl.lng),
+                destinations=(place.lat, place.lng),
+                mode='walking',
+                units='metric'
+            )
+            DistanceMatrix.objects.create(
+                complex=compl,
+                place=place,
+                distance=result.get('rows')[0].get('elements')[0].get('distance').get('value'),
+                duration=result.get('rows')[0].get('elements')[0].get('duration').get('value'),
+            )
+        print('Current {} / place {} / complex {}'.format(i, place.pk, compl.pk))
+
+    def get_places(self, token, next_token, place_type, lat, lng, complex_pk):
         time.sleep(3)
         gmaps = googlemaps.Client(key=token)
         try:
@@ -57,8 +84,9 @@ class Command(BaseCommand):
                                 new_type.save()
                                 new_place.place_type.add(PlaceType.objects.get(type=pl_type))
                         new_place.save()
+                        self.get_dist(new_place.pk, complex_pk)
             if next_page_token:
-                self.get_places(token, next_page_token, place_type, lat, lng)
+                self.get_places(token, next_page_token, place_type, lat, lng, complex_pk)
         except Exception as e:
             print(e)
 
@@ -109,5 +137,6 @@ class Command(BaseCommand):
                                     new_type.save()
                                     new_place.place_type.add(PlaceType.objects.get(type=pl_type))
                             new_place.save()
+                            self.get_dist(new_place.pk, realty_complex.pk)
                 if next_page_token:
-                    self.get_places(token, next_page_token, place_type, realty_complex.lat, realty_complex.lng)
+                    self.get_places(token, next_page_token, place_type, realty_complex.lat, realty_complex.lng, realty_complex.pk)
