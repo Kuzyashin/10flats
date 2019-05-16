@@ -17,7 +17,7 @@ class Command(BaseCommand):
         token = os.environ['GOOGLE_API_KEY']
         complex_pk = options['complex_pk']
         gmaps = googlemaps.Client(key=token)
-        for ids in range(options['complex_id'], options['complex_id_end']):
+        for ids in range(int(options['complex_id']), int(options['complex_id_end'])):
             i=0
             compl = RealtyComplex.objects.get(pk=int(complex_pk))
             places_count = Place.objects.all().count()
