@@ -178,7 +178,7 @@ class SearchViewSet(views.APIView):
             search.step_5 = data.get('data')
             search.last_step = 6
             search.save()
-            realty_objects = RealtyObject.objects.filter(pk__in=search.step_4_data)
+            realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_4_data))
             _park_distance = DistanceChoose.objects.get(pk=int(search.step_5))
             percent = PercentPass.objects.last().percent
             search.step_5_data = [r_obj.pk for r_obj in realty_objects
@@ -201,7 +201,7 @@ class SearchViewSet(views.APIView):
             search.step_6 = data.get('data')
             search.last_step = 7
             search.save()
-            realty_objects = RealtyObject.objects.filter(pk__in=search.step_5_data)
+            realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_5_data))
             _market_distance = DistanceChoose.objects.get(pk=int(search.step_6))
             percent = PercentPass.objects.last().percent
             search.step_6_data = [r_obj.pk for r_obj in realty_objects
@@ -224,7 +224,7 @@ class SearchViewSet(views.APIView):
             search.step_7 = data.get('data')
             search.last_step = 8
             search.save()
-            realty_objects = RealtyObject.objects.filter(pk__in=search.step_6_data)
+            realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_6_data))
             _pharmacy_distance = DistanceChoose.objects.get(pk=int(search.step_7))
             percent = PercentPass.objects.last().percent
             search.step_7_data = [r_obj.pk for r_obj in realty_objects
@@ -247,7 +247,7 @@ class SearchViewSet(views.APIView):
             search.step_8 = data.get('data')
             search.last_step = 9
             search.save()
-            realty_objects = RealtyObject.objects.filter(pk__in=search.step_7_data)
+            realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_7_data))
             _night_distance = DistanceChoose.objects.get(pk=int(search.step_8))
             percent = PercentPass.objects.last().percent
             search.step_8_data = [r_obj.pk for r_obj in realty_objects
@@ -271,7 +271,7 @@ class SearchViewSet(views.APIView):
             search.last_step = 10
             search.finished_at = timezone.now()
             search.save()
-            realty_objects = RealtyObject.objects.filter(pk__in=search.step_8_data)
+            realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_8_data))
             _gym_distance = DistanceChoose.objects.get(pk=int(search.step_9))
             percent = PercentPass.objects.last().percent
             search.step_9_data = [r_obj.pk for r_obj in realty_objects
