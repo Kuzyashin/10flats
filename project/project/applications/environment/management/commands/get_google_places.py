@@ -23,7 +23,7 @@ class Command(BaseCommand):
         place = Place.objects.get(pk=place_pk)
         try:
             DistanceMatrix.objects.get(place=place, complex=compl)
-            print('Skipped place {} / complex {}'.format(place.pk, compl.pk))
+            print('Skipped place {} / complex {} / {} / {}'.format(place.pk, compl.pk, ti, tt))
         except DistanceMatrix.MultipleObjectsReturned:
             print('Need to FIX THIS SHEET',
                   DistanceMatrix.objects.filter(place=place, complex=compl))
