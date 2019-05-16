@@ -23,6 +23,7 @@ class Command(BaseCommand):
         place = Place.objects.get(pk=place_pk)
         try:
             DistanceMatrix.objects.get(place=place, complex=compl)
+            print('Skipped place {} / complex {}'.format(place.pk, compl.pk))
         except DistanceMatrix.MultipleObjectsReturned:
             print('Need to FIX THIS SHEET',
                   DistanceMatrix.objects.filter(place=place, complex=compl))
@@ -39,7 +40,7 @@ class Command(BaseCommand):
                 distance=result.get('rows')[0].get('elements')[0].get('distance').get('value'),
                 duration=result.get('rows')[0].get('elements')[0].get('duration').get('value'),
             )
-        print('place {} / complex {}'.format( place.pk, compl.pk))
+            print('Created place {} / complex {}'.format(place.pk, compl.pk))
 
     def get_places(self, token, next_token, place_type, lat, lng, complex_pk):
         time.sleep(3)
