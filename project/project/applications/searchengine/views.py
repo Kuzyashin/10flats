@@ -56,7 +56,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '1' or data.get('step') == 1:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=1
+                finished_at__isnull=True
             ).last()
             try:
                 areas_pk = ast.literal_eval(data.get('data'))
@@ -76,7 +76,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '2' or data.get('step') == 2:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=2
+                finished_at__isnull=True
             ).last()
             try:
                 rooms_count = ast.literal_eval(data.get('data'))
@@ -106,7 +106,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '3' or data.get('step') == 3:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=3
+                finished_at__isnull=True
             ).last()
             min_price = data.get('data').get('min_price')
             max_price = data.get('data').get('max_price')
@@ -137,7 +137,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '4' or data.get('step') == 4:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=4
+                finished_at__isnull=True
             ).last()
             search.step_4 = data.get('data')
             search.last_step = 5
@@ -173,7 +173,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '5' or data.get('step') == 5:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=5
+                finished_at__isnull=True
             ).last()
             search.step_5 = data.get('data')
             search.last_step = 6
@@ -213,7 +213,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '6' or data.get('step') == 6:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=6
+                finished_at__isnull=True
             ).last()
             search.step_6 = data.get('data')
             search.last_step = 7
@@ -258,7 +258,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '7' or data.get('step') == 7:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=7
+                finished_at__isnull=True
             ).last()
             search.step_7 = data.get('data')
             search.last_step = 8
@@ -308,7 +308,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '8' or data.get('step') == 8:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=8
+                finished_at__isnull=True
             ).last()
             search.step_8 = data.get('data')
             search.last_step = 9
@@ -363,7 +363,7 @@ class SearchViewSet(views.APIView):
         elif data.get('step') == '9' or data.get('step') == 9:
             search = Search.objects.filter(
                 user_identify=user_id,
-                last_step=9
+                finished_at__isnull=True
             ).last()
             search.step_9 = data.get('data')
             search.last_step = 10
