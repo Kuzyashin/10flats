@@ -97,7 +97,7 @@ class Command(BaseCommand):
         gmaps = googlemaps.Client(key=token)
 
         for i in range(int(options['complex_id']), int(options['complex_id_end'])):
-            realty_complex = RealtyComplex.objects.get(pk=options['complex_id'])
+            realty_complex = RealtyComplex.objects.get(pk=int(i))
             count_types = types.count()
             ti = 0
             for place_type in types:
