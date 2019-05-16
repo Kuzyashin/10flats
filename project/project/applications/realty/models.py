@@ -96,7 +96,7 @@ class RealtyComplex(models.Model):
 
     @property
     def nightclub_dist(self):
-        dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='nightclub')
+        dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='cafe')
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
