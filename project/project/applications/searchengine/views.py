@@ -85,18 +85,11 @@ class SearchViewSet(views.APIView):
             search.step_2 = sorted(rooms_count)
             search.last_step = 3
             search.save()
-            try:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__gte=rooms_count[0],
-                    rooms_count__lte=rooms_count[1]
-                )
-            except ValueError:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=search.step_1,
-                    rooms_count__gte=rooms_count[0],
-                    rooms_count__lte=rooms_count[1]
-                )
+            realty_objects = RealtyObject.objects.filter(
+                realty_complex__area_id__in=search.step_1,
+                rooms_count__gte=rooms_count[0],
+                rooms_count__lte=rooms_count[1]
+            )
             count = realty_objects.count()
             min_price = realty_objects.aggregate(Min('rent_price_eur'))
             max_price = realty_objects.aggregate(Max('rent_price_eur'))
@@ -110,25 +103,20 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            search.step_3 = sorted(data.get('data'))
+            try:
+                min_max_price = ast.literal_eval(data.get('data'))
+            except ValueError:
+                min_max_price = data.get('data')
+            search.step_3 = sorted(min_max_price)
             search.last_step = 4
             search.save()
-            try:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__gte=search.step_2[0],
-                    rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=search.step_3[0],
-                    rent_price_eur__lte=search.step_3[1]
-                )
-            except ValueError:
-                realty_objects = RealtyObject.objects.filter(
-                    realty_complex__area_id__in=search.step_1,
-                    rooms_count__gte=search.step_2[0],
-                    rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=search.step_3[0],
-                    rent_price_eur__lte=search.step_3[1]
-                )
+            realty_objects = RealtyObject.objects.filter(
+                realty_complex__area_id__in=search.step_1,
+                rooms_count__gte=search.step_2[0],
+                rooms_count__lte=search.step_2[1],
+                rent_price_eur__gte=search.step_3[0],
+                rent_price_eur__lte=search.step_3[1]
+            )
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 4,
