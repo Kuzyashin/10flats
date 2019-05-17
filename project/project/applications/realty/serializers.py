@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import RealtyComplex, RealtyObject
+from profiles.serializers import RealtyAgencySerializer
 
 
 class RealtyComplexSerializer(serializers.ModelSerializer):
@@ -20,6 +21,7 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
     heating = serializers.StringRelatedField(many=True)
     object_info = serializers.StringRelatedField(many=True)
     realty_complex = RealtyComplexSerializer(read_only=True)
+    agency = RealtyAgencySerializer(many=True, read_only=True)
 
     class Meta:
         model = RealtyObject

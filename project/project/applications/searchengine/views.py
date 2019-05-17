@@ -395,7 +395,6 @@ class SearchViewSet(views.APIView):
 
             for realty_object in realty_objects:
                 _object_json = {
-#                    realty_object.pk: {
                         "scoring": {
                             "gym": _gym_percent_list.get(realty_object.pk),
                             "school": _school_percent_list.get(realty_object.pk),
@@ -411,7 +410,6 @@ class SearchViewSet(views.APIView):
                                       int(_market_percent_list.get(realty_object.pk))) / 6
                         },
                         "info": RealtyObjectSerializer(realty_object).data
-#                    }
                 }
                 _final_list.append(_object_json)
 
