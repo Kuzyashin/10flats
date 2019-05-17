@@ -111,8 +111,6 @@ class SearchViewSet(views.APIView):
                 finished_at__isnull=True
             ).last()
             search.step_3 = sorted(data.get('data'))
-            min_price = search.step_3[0]
-            max_price = search.step_3[1]
             search.last_step = 4
             search.save()
             try:
@@ -120,16 +118,16 @@ class SearchViewSet(views.APIView):
                     realty_complex__area_id__in=ast.literal_eval(search.step_1),
                     rooms_count__gte=search.step_2[0],
                     rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=min_price,
-                    rent_price_eur__lte=max_price
+                    rent_price_eur__gte=search.step_3[0],
+                    rent_price_eur__lte=search.step_3[1]
                 )
             except ValueError:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=search.step_1,
                     rooms_count__gte=search.step_2[0],
                     rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=min_price,
-                    rent_price_eur__lte=max_price
+                    rent_price_eur__gte=search.step_3[0],
+                    rent_price_eur__lte=search.step_3[1]
                 )
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
