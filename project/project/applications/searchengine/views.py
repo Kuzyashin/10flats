@@ -110,9 +110,9 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            min_price = data.get('data')[0].get('min_price')
-            max_price = data.get('data')[0].get('max_price')
-            search.step_3 = json.dumps({"min_price": min_price, "max_price": max_price})
+            search.step_3 = sorted(data.get('data'))
+            min_price = search.step_3[0]
+            max_price = search.step_3[1]
             search.last_step = 4
             search.save()
             try:
@@ -128,8 +128,8 @@ class SearchViewSet(views.APIView):
                     realty_complex__area_id__in=search.step_1,
                     rooms_count__gte=search.step_2[0],
                     rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
+                    rent_price_eur__gte=min_price,
+                    rent_price_eur__lte=max_price
                 )
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
@@ -151,16 +151,16 @@ class SearchViewSet(views.APIView):
                     realty_complex__area_id__in=ast.literal_eval(search.step_1),
                     rooms_count__gte=search.step_2[0],
                     rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
+                    rent_price_eur__gte=search.step_3[0],
+                    rent_price_eur__lte=search.step_3[1]
                 )
             except ValueError:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=search.step_1,
                     rooms_count__gte=search.step_2[0],
                     rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
-                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
+                    rent_price_eur__gte=search.step_3[0],
+                    rent_price_eur__lte=search.step_3[1]
                 )
             _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
             percent = PercentPass.objects.last().percent
