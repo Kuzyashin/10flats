@@ -110,6 +110,10 @@ class SearchViewSet(views.APIView):
             search.step_3 = sorted(min_max_price)
             search.last_step = 4
             search.save()
+            print(search.step_3)
+            print(type(search.step_3))
+            print(list(search.step_3))
+            print(type(list(search.step_3)))
             realty_objects = RealtyObject.objects.filter(
                 realty_complex__area_id__in=search.step_1,
                 rooms_count__gte=search.step_2[0],
