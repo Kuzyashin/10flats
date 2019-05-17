@@ -421,7 +421,7 @@ class SearchViewSet(views.APIView):
                 except KeyError:
                     return 0
 
-            [_final_json].sort(key=extract_time, reverse=True)
+            #[_final_json].sort(key=extract_time, reverse=True)
             search.result = json.dumps(_final_json)
             search.save()
             return Response(data=_final_json, status=200)
