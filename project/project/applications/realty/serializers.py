@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import RealtyComplex, RealtyObject
-from profiles.serializers import RealtyAgencySerializer
-
+from profiles.serializers import RealtyAgencySerializer, ProfileSerializer
+from profiles.models import Profile
 
 class RealtyComplexSerializer(serializers.ModelSerializer):
     region = serializers.StringRelatedField()
@@ -22,9 +22,13 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
     object_info = serializers.StringRelatedField(many=True)
     realty_complex = RealtyComplexSerializer(read_only=True)
     agency = RealtyAgencySerializer(read_only=True)
+    agent = serializers.SerializerMethodField()
 
     class Meta:
         model = RealtyObject
-        fields = ('id', 'realty_complex', 'photo', 'info', 'agency', 'site_url', 'custom_description',
+        fields = ('id', 'agent', 'realty_complex', 'photo', 'info', 'agency', 'site_url', 'custom_description',
                   'additional_info', 'kitchen', 'wc', 'heating', 'object_info', 'rooms_count',
                   'square', 'floor', 'rent_price_eur')
+
+    def get_agent(self, obj):
+        return ProfileSerializer(Profile.objects.get(user=obj.user)).data
