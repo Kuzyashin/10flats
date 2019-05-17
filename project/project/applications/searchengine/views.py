@@ -128,8 +128,8 @@ class SearchViewSet(views.APIView):
                     realty_complex__area_id__in=search.step_1,
                     rooms_count__gte=search.step_2[0],
                     rooms_count__lte=search.step_2[1],
-                    rent_price_eur__gte=min_price,
-                    rent_price_eur__lte=max_price
+                    rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
+                    rent_price_eur__lte=json.loads(search.step_3).get('max_price')
                 )
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
