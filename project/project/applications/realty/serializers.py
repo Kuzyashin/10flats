@@ -3,6 +3,7 @@ from .models import RealtyComplex, RealtyObject
 from profiles.serializers import RealtyAgencySerializer, ProfileSerializer
 from profiles.models import Profile
 
+
 class RealtyComplexSerializer(serializers.ModelSerializer):
     region = serializers.StringRelatedField()
     city = serializers.StringRelatedField()

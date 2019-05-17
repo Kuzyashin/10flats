@@ -82,18 +82,20 @@ class SearchViewSet(views.APIView):
                 rooms_count = ast.literal_eval(data.get('data'))
             except ValueError:
                 rooms_count = data.get('data')
-            search.step_2 = rooms_count
+            search.step_2 = rooms_count.sort()
             search.last_step = 3
             search.save()
             try:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=rooms_count
+                    rooms_count__gte=rooms_count[0],
+                    rooms_count__lte=rooms_count[1]
                 )
             except ValueError:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=rooms_count
+                    rooms_count__gte=rooms_count[0],
+                    rooms_count__lte=rooms_count[1]
                 )
             count = realty_objects.count()
             min_price = realty_objects.aggregate(Min('rent_price_eur'))
@@ -116,14 +118,16 @@ class SearchViewSet(views.APIView):
             try:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=ast.literal_eval(search.step_2),
+                    rooms_count__gte=search.step_2[0],
+                    rooms_count__lte=search.step_2[1],
                     rent_price_eur__gte=min_price,
                     rent_price_eur__lte=max_price
                 )
             except ValueError:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=search.step_2,
+                    rooms_count__gte=search.step_2[0],
+                    rooms_count__lte=search.step_2[1],
                     rent_price_eur__gte=min_price,
                     rent_price_eur__lte=max_price
                 )
@@ -145,14 +149,16 @@ class SearchViewSet(views.APIView):
             try:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=ast.literal_eval(search.step_1),
-                    rooms_count__in=ast.literal_eval(search.step_2),
+                    rooms_count__gte=search.step_2[0],
+                    rooms_count__lte=search.step_2[1],
                     rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
                     rent_price_eur__lte=json.loads(search.step_3).get('max_price')
                 )
             except ValueError:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=search.step_1,
-                    rooms_count__in=search.step_2,
+                    rooms_count__gte=search.step_2[0],
+                    rooms_count__lte=search.step_2[1],
                     rent_price_eur__gte=json.loads(search.step_3).get('min_price'),
                     rent_price_eur__lte=json.loads(search.step_3).get('max_price')
                 )
