@@ -85,12 +85,10 @@ class SearchViewSet(views.APIView):
             search.step_2 = rooms_count
             search.last_step = 3
             search.save()
+            logger.info(search.step_1)
+            logger.info(type(search.step_1))
             min_room = search.step_2[0]
             max_room = search.step_2[1]
-            logger.info(min_room)
-            logger.info(type(min_room))
-            logger.info(max_room)
-            logger.info(type(max_room))
             realty_objects = RealtyObject.objects.filter(
                 realty_complex__area_id__in=search.step_1,
                 rooms_count__range=(min_room, max_room)
