@@ -21,7 +21,7 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
     heating = serializers.StringRelatedField(many=True)
     object_info = serializers.StringRelatedField(many=True)
     realty_complex = RealtyComplexSerializer(read_only=True)
-    agency = RealtyAgencySerializer(many=True, read_only=True)
+    agency = RealtyAgencySerializer(read_only=True)
 
     class Meta:
         model = RealtyObject
