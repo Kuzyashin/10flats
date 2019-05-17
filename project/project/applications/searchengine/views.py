@@ -139,7 +139,7 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            search.step_4 = data.get('data')
+            search.step_4 = data.get('data')[0]
             search.last_step = 5
             search.save()
             try:
@@ -175,7 +175,7 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            search.step_5 = data.get('data')
+            search.step_5 = data.get('data')[0]
             search.last_step = 6
             search.save()
             realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_4_data))
@@ -198,7 +198,7 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            search.step_6 = data.get('data')
+            search.step_6 = data.get('data')[0]
             search.last_step = 7
             search.save()
             realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_5_data))
@@ -221,7 +221,7 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            search.step_7 = data.get('data')
+            search.step_7 = data.get('data')[0]
             search.last_step = 8
             search.save()
             realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_6_data))
@@ -244,7 +244,7 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            search.step_8 = data.get('data')
+            search.step_8 = data.get('data')[0]
             search.last_step = 9
             search.save()
             realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(search.step_7_data))
@@ -267,7 +267,7 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            search.step_9 = data.get('data')
+            search.step_9 = data.get('data')[0]
             search.last_step = 10
             search.finished_at = timezone.now()
             search.save()
@@ -392,6 +392,7 @@ class SearchViewSet(views.APIView):
             _market_percent_list = _market_percent_list
             _gym_percent_list = _gym_percent_list
             _final_json = dict()
+
             for realty_object in realty_objects:
                 _object_json = {
                     realty_object.pk: {
@@ -409,10 +410,20 @@ class SearchViewSet(views.APIView):
                                       int(_gym_percent_list.get(realty_object.pk)) +
                                       int(_market_percent_list.get(realty_object.pk))) / 6
                         },
-                            "info": RealtyObjectSerializer(realty_object).data
+                        "info": RealtyObjectSerializer(realty_object).data
                     }
                 }
                 _final_json.update(_object_json)
+
+            def extract_time(json):
+                try:
+                    return int(json['scoring']['total'])
+                except KeyError:
+                    return 0
+
+            [_final_json].sort(key=extract_time, reverse=True)
+            search.result = json.dumps(_final_json)
+            search.save()
             return Response(data=_final_json, status=200)
         else:
             return Response(request.data)

@@ -79,6 +79,9 @@ class Search(models.Model):
         null=True, blank=True,
         verbose_name='Последний шаг'
     )
+    result = models.TextField(
+        null=True, blank=True
+    )
     created_at = models.DateTimeField(
         null=True, blank=True,
         verbose_name='Начало поиска'

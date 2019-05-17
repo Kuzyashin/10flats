@@ -23,6 +23,6 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RealtyObject
-        fields = ('realty_complex', 'photo', 'info', 'agency', 'site_url', 'custom_description',
+        fields = ('id', 'realty_complex', 'photo', 'info', 'agency', 'site_url', 'custom_description',
                   'additional_info', 'kitchen', 'wc', 'heating', 'object_info', 'rooms_count',
                   'square', 'floor', 'rent_price_eur')
