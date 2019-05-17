@@ -391,7 +391,7 @@ class SearchViewSet(views.APIView):
             _nightclub_percent_list = _nightclub_percent_list
             _market_percent_list = _market_percent_list
             _gym_percent_list = _gym_percent_list
-            _final_json = dict()
+            _final_list = []
 
             for realty_object in realty_objects:
                 _object_json = {
@@ -413,7 +413,7 @@ class SearchViewSet(views.APIView):
                         "info": RealtyObjectSerializer(realty_object).data
 #                    }
                 }
-                _final_json.update(_object_json)
+                _final_list.append(_object_json)
 
             def extract_time(json):
                 try:
@@ -421,9 +421,13 @@ class SearchViewSet(views.APIView):
                 except KeyError:
                     return 0
 
-            #[_final_json].sort(key=extract_time, reverse=True)
-            search.result = json.dumps(_final_json)
+            _final_list.sort(key=extract_time, reverse=True)
+            search.result = json.dumps(_final_list)
             search.save()
-            return Response(data=_final_json, status=200)
+            resp_data = {"step": 10,
+                         "template": "final",
+                         "answers": _final_list,
+                         "count": _final_list.count()}
+            return Response(data=resp_data, status=200)
         else:
             return Response(request.data)
