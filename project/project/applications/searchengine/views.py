@@ -402,12 +402,12 @@ class SearchViewSet(views.APIView):
             for realty_object in realty_objects:
                 _object_json = {
                         "scoring": {
-                            "gym": _gym_percent_list.get(realty_object.pk),
-                            "school": _school_percent_list.get(realty_object.pk),
-                            "park": _park_percent_list.get(realty_object.pk),
-                            "pharmacy": _pharmacy_percent_list.get(realty_object.pk),
-                            "nightclub": _nightclub_percent_list.get(realty_object.pk),
-                            "market": _market_percent_list.get(realty_object.pk),
+                            "gym": int(_gym_percent_list.get(realty_object.pk)),
+                            "school": int(_school_percent_list.get(realty_object.pk)),
+                            "park": int(_park_percent_list.get(realty_object.pk)),
+                            "pharmacy": int(_pharmacy_percent_list.get(realty_object.pk)),
+                            "nightclub": int(_nightclub_percent_list.get(realty_object.pk)),
+                            "market": int(_market_percent_list.get(realty_object.pk)),
                             "total": (int(_school_percent_list.get(realty_object.pk)) +
                                       int(_park_percent_list.get(realty_object.pk)) +
                                       int(_pharmacy_percent_list.get(realty_object.pk)) +
