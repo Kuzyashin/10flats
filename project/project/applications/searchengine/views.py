@@ -91,7 +91,9 @@ class SearchViewSet(views.APIView):
             logger.info(type(search.step_2))
             try:
                 logger.info(search.step_2[0])
+                logger.info(type(search.step_2[0]))
                 logger.info(search.step_2[1])
+                logger.info(type(search.step_2[1]))
             except Exception as e:
                 logger.info(e)
                 logger.info(list(search.step_2)[0])
