@@ -85,6 +85,17 @@ class SearchViewSet(views.APIView):
             search.step_2 = rooms_count
             search.last_step = 3
             search.save()
+            logger.info(rooms_count)
+            logger.info(type(rooms_count))
+            logger.info(search.step_2)
+            logger.info(type(search.step_2))
+            try:
+                logger.info(search.step_2[0])
+                logger.info(search.step_2[1])
+            except Exception as e:
+                logger.info(e)
+                logger.info(list(search.step_2)[0])
+                logger.info(list(search.step_2)[1])
             realty_objects = RealtyObject.objects.filter(
                 realty_complex__area_id__in=search.step_1,
                 rooms_count__gte=rooms_count[0],
