@@ -85,9 +85,11 @@ class SearchViewSet(views.APIView):
             search.step_2 = rooms_count
             search.last_step = 3
             search.save()
+            min_room = search.step_2[0]
+            max_room = search.step_2[1]
             realty_objects = RealtyObject.objects.filter(
                 realty_complex__area_id__in=search.step_1,
-                rooms_count__range=(search.step_2[0], search.step_2[1])
+                rooms_count__range=(min_room, max_room)
             )
             count = realty_objects.count()
             min_price = realty_objects.aggregate(Min('rent_price_eur'))
@@ -109,10 +111,14 @@ class SearchViewSet(views.APIView):
             search.step_3 = min_max_price
             search.last_step = 4
             search.save()
+            min_room = search.step_2[0]
+            max_room = search.step_2[1]
+            min_price = search.step_3[0]
+            max_price = search.step_3[1]
             realty_objects = RealtyObject.objects.filter(
                 realty_complex__area_id__in=search.step_1,
-                rooms_count__range=(search.step_2[0], search.step_2[1]),
-                rent_price_eur__range=(search.step_3[0], search.step_3[1])
+                rooms_count__range=(min_room, max_room),
+                rent_price_eur__range=(min_price, max_price)
             )
             count = realty_objects.count()
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
@@ -129,10 +135,14 @@ class SearchViewSet(views.APIView):
             search.step_4 = data.get('data')[0]
             search.last_step = 5
             search.save()
+            min_room = search.step_2[0]
+            max_room = search.step_2[1]
+            min_price = search.step_3[0]
+            max_price = search.step_3[1]
             realty_objects = RealtyObject.objects.filter(
                 realty_complex__area_id__in=search.step_1,
-                rooms_count__range=(search.step_2[0], search.step_2[1]),
-                rent_price_eur__range=(search.step_3[0], search.step_3[1])
+                rooms_count__range=(min_room, max_room),
+                rent_price_eur__range=(min_price, max_price)
             )
             _school_distance = DistanceChoose.objects.get(pk=int(search.step_4))
             percent = PercentPass.objects.last().percent
