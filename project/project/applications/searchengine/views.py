@@ -115,8 +115,8 @@ class SearchViewSet(views.APIView):
             search.step_3 = min_max_price
             search.last_step = 4
             search.save()
-            min_room = search.step_2[0]
-            max_room = search.step_2[1]
+            min_room = ast.literal_eval(search.step_2)[0]
+            max_room = ast.literal_eval(search.step_2)[1]
             min_price = search.step_3[0]
             max_price = search.step_3[1]
             try:
@@ -146,10 +146,10 @@ class SearchViewSet(views.APIView):
             search.step_4 = data.get('data')[0]
             search.last_step = 5
             search.save()
-            min_room = search.step_2[0]
-            max_room = search.step_2[1]
-            min_price = search.step_3[0]
-            max_price = search.step_3[1]
+            min_room = ast.literal_eval(search.step_2)[0]
+            max_room = ast.literal_eval(search.step_2)[1]
+            min_price = ast.literal_eval(search.step_3)[0]
+            max_price = ast.literal_eval(search.step_3)[1]
             try:
                 realty_objects = RealtyObject.objects.filter(
                     realty_complex__area_id__in=ast.literal_eval(search.step_1),
