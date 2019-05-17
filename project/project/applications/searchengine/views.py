@@ -108,8 +108,8 @@ class SearchViewSet(views.APIView):
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
-            min_price = data.get('data').get('min_price')
-            max_price = data.get('data').get('max_price')
+            min_price = data.get('data')[0].get('min_price')
+            max_price = data.get('data')[0].get('max_price')
             search.step_3 = json.dumps({"min_price": min_price, "max_price": max_price})
             search.last_step = 4
             search.save()
