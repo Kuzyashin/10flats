@@ -82,7 +82,7 @@ class SearchViewSet(views.APIView):
                 rooms_count = ast.literal_eval(data.get('data'))
             except ValueError:
                 rooms_count = data.get('data')
-            search.step_2 = rooms_count.sort()
+            search.step_2 = sorted(rooms_count)
             search.last_step = 3
             search.save()
             try:
