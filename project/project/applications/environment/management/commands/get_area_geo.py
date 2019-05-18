@@ -13,7 +13,7 @@ class Command(BaseCommand):
         url = 'https://nominatim.openstreetmap.org/search?q=Estonia+Tallinn+{}&polygon_geojson=1&format=json'
         areas = Area.objects.all()
         for area in areas:
-            dataz = requests.get(url.format(area.area))
+            dataz = requests.get(url.format(area.area)).json()
             for data in dataz:
                 if data.get('class') == 'boundary':
                     try:
