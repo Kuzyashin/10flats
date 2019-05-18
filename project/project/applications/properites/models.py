@@ -133,6 +133,18 @@ class TomTomSynonym(models.Model):
     )
 
 
+class TomTomChildPOI(models.Model):
+    tom_id = models.CharField(
+        blank=True, null=True, max_length=80
+    )
+    name = models.CharField(
+        blank=True, null=True, max_length=80
+    )
+    synonyms = models.ManyToManyField(
+        TomTomSynonym
+    )
+
+
 class TomTomPOI(models.Model):
     tom_id = models.CharField(
         blank=True, null=True, max_length=80
@@ -141,7 +153,7 @@ class TomTomPOI(models.Model):
         blank=True, null=True, max_length=80
     )
     childCategory = models.ManyToManyField(
-        "TomTomPOI"
+        TomTomChildPOI
     )
     synonyms = models.ManyToManyField(
         TomTomSynonym

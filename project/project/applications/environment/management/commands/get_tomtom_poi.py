@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from properites.models import TomTomPOI, TomTomSynonym
+from properites.models import TomTomPOI, TomTomSynonym, TomTomChildPOI
 from core.utils.TomTom import TomTom
 import os
 import logging
@@ -29,10 +29,24 @@ class Command(BaseCommand):
                     point.save()
                     for child_id in poi.get('childCategoryIds'):
                         try:
-                            child = TomTomPOI.objects.get(tom_id=child_id)
+                            child = TomTomChildPOI.objects.get(tom_id=child_id)
                             point.childCategory.add(child)
                         except TomTomPOI.DoesNotExist:
                             logger.warning('No data for first run {}'.format(point.pk))
+                    for synonim in poi.get('synonyms'):
+                        try:
+                            syn = TomTomSynonym.objects.get(name=synonim)
+                            point.synonyms.add(syn)
+                        except TomTomSynonym.DoesNotExist:
+                            syn = TomTomSynonym.objects.create(name=synonim)
+                            point.synonyms.add(syn)
+                    point.save()
+                else:
+                    point = TomTomChildPOI.objects.create(
+                        tom_id=poi.get('id'),
+                        name=poi.get('name')
+                    )
+                    point.save()
                     for synonim in poi.get('synonyms'):
                         try:
                             syn = TomTomSynonym.objects.get(name=synonim)
