@@ -27,7 +27,7 @@ class SearchGetViewSet(views.APIView):
 
     def get(self, request, search_pk):
         search = get_object_or_404(Search, pk=search_pk)
-        return Response(data=json.dumps(search.result), status=200)
+        return Response(data=search.result, status=200)
 
 
 class SearchViewSet(views.APIView):
