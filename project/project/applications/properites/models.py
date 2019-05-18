@@ -172,6 +172,9 @@ class Area(models.Model):
         null=True, blank=True, max_length=40,
         verbose_name=_('Area')
     )
+    geojson = models.TextField(
+        null=True, blank=True
+    )
 
     def __str__(self):
         return self.area
