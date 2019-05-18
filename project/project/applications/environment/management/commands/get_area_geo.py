@@ -19,7 +19,6 @@ class Command(BaseCommand):
                 print(data.get('class'))
                 if data.get('class') == 'boundary':
                     try:
-                        data = data.json()
                         geojson = data.get('geojson')
                         area.geojson = geojson
                         area.save()
