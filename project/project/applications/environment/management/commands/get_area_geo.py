@@ -16,6 +16,7 @@ class Command(BaseCommand):
             area.geojson = None
             dataz = requests.get(url.format(area.area)).json()
             for data in dataz:
+                print(data.get('class'))
                 if data.get('class') == 'boundary':
                     try:
                         data = data.json()
@@ -24,3 +25,14 @@ class Command(BaseCommand):
                         area.save()
                     except Exception:
                         print('No data for {}'.format(area.area))
+            if not area.geojson:
+                for data in dataz:
+                    print(data.get('class'))
+                    if data.get('class') == 'point':
+                        try:
+                            data = data.json()
+                            geojson = data.get('geojson')
+                            area.geojson = geojson
+                            area.save()
+                        except Exception:
+                            print('No data for {}'.format(area.area))
