@@ -19,11 +19,10 @@ from typeform.views import TypeformViewSet
 from realty import urls as realty_urls
 from profiles import urls as profiles_urls
 from django.conf.urls import url
-from searchengine.views import SearchViewSet
+from searchengine.views import SearchViewSet, SearchGetViewSet
 
 admin.site.site_header = 'E-Mlak Tech Admin Panel'
 admin.site.site_title = 'E-Mlak Tech Admin Panel'
-
 
 
 urlpatterns = [
@@ -33,6 +32,7 @@ urlpatterns = [
     # url(r'^bot/', include('messenegers.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
     url(r'^api/search/$', SearchViewSet.as_view()),
+    url(r'^api/get_search/(?P<search_pk>.+)/$', SearchGetViewSet.as_view()),
     # url(r'^api/search/$', SearchView, basename= ''),
     # path('grappelli/', include('grappelli.urls')),
     # path(r'^docs/', include('rest_framework_swagger.urls')),

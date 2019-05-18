@@ -33,3 +33,11 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
 
     def get_agent(self, obj):
         return ProfileSerializer(Profile.objects.get(user=obj.user)).data
+
+
+class RealtyObjectShortSerializer(serializers.ModelSerializer):
+    realty_complex = RealtyComplexSerializer(read_only=True)
+
+    class Meta:
+        model = RealtyObject
+        fields = ('id', 'realty_complex', 'photo', 'rooms_count', 'square', 'floor', 'rent_price_eur')

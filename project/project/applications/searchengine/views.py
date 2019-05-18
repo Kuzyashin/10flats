@@ -8,17 +8,26 @@ from django.utils import timezone
 from rest_framework import permissions
 from rest_framework import views
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 from core.models import DistanceMatrix
 from properites.models import Area
 from properites.serializers import AreaSerializer
 from realty.models import RealtyObject
-from realty.serializers import RealtyObjectSerializer
+from realty.serializers import RealtyObjectSerializer, RealtyObjectShortSerializer
 from .models import DistanceChoose
 from .models import Search, PercentPass
 from .serializers import DistanceChooseSerializer
 
 logger = logging.getLogger(__name__)
+
+
+class SearchGetViewSet(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, search_pk):
+        search = get_object_or_404(Search, pk=search_pk)
+        return Response(data=json.dumps(search.result), status=200)
 
 
 class SearchViewSet(views.APIView):
@@ -415,22 +424,23 @@ class SearchViewSet(views.APIView):
                                       int(_gym_percent_list.get(realty_object.pk)) +
                                       int(_market_percent_list.get(realty_object.pk))) / 6
                         },
-                        "info": RealtyObjectSerializer(realty_object).data
+                        "info": RealtyObjectShortSerializer(realty_object).data
                 }
                 _final_list.append(_object_json)
 
-            def extract_time(json):
+            def extract_score(json):
                 try:
                     return int(json['scoring']['total'])
                 except KeyError:
                     return 0
 
-            _final_list.sort(key=extract_time, reverse=True)
+            _final_list.sort(key=extract_score, reverse=True)
             search.result = json.dumps(_final_list)
             search.save()
             resp_data = {"step": 10,
                          "template": "final",
                          "answers": _final_list,
+                         "search_id": search.pk,
                          "count": len(_final_list)}
             return Response(data=resp_data, status=200)
         else:
