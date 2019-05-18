@@ -127,6 +127,27 @@ class PlaceType(models.Model):
         verbose_name_plural = _("Additional info")
 
 
+class TomTomSynonym(models.Model):
+    name = models.CharField(
+        blank=True, null=True, max_length=255
+    )
+
+
+class TomTomPOI(models.Model):
+    tom_id = models.CharField(
+        blank=True, null=True, max_length=80
+    )
+    name = models.CharField(
+        blank=True, null=True, max_length=80
+    )
+    childCategory = models.ManyToManyField(
+        "TomTomPOI"
+    )
+    synonyms = models.ManyToManyField(
+        TomTomSynonym
+    )
+
+
 class Region(models.Model):
     region = models.CharField(
         null=True, blank=True, max_length=40,
