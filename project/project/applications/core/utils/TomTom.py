@@ -4,7 +4,7 @@ import requests
 class TomTom:
     def __init__(self, token):
         self.token = token
-        self.base_url = 'https://api.tomtom.com/'
+        self.base_url = 'https://api.tomtom.com'
         self.default_format = 'json'
         self.default_limit = '100'
         self.default_radius = '3000'
