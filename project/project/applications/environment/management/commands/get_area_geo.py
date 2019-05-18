@@ -10,14 +10,16 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        url = 'https://nominatim.openstreetmap.org/search?q=Estonia+Tallin+{}+linnaosa&polygon_geojson=1&format=json&type=boundary'
+        url = 'https://nominatim.openstreetmap.org/search?q=Estonia+Tallinn+{}&polygon_geojson=1&format=json'
         areas = Area.objects.all()
         for area in areas:
-            data = requests.get(url.format(area.area))
-            try:
-                data = data.json()[0]
-                geojson = data.get('geojson').get('coordinates')[0]
-                area.geojson = geojson
-                area.save()
-            except Exception:
-                print('No data for {}'.format(area.area))
+            dataz = requests.get(url.format(area.area))
+            for data in dataz:
+                if data.get('class') == 'boundary':
+                    try:
+                        data = data.json()
+                        geojson = data.get('geojson').get('coordinates')
+                        area.geojson = geojson
+                        area.save()
+                    except Exception:
+                        print('No data for {}'.format(area.area))
