@@ -439,7 +439,6 @@ class SearchViewSet(views.APIView):
             search.save()
             resp_data = {"step": 10,
                          "template": "final",
-                         "answers": _final_list,
                          "search_id": search.pk,
                          "count": len(_final_list)}
             return Response(data=resp_data, status=200)
