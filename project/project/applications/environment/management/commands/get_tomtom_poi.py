@@ -4,7 +4,6 @@ from core.utils.TomTom import TomTom
 import os
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -18,7 +17,7 @@ class Command(BaseCommand):
         token = os.environ['TOMTOM_API_KEY']
         provider = TomTom(token)
         poi_list = provider.get_categories()
-        for poi in poi_list:
+        for poi in poi_list.get('poiCategories'):
             try:
                 point = TomTomPOI.objects.get(tom_id=poi.get('id'))
             except TomTomPOI.DoesNotExist:
