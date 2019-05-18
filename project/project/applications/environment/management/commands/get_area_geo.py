@@ -14,7 +14,10 @@ class Command(BaseCommand):
         areas = Area.objects.all()
         for area in areas:
             data = requests.get(url.format(area.area))
-            data = data.json()[0]
-            geojson = data.get('geojson').get('coordinates')[0]
-            area.geojson = geojson
-            area.save()
+            try:
+                data = data.json()[0]
+                geojson = data.get('geojson').get('coordinates')[0]
+                area.geojson = geojson
+                area.save()
+            except Exception:
+                print('No data for {}'.format(area.area))
