@@ -1,6 +1,6 @@
 from dal import autocomplete
 from .models import RealtyObject
-from .serializers import RealtyObjectShortSerializer
+from .serializers import RealtyObjectSerializer
 
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions
@@ -34,4 +34,4 @@ class RealtyComplexViewSet(views.APIView):
 
     def get(self, request, complex_pk):
         realty_object = get_object_or_404(RealtyObject, pk=complex_pk)
-        return Response(RealtyObjectShortSerializer(realty_object).data)
+        return Response(RealtyObjectSerializer(realty_object).data)
