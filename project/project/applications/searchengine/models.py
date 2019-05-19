@@ -199,6 +199,10 @@ class SearchV2(models.Model):
     result = models.TextField(
         null=True, blank=True
     )
+    last_step = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='Последний шаг'
+    )
     created_at = models.DateTimeField(
         null=True, blank=True,
         verbose_name='Начало поиска'
