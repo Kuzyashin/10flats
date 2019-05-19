@@ -42,16 +42,21 @@ class Command(BaseCommand):
                             point.synonyms.add(syn)
                     point.save()
                 else:
-                    point = TomTomChildPOI.objects.create(
-                        tom_id=poi.get('id'),
-                        name=poi.get('name')
-                    )
-                    point.save()
-                    for synonim in poi.get('synonyms'):
-                        try:
-                            syn = TomTomSynonym.objects.get(name=synonim)
-                            point.synonyms.add(syn)
-                        except TomTomSynonym.DoesNotExist:
-                            syn = TomTomSynonym.objects.create(name=synonim)
-                            point.synonyms.add(syn)
-                    point.save()
+                    try:
+                        point = TomTomChildPOI.objects.get(
+                            tom_id=poi.get('id')
+                        )
+                    except TomTomChildPOI.DoesNotExist:
+                        point = TomTomChildPOI.objects.create(
+                            tom_id=poi.get('id'),
+                            name=poi.get('name')
+                        )
+                        point.save()
+                        for synonim in poi.get('synonyms'):
+                            try:
+                                syn = TomTomSynonym.objects.get(name=synonim)
+                                point.synonyms.add(syn)
+                            except TomTomSynonym.DoesNotExist:
+                                syn = TomTomSynonym.objects.create(name=synonim)
+                                point.synonyms.add(syn)
+                        point.save()
