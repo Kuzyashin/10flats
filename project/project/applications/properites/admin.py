@@ -48,20 +48,10 @@ class AreaAdmin(admin.ModelAdmin):
 
 
 
-class SynonimInline(admin.TabularInline):
-    model = TomTomSynonym
-
-
-class ChildInline(admin.TabularInline):
-    inlines = TomTomChildPOI
-
-
-class TomTomPOIAdmin(admin.ModelAdmin):
-    inlines = [ChildInline, SynonimInline, ]
-
-
 admin.site.register(PlaceType)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(Area, AreaAdmin)
-admin.site.register(TomTomPOI, TomTomPOIAdmin)
+admin.site.register(TomTomPOI)
+admin.site.register(TomTomChildPOI)
+admin.site.register(TomTomSynonym)

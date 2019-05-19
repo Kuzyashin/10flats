@@ -24,3 +24,9 @@ class TomTom:
             '&key=' + self.token
         data = requests.get(url)
         return data.json()
+
+    def get_route(self, lat, lng):
+        url = self.base_url + '/routing/1/calculateRoute/' + lat + ',' + lng + '/' + self.default_format \
+              + '?travelMode=pedestrian&key=' + self.token
+        data = requests.get(url)
+        return data.json()
