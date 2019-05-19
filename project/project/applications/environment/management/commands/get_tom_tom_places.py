@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from properites.models import TomTomPOI
 from environment.models import TomTomPlace
 from core.utils.TomTom import TomTom
+from core.models import TomTomDistanceMatrix
 from realty.models import RealtyComplex
 import os
 import logging
@@ -78,6 +79,23 @@ class Command(BaseCommand):
                         category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
                         tom_place.place_type.add(category)
                     tom_place.save()
+                    try:
+                        TomTomDistanceMatrix.objects.get(complex=realty_complex, place=tom_place)
+                    except TomTomDistanceMatrix.DoesNotExist:
+                        remoteness = maps.get_route(realty_complex.lat, realty_complex.lng, tom_place.lat, tom_place.lng)
+                        try:
+                            route = remoteness.get('routes')[0]
+                            data = route.get('summary')
+                            dist_matrix = TomTomDistanceMatrix.objects.create(
+                                complex=realty_complex,
+                                place=tom_place,
+                                distance=data.get('lengthInMeters'),
+                                duration=data.get('travelTimeInSeconds')
+                            )
+                            dist_matrix.save()
+                        except Exception as e:
+                            logger.warning('No data for point {} and complex {} with err\n{}'.
+                                           format(tom_place.pk, realty_complex.pk, e))
             if places_total > places_on_page + current_offset:
                 self.get_more_places(places_on_page, current_offset, realty_complex.pk)
             else:
