@@ -20,6 +20,12 @@ class Command(BaseCommand):
         for poi in poi_list.get('poiCategories'):
             try:
                 point = TomTomPOI.objects.get(tom_id=poi.get('id'))
+                for child_id in poi.get('childCategoryIds'):
+                    try:
+                        child = TomTomChildPOI.objects.get(tom_id=child_id)
+                        point.childCategory.add(child)
+                    except TomTomChildPOI.DoesNotExist:
+                        logger.warning('No data for first run {}'.format(point.pk))
             except TomTomPOI.DoesNotExist:
                 if len(str(poi.get('id'))) == 4:
                     point = TomTomPOI.objects.create(
