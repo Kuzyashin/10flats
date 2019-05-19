@@ -513,13 +513,10 @@ class SearchV2ViewSet(views.APIView):
             search.save()
             realty_objects = RealtyObject.objects.filter(realty_complex__area_id__in=areas_pk)
             count = realty_objects.count()
-            SearchV2step.objects.create(
-                created_at=timezone.now(),
-                search=search,
-                step_pos=1,
-                answer=areas_pk,
-                result=[realty_object.pk for realty_object in realty_objects]
-            )
+            step_1 = get_or_create_step(search=search, step_pos=1)
+            step_1.answer = areas_pk
+            step_1.result = [realty_object.pk for realty_object in realty_objects]
+            step_1.save()
             room_list = realty_objects.distinct('rooms_count').values('rooms_count')
             resp_data = {"step": 2,
                          "template": "step_2",
