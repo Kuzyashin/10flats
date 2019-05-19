@@ -10,7 +10,7 @@ class TomTomDistanceMatrix(models.Model):
         verbose_name='Realty Complex'
     )
     place = models.ForeignKey(
-        'environment.Place', models.CASCADE,
+        'environment.TomTomPlace', models.CASCADE,
         null=True, blank=True,
         verbose_name='Place, object'
     )
