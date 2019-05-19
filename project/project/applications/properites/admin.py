@@ -46,41 +46,18 @@ class AreaAdmin(admin.ModelAdmin):
     search_fields = ['area']
 
 
-class MembershipInline(admin.TabularInline):
-    model = Group.members.through
-
-class PersonAdmin(admin.ModelAdmin):
-    inlines = [
-        MembershipInline,
-    ]
-
-class GroupAdmin(admin.ModelAdmin):
-    inlines = [
-        MembershipInline,
-    ]
-    exclude = ('members',)
 
 
 class SynonimInline(admin.TabularInline):
-    model = TomTomPOI.synonyms.though
-
-
-class ChildrenInline(admin.TabularInline):
-    model = TomTomPOI.childCategory.though
-
-
-class SynonimsInline(admin.TabularInline):
-    inlines = [SynonimInline, ]
+    model = TomTomSynonym
 
 
 class ChildInline(admin.TabularInline):
-    inlines = [ChildrenInline, SynonimInline, ]
-    exclude = ('synonyms',)
+    inlines = TomTomChildPOI
 
 
 class TomTomPOIAdmin(admin.ModelAdmin):
-    inlines = [ChildrenInline, SynonimInline, ]
-    exclude = ('childCategory', 'synonyms', )
+    inlines = [ChildInline, SynonimInline, ]
 
 
 admin.site.register(PlaceType)
