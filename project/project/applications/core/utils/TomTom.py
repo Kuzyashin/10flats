@@ -18,10 +18,9 @@ class TomTom:
         return data.json()
 
     def get_nearby(self, lat, lng, category, offset):
-        url = self.base_url + '/search/2/nearbySearch/.' + self.default_format + '?lat=' + lat + '&lon=' + lng + \
-            '&limit=' + self.default_limit + '&categorySet=' + str(category) + '&ofs={}'.format(offset) + '&radius=' \
-              + self.default_radius + '&idxSet=POI' + \
-            '&key=' + self.token
+        url = self.base_url + '/search/2/nearbySearch/.' + self.default_format + '?lat={}&lon={}'.format(lat, lng) + \
+            '&limit=' + self.default_limit + '&categorySet=' + category + '&ofs={}'.format(offset) + '&radius=' \
+              + self.default_radius + '&idxSet=POI' + '&key=' + self.token
         data = requests.get(url)
         return data.json()
 
