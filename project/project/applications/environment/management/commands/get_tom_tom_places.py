@@ -78,6 +78,8 @@ class Command(BaseCommand):
                         tomtom_place_id=raw_place.get('id')
                     )
                     for raw_category in raw_place.get('poi').get('categorySet')[0]:
+                        logger.info(raw_category)
+                        logger.info(type(raw_category))
                         try:
                             category = TomTomPOI.objects.get(tom_id=raw_category.get('id'))
                         except TomTomPOI.DoesNotExist:
