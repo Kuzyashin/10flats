@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from properites.models import TomTomPOI
+from properites.models import TomTomPOI, TomTomChildPOI
 from environment.models import TomTomPlace
 from core.utils.TomTom import TomTom
 from realty.models import RealtyComplex
@@ -45,7 +45,8 @@ class Command(BaseCommand):
                         try:
                             category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
                         except TomTomPOI.DoesNotExist:
-                            category = TomTomPOI.objects.get(childCategory__tom_id=str(raw_category.get('id')))
+                            child = TomTomChildPOI.objects.get(tom_id=str(raw_category.get('id')))
+                            category = TomTomPOI.objects.get(childCategory=child)
                         tom_place.childCategory.add(category)
                     tom_place.save()
             if places_total > places_on_page + current_offset:
@@ -81,7 +82,8 @@ class Command(BaseCommand):
                         try:
                             category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
                         except TomTomPOI.DoesNotExist:
-                            category = TomTomPOI.objects.get(childCategory__tom_id=str(raw_category.get('id')))
+                            child = TomTomChildPOI.objects.get(tom_id=str(raw_category.get('id')))
+                            category = TomTomPOI.objects.get(childCategory=child)
                         tom_place.childCategory.add(category)
                     tom_place.save()
             if places_total > places_on_page + current_offset:
