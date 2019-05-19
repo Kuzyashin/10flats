@@ -537,8 +537,8 @@ class SearchV2ViewSet(views.APIView):
                 rooms_count = data.get('data')
             search.last_step = 3
             search.save()
-            min_room = search.step_2[0]
-            max_room = search.step_2[1]
+            min_room = rooms_count[0]
+            max_room = rooms_count[1]
             step_2 = get_or_create_step(search=search, step_pos=2)
             step_2.answer = rooms_count
             step_2.created_at = timezone.now()
@@ -568,7 +568,7 @@ class SearchV2ViewSet(views.APIView):
             search.save()
             step_3 = get_or_create_step(search=search, step_pos=3)
             min_price = min_max_price[0]
-            max_price = min_max_price.step_3[1]
+            max_price = min_max_price[1]
             step_3.answer = min_max_price
             realty_objects = RealtyObject.objects.filter(
                 pk__in=ast.literal_eval(get_or_create_step(search=search, step_pos=2).result),
