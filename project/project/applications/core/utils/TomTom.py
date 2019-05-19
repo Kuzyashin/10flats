@@ -1,5 +1,8 @@
 import requests
+import logging
+import json
 
+logger = logging.getLogger(__name__)
 
 class TomTom:
     def __init__(self, token):
@@ -29,4 +32,13 @@ class TomTom:
               + '/routing/1/calculateRoute/{},{}:{},{}/'.format(start_lat, start_lng, fnish_lat, fnish_lng) \
               + self.default_format + '?travelMode=pedestrian&key=' + self.token
         data = requests.get(url)
-        return data.json()
+        try:
+            return data.json()
+        except Exception as e:
+            logger.warning(e)
+            logger.warning(data)
+            try:
+                return json.loads(data)
+            except Exception as e:
+                logger.warning(e)
+                return requests.get(url).json()
