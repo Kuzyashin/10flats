@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 #from messenegers.models import TelegramUser
 from django.contrib.auth.models import User
 # Create your models here.
@@ -9,6 +10,14 @@ class Search(models.Model):
         User, models.CASCADE,
         null=True, blank=True,
         verbose_name='Аккаунт в телеграм'
+    )
+    hashed_id = models.UUIDField(
+        default=uuid.uuid4,
+        max_length=255,
+        verbose_name='Уникальный идентификатор',
+        unique=True,
+        null=True,
+        blank=True,
     )
     user_identify = models.CharField(
         null=True, blank=True, max_length=255,

@@ -3,7 +3,6 @@ import json
 import os
 import logging
 
-
 from django.db.models import Max, Min
 from django.utils import timezone
 from rest_framework import permissions
@@ -62,7 +61,7 @@ class SearchViewSet(views.APIView):
             search = Search.objects.create(
                 user_identify=user_id,
                 created_at=timezone.now(),
-                last_step=1
+                last_step=1,
             )
             search.save()
             area_list = Area.objects.all()
