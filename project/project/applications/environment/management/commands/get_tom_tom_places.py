@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from properites.models import TomTomPOI, TomTomChildPOI
+from properites.models import TomTomPOI
 from environment.models import TomTomPlace
 from core.utils.TomTom import TomTom
 from realty.models import RealtyComplex
@@ -42,12 +42,8 @@ class Command(BaseCommand):
                         tomtom_place_id=raw_place.get('id')
                     )
                     for raw_category in raw_place.get('poi').get('categorySet'):
-                        try:
-                            category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
-                        except TomTomPOI.DoesNotExist:
-                            child = TomTomChildPOI.objects.get(tom_id=str(raw_category.get('id')))
-                            category = TomTomPOI.objects.get(childCategory=child)
-                        tom_place.childCategory.add(category)
+                        category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
+                        tom_place.place_type.add(category)
                     tom_place.save()
             if places_total > places_on_page + current_offset:
                 self.get_more_places( places_on_page, current_offset)
@@ -79,12 +75,8 @@ class Command(BaseCommand):
                         tomtom_place_id=raw_place.get('id')
                     )
                     for raw_category in raw_place.get('poi').get('categorySet'):
-                        try:
-                            category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
-                        except TomTomPOI.DoesNotExist:
-                            child = TomTomChildPOI.objects.get(tom_id=str(raw_category.get('id')))
-                            category = TomTomPOI.objects.get(childCategory=child)
-                        tom_place.childCategory.add(category)
+                        category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
+                        tom_place.place_type.add(category)
                     tom_place.save()
             if places_total > places_on_page + current_offset:
                 self.get_more_places(places_on_page, current_offset)

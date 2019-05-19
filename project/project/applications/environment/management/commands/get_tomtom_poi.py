@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from properites.models import TomTomPOI, TomTomSynonym, TomTomChildPOI
+from properites.models import TomTomPOI, TomTomSynonym
 from core.utils.TomTom import TomTom
 import os
 import logging
@@ -20,49 +20,18 @@ class Command(BaseCommand):
         for poi in poi_list.get('poiCategories'):
             try:
                 point = TomTomPOI.objects.get(tom_id=poi.get('id'))
-                for child_id in poi.get('childCategoryIds'):
-                    try:
-                        child = TomTomChildPOI.objects.get(tom_id=child_id)
-                        point.childCategory.add(child)
-                    except TomTomChildPOI.DoesNotExist:
-                        logger.warning('No data for first run {}'.format(point.pk))
             except TomTomPOI.DoesNotExist:
-                if len(str(poi.get('id'))) == 4:
-                    point = TomTomPOI.objects.create(
-                        tom_id=poi.get('id'),
-                        name=poi.get('name')
-                    )
-                    point.save()
-                    for child_id in poi.get('childCategoryIds'):
-                        try:
-                            child = TomTomChildPOI.objects.get(tom_id=child_id)
-                            point.childCategory.add(child)
-                        except TomTomChildPOI.DoesNotExist:
-                            logger.warning('No data for first run {}'.format(point.pk))
-                    for synonim in poi.get('synonyms'):
-                        try:
-                            syn = TomTomSynonym.objects.get(name=synonim)
-                            point.synonyms.add(syn)
-                        except TomTomSynonym.DoesNotExist:
-                            syn = TomTomSynonym.objects.create(name=synonim)
-                            point.synonyms.add(syn)
-                    point.save()
-                else:
+                point = TomTomPOI.objects.create(
+                    tom_id=poi.get('id'),
+                    name=poi.get('name')
+                )
+                point.save()
+                for synonim in poi.get('synonyms'):
                     try:
-                        point = TomTomChildPOI.objects.get(
-                            tom_id=poi.get('id')
-                        )
-                    except TomTomChildPOI.DoesNotExist:
-                        point = TomTomChildPOI.objects.create(
-                            tom_id=poi.get('id'),
-                            name=poi.get('name')
-                        )
-                        point.save()
-                        for synonim in poi.get('synonyms'):
-                            try:
-                                syn = TomTomSynonym.objects.get(name=synonim)
-                                point.synonyms.add(syn)
-                            except TomTomSynonym.DoesNotExist:
-                                syn = TomTomSynonym.objects.create(name=synonim)
-                                point.synonyms.add(syn)
-                        point.save()
+                        syn = TomTomSynonym.objects.get(name=synonim)
+                        point.synonyms.add(syn)
+                    except TomTomSynonym.DoesNotExist:
+                        syn = TomTomSynonym.objects.create(name=synonim)
+                        point.synonyms.add(syn)
+                point.save()
+

@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 
 from core.utils import TomTom
 from core.models import DistanceMatrix, TomTomDistanceMatrix
-from properites.models import Area, TomTomPOI, TomTomChildPOI
+from properites.models import Area, TomTomPOI
 from environment.models import TomTomPlace
 from properites.serializers import AreaSerializer
 from realty.models import RealtyObject
