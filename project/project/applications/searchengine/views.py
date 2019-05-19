@@ -527,7 +527,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '2' or data.get('step') == 2:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -556,7 +556,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '3' or data.get('step') == 3:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -584,7 +584,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '4' or data.get('step') == 4:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -612,7 +612,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '5' or data.get('step') == 5:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -640,7 +640,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '6' or data.get('step') == 6:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -668,7 +668,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '7' or data.get('step') == 7:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -696,7 +696,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '8' or data.get('step') == 8:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -724,7 +724,7 @@ class SearchV2ViewSet(views.APIView):
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '9' or data.get('step') == 9:
-            search = Search.objects.filter(
+            search = SearchV2.objects.filter(
                 user_identify=user_id,
                 finished_at__isnull=True
             ).last()
@@ -895,6 +895,30 @@ class SearchV2ViewSet(views.APIView):
                 except DistanceMatrix.DoesNotExist:
                     _market_json = {realty_object.pk: 0}
                     _market_percent_list.update(_market_json)
+                    
+                try:
+                    _distance = realty_object.realty_complex.park_dist
+                    if _park_distance.distance > 0:
+                        if _park_distance.distance > _distance:
+                            _percent = 100
+                        else:
+                            _percent = 100 - (_distance - _park_distance.distance) / _park_distance.distance * 100
+                            if _percent < 0:
+                                _percent = 0
+                        _park_json = {realty_object.pk: _percent}
+                        _park_percent_list.update(_park_json)
+                    else:
+                        if -_park_distance.distance < _distance:
+                            _percent = 100
+                        else:
+                            _percent = 100 - (- _park_distance.distance - _distance) / - _park_distance.distance * 100
+                            if _percent < 0:
+                                _percent = 0
+                        _park_json = {realty_object.pk: _percent}
+                        _park_percent_list.update(_park_json)
+                except DistanceMatrix.DoesNotExist:
+                    _park_json = {realty_object.pk: 0}
+                    _park_percent_list.update(_park_json)
                     
             _school_percent_list = _school_percent_list
             _park_percent_list = _park_percent_list
