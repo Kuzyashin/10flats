@@ -43,9 +43,9 @@ class Command(BaseCommand):
                     )
                     for raw_category in raw_place.get('poi').get('categorySet'):
                         try:
-                            category = TomTomPOI.objects.get(tom_id=raw_category.get('id'))
+                            category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
                         except TomTomPOI.DoesNotExist:
-                            category = TomTomPOI.objects.get(childCategory__tom_id__contains=raw_category.get('id'))
+                            category = TomTomPOI.objects.get(childCategory__tom_id=str(raw_category.get('id')))
                         tom_place.childCategory.add(category)
                     tom_place.save()
             if places_total > places_on_page + current_offset:
@@ -78,12 +78,10 @@ class Command(BaseCommand):
                         tomtom_place_id=raw_place.get('id')
                     )
                     for raw_category in raw_place.get('poi').get('categorySet'):
-                        logger.info(raw_category)
-                        logger.info(type(raw_category))
                         try:
-                            category = TomTomPOI.objects.get(tom_id=raw_category.get('id'))
+                            category = TomTomPOI.objects.get(tom_id=str(raw_category.get('id')))
                         except TomTomPOI.DoesNotExist:
-                            category = TomTomPOI.objects.get(childCategory__tom_id=raw_category.get('id'))
+                            category = TomTomPOI.objects.get(childCategory__tom_id=str(raw_category.get('id')))
                         tom_place.childCategory.add(category)
                     tom_place.save()
             if places_total > places_on_page + current_offset:
