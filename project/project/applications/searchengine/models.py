@@ -219,7 +219,7 @@ class SearchV2(models.Model):
 
 class SearchV2step(models.Model):
     search = models.ForeignKey(
-        Search, models.CASCADE,
+        SearchV2, models.CASCADE,
         null=True, blank=True
     )
     created_at = models.DateTimeField(
