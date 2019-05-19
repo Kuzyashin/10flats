@@ -1,6 +1,7 @@
 import requests
 import logging
 import json
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -35,10 +36,12 @@ class TomTom:
         try:
             return data.json()
         except Exception as e:
+            time.sleep(1)
             logger.warning(e)
             logger.warning(data)
             try:
                 return json.loads(data)
             except Exception as e:
                 logger.warning(e)
+                time.sleep(3)
                 return requests.get(url).json()
