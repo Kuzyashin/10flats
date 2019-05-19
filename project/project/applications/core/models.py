@@ -3,6 +3,34 @@ from forex_python.converter import CurrencyRates
 # Create your models here.
 
 
+class TomTomDistanceMatrix(models.Model):
+    complex = models.ForeignKey(
+        'realty.RealtyComplex', models.CASCADE,
+        null=True, blank=True,
+        verbose_name='Realty Complex'
+    )
+    place = models.ForeignKey(
+        'environment.Place', models.CASCADE,
+        null=True, blank=True,
+        verbose_name='Place, object'
+    )
+    distance = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='Distance'
+    )
+    duration = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='Duration'
+    )
+
+    def __str__(self):
+        return self.complex.address + ' - ' + self.place.name + ' - {}'.format(self.distance)
+
+    class Meta:
+        verbose_name = "Place"
+        verbose_name_plural = "Places"
+
+
 class DistanceMatrix(models.Model):
     complex = models.ForeignKey(
         'realty.RealtyComplex', models.CASCADE,
@@ -24,7 +52,7 @@ class DistanceMatrix(models.Model):
     )
 
     def __str__(self):
-        return self.complex.name + ' - ' + self.place.name + ' - {}'.format(self.distance)
+        return self.complex.address + ' - ' + self.place.name + ' - {}'.format(self.distance)
 
     class Meta:
         verbose_name = "Place"

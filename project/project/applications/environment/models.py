@@ -1,5 +1,5 @@
 from django.db import models
-from properites.models import PlaceType
+from properites.models import PlaceType, TomTomPOI
 # Create your models here.
 
 
@@ -44,4 +44,40 @@ class Place(models.Model):
     class Meta:
         verbose_name = "Place"
         verbose_name_plural = "Places"
+
+
+class TomTomPlace(models.Model):
+    place_type = models.ManyToManyField(
+        TomTomPOI,
+        blank=True,
+        verbose_name='Place type'
+    )
+    name = models.CharField(
+        null=True, blank=True, max_length=250,
+        verbose_name='Name'
+    )
+    address = models.CharField(
+        null=True, blank=True, max_length=250,
+        verbose_name='Address'
+    )
+    lat = models.CharField(
+        null=True, blank=True, max_length=20,
+        verbose_name='Lat'
+    )
+    lng = models.CharField(
+        null=True, blank=True, max_length=20,
+        verbose_name='Lng'
+    )
+    tomtom_place_id = models.CharField(
+        null=True, blank=True, max_length=50,
+        verbose_name='ID on Google Maps'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Place"
+        verbose_name_plural = "Places"
+
 
