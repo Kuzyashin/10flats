@@ -176,3 +176,63 @@ class PercentPass(models.Model):
 
     def __str__(self):
         return '{}'.format(self.percent)
+
+
+class SearchV2(models.Model):
+    user = models.ForeignKey(
+        User, models.CASCADE,
+        null=True, blank=True,
+        verbose_name='User'
+    )
+    hashed_id = models.UUIDField(
+        default=uuid.uuid4,
+        max_length=255,
+        verbose_name='Уникальный идентификатор',
+        unique=True,
+        null=True,
+        blank=True,
+    )
+    user_identify = models.CharField(
+        null=True, blank=True, max_length=255,
+        verbose_name='Идентификатор юзера'
+    )
+    result = models.TextField(
+        null=True, blank=True
+    )
+    created_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name='Начало поиска'
+    )
+    finished_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name='Конец поиска'
+    )
+
+    class Meta:
+        verbose_name = "Поиск V2"
+        verbose_name_plural = "Поиски V2"
+
+
+class SearchV2step(models.Model):
+    search = models.ForeignKey(
+        Search, models.CASCADE,
+        null=True, blank=True
+    )
+    created_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name='Шаг записан'
+    )
+    step_pos = models.CharField(
+        null=True, blank=True, max_length=80
+    )
+    answer = models.TextField(
+        null=True, blank=True
+    )
+    result = models.TextField(
+        null=True, blank=True
+    )
+
+    class Meta:
+        verbose_name = "Шаг поиска V2"
+        verbose_name_plural = "Шаги поисков V2"
+
