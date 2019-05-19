@@ -21,7 +21,7 @@ class Command(BaseCommand):
             try:
                 point = TomTomPOI.objects.get(tom_id=poi.get('id'))
             except TomTomPOI.DoesNotExist:
-                if len(poi.get('id')) == 4:
+                if len(str(poi.get('id'))) == 4:
                     point = TomTomPOI.objects.create(
                         tom_id=poi.get('id'),
                         name=poi.get('name')
