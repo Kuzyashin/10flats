@@ -599,7 +599,7 @@ class SearchV2ViewSet(views.APIView):
             percent = PercentPass.objects.last().percent
             if _school_distance.distance > 0:
                 step_4.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.school_dist is not None
-                                and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100]
+                                 and r_obj.realty_complex.school_dist <= _school_distance.distance / percent * 100]
             else:
                 step_4.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.school_dist is not None
                                  and r_obj.realty_complex.school_dist >= (-_school_distance.distance) / percent * 100]
