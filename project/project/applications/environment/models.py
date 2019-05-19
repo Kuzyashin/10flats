@@ -56,8 +56,8 @@ class TomTomPlace(models.Model):
         null=True, blank=True, max_length=250,
         verbose_name='Name'
     )
-    address = models.CharField(
-        null=True, blank=True, max_length=250,
+    address = models.TextField(
+        null=True, blank=True,
         verbose_name='Address'
     )
     lat = models.CharField(
