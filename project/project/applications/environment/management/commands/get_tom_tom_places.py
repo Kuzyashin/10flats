@@ -33,8 +33,8 @@ class Command(BaseCommand):
             for raw_place in raw_places:
                 try:
                     TomTomPlace.objects.get(tomtom_place_id=raw_place.get('id'))
-                except TomTomPOI.DoesNotExist:
-                    tom_place = TomTomPOI.objects.create(
+                except TomTomPlace.DoesNotExist:
+                    tom_place = TomTomPlace.objects.create(
                         name=raw_place.get('poi').get('name'),
                         address=raw_place.get('address'),
                         lat=raw_place.get('position').get('lat'),
@@ -69,8 +69,8 @@ class Command(BaseCommand):
             for raw_place in raw_places:
                 try:
                     TomTomPlace.objects.get(tomtom_place_id=raw_place.get('id'))
-                except TomTomPOI.DoesNotExist:
-                    tom_place = TomTomPOI.objects.create(
+                except TomTomPlace.DoesNotExist:
+                    tom_place = TomTomPlace.objects.create(
                         name=raw_place.get('poi').get('name'),
                         address=raw_place.get('address'),
                         lat=raw_place.get('position').get('lat'),
