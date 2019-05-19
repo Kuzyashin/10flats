@@ -24,7 +24,7 @@ class Command(BaseCommand):
             lat=realty_complex.lat,
             lng=realty_complex.lng,
             category='7372,9362,7332,9361051,9376,7320002',
-            offset='{}'.format(places_on_page+current_offset)
+            offset=places_on_page+current_offset
         )
         places_total = places_data.get('summary').get('totalResults')
         places_on_page = places_data.get('summary').get('numResults')
@@ -46,7 +46,7 @@ class Command(BaseCommand):
                     tom_place.place_type.add(category)
                 tom_place.save()
         if places_total > places_on_page + current_offset:
-            self.get_more_places( places_on_page, current_offset, realty_complex_pk)
+            self.get_more_places(places_on_page, current_offset, realty_complex_pk)
 
     def handle(self, *args, **options):
         maps = TomTom(token=os.environ['TOMTOM_API_KEY'])
@@ -57,7 +57,7 @@ class Command(BaseCommand):
                 lat=realty_complex.lat,
                 lng=realty_complex.lng,
                 category='7372,9362,7332,9361051,9376,7320002',
-                offset='0'
+                offset=0
             )
             places_total = places_data.get('summary').get('totalResults')
             places_on_page = places_data.get('summary').get('numResults')
