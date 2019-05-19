@@ -3,8 +3,8 @@ stages:
 deploy:
   stage: deploy
   script:
-    - sudo cd /root/10flats
-    - git pull
+    - cd ~/10flats
+    - git pull git@gitlab.com:Awakerr/10flats.git
     - docker-compose stop
     - docker-compose up -d --force-recreate
   only:
