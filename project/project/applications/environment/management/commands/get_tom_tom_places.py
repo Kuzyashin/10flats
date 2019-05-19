@@ -46,7 +46,7 @@ class Command(BaseCommand):
                     tom_place.place_type.add(category)
                 tom_place.save()
         if places_total > places_on_page + current_offset:
-            self.get_more_places( places_on_page, current_offset)
+            self.get_more_places( places_on_page, current_offset, realty_complex_pk)
 
     def handle(self, *args, **options):
         maps = TomTom(token=os.environ['TOMTOM_API_KEY'])
