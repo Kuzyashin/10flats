@@ -33,7 +33,7 @@ class SearchGetViewSet(views.APIView):
     def get(self, request, search_pk):
         search = get_object_or_404(Search, pk=search_pk)
         resp_data = {
-            "answers": json.loads(search.result),
+            "result": json.loads(search.result),
             "search_id": search.pk,
             "search_start": search.created_at,
             "search_finish": search.finished_at
