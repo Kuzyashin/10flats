@@ -31,7 +31,7 @@ class Command(BaseCommand):
                         try:
                             child = TomTomChildPOI.objects.get(tom_id=child_id)
                             point.childCategory.add(child)
-                        except TomTomPOI.DoesNotExist:
+                        except TomTomChildPOI.DoesNotExist:
                             logger.warning('No data for first run {}'.format(point.pk))
                     for synonim in poi.get('synonyms'):
                         try:
