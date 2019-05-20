@@ -76,7 +76,6 @@ class SearchViewSet(views.APIView):
             search.save()
             area_list = Area.objects.all()
             serialized = AreaSerializer(area_list, many=True)
-            logger.info(serialized.data)
             resp_data = {"step": 1,
                          "template": "step_1",
                          "answers": serialized.data,
@@ -802,8 +801,6 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (_distance - _gym_distance.distance) / _gym_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _gym_json = {realty_object.pk: _percent}
-                        _gym_percent_list.update(_gym_json)
                     else:
                         if -_gym_distance.distance < _distance:
                             _percent = 100
@@ -811,8 +808,8 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (- _gym_distance.distance - _distance) / - _gym_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _gym_json = {realty_object.pk: _percent}
-                        _gym_percent_list.update(_gym_json)
+                    _gym_json = {realty_object.pk: _percent}
+                    _gym_percent_list.update(_gym_json)
                 except DistanceMatrix.DoesNotExist:
                     _gym_json = {realty_object.pk: 0}
                     _gym_percent_list.update(_gym_json)
@@ -828,8 +825,6 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (_distance - _school_distance.distance) / _school_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _school_json = {realty_object.pk: _percent}
-                        _school_percent_list.update(_school_json)
                     else:
                         if -_school_distance.distance < _distance:
                             _percent = 100
@@ -837,8 +832,8 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (-_school_distance.distance - _distance) / -_school_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _school_json = {realty_object.pk: _percent}
-                        _school_percent_list.update(_school_json)
+                    _school_json = {realty_object.pk: _percent}
+                    _school_percent_list.update(_school_json)
                 except DistanceMatrix.DoesNotExist:
                     _gym_json = {realty_object.pk: 0}
                     _gym_percent_list.update(_gym_json)
@@ -855,8 +850,6 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (_distance - _pharmacy_distance.distance) / _pharmacy_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _pharmacy_json = {realty_object.pk: _percent}
-                        _pharmacy_percent_list.update(_pharmacy_json)
                     else:
                         if -_pharmacy_distance.distance < _distance:
                             _percent = 100
@@ -864,8 +857,8 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (- _pharmacy_distance.distance - _distance) / - _pharmacy_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _pharmacy_json = {realty_object.pk: _percent}
-                        _pharmacy_percent_list.update(_pharmacy_json)
+                    _pharmacy_json = {realty_object.pk: _percent}
+                    _pharmacy_percent_list.update(_pharmacy_json)
                 except DistanceMatrix.DoesNotExist:
                     _pharmacy_json = {realty_object.pk: 0}
                     _pharmacy_percent_list.update(_pharmacy_json)
@@ -883,8 +876,6 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (_distance - _night_distance.distance) / _night_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _nightclub_json = {realty_object.pk: _percent}
-                        _nightclub_percent_list.update(_nightclub_json)
                     else:
                         if -_night_distance.distance < _distance:
                             _percent = 100
@@ -892,8 +883,8 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (- _night_distance.distance - _distance) / - _night_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _nightclub_json = {realty_object.pk: _percent}
-                        _nightclub_percent_list.update(_nightclub_json)
+                    _nightclub_json = {realty_object.pk: _percent}
+                    _nightclub_percent_list.update(_nightclub_json)
                 except DistanceMatrix.DoesNotExist:
                     _nightclub_json = {realty_object.pk: 0}
                     _nightclub_percent_list.update(_nightclub_json)
@@ -911,8 +902,6 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (_distance - _market_distance.distance) / _market_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _market_json = {realty_object.pk: _percent}
-                        _market_percent_list.update(_market_json)
                     else:
                         if -_market_distance.distance < _distance:
                             _percent = 100
@@ -920,8 +909,8 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (- _market_distance.distance - _distance) / - _market_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _market_json = {realty_object.pk: _percent}
-                        _market_percent_list.update(_market_json)
+                    _market_json = {realty_object.pk: _percent}
+                    _market_percent_list.update(_market_json)
                 except DistanceMatrix.DoesNotExist:
                     _market_json = {realty_object.pk: 0}
                     _market_percent_list.update(_market_json)
@@ -937,8 +926,6 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (_distance - _park_distance.distance) / _park_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _park_json = {realty_object.pk: _percent}
-                        _park_percent_list.update(_park_json)
                     else:
                         if -_park_distance.distance < _distance:
                             _percent = 100
@@ -946,8 +933,8 @@ class SearchV2ViewSet(views.APIView):
                             _percent = 100 - (- _park_distance.distance - _distance) / - _park_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
-                        _park_json = {realty_object.pk: _percent}
-                        _park_percent_list.update(_park_json)
+                    _park_json = {realty_object.pk: _percent}
+                    _park_percent_list.update(_park_json)
                 except DistanceMatrix.DoesNotExist:
                     _park_json = {realty_object.pk: 0}
                     _park_percent_list.update(_park_json)
