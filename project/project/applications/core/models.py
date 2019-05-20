@@ -22,7 +22,9 @@ class TomTomDistanceMatrix(models.Model):
         null=True, blank=True,
         verbose_name='Duration'
     )
-
+    route = models.TextField(
+        null=True, blank=True
+    )
     def __str__(self):
         return self.complex.address + ' - ' + self.place.name + ' - {}'.format(self.distance)
 

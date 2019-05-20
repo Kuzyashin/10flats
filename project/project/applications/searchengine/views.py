@@ -479,6 +479,7 @@ def get_or_create_step(search, step_pos):
         return step
 
 
+
 class SearchV2ViewSet(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
     """

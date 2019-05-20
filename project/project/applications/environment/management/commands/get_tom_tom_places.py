@@ -78,7 +78,8 @@ class Command(BaseCommand):
                                 complex=realty_complex,
                                 place=tom_place,
                                 distance=data.get('lengthInMeters'),
-                                duration=data.get('travelTimeInSeconds')
+                                duration=data.get('travelTimeInSeconds'),
+                                route=route.get('summary').get('legs')
                             )
                             dist_matrix.save()
                         except Exception as e:
@@ -107,7 +108,8 @@ class Command(BaseCommand):
                                 complex=realty_complex,
                                 place=tom_place,
                                 distance=data.get('lengthInMeters'),
-                                duration=data.get('travelTimeInSeconds')
+                                duration=data.get('travelTimeInSeconds'),
+                                route=route.get('summary').get('legs')
                             )
                             dist_matrix.save()
                         except Exception as e:
