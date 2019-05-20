@@ -39,6 +39,16 @@ class SearchGetViewSet(views.APIView):
         }
         return Response(data=resp_data, status=200)
 
+    def post(self, request, search_pk):
+        search = get_object_or_404(Search, pk=search_pk)
+        resp_data = {
+            "result": json.loads(search.result),
+            "search_id": search.pk,
+            "search_start": search.created_at,
+            "search_finish": search.finished_at
+        }
+        return Response(data=resp_data, status=200)
+
 
 class SearchViewSet(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
