@@ -865,7 +865,7 @@ class SearchV2ViewSet(views.APIView):
                 
                 try:
                     _distance = realty_object.realty_complex.pharmacy_dist
-                    if _pharmacy_distance.distance > 0:
+                    if _pharmacy_distance.distance == 0:
                         _percent = 100
                     elif _pharmacy_distance.distance > 0:
                         if _pharmacy_distance.distance > _distance:
@@ -891,7 +891,7 @@ class SearchV2ViewSet(views.APIView):
                 
                 try:
                     _distance = realty_object.realty_complex.nightclub_dist
-                    if _night_distance.distance > 0:
+                    if _night_distance.distance == 0:
                         _percent = 100
                     elif _night_distance.distance > 0:
                         if _night_distance.distance > _distance:
@@ -917,9 +917,9 @@ class SearchV2ViewSet(views.APIView):
                 
                 try:
                     _distance = realty_object.realty_complex.market_dist
-                    if _market_distance.distance > 0:
+                    if _market_distance.distance == 0:
                         _percent = 100
-                    if _market_distance.distance > 0:
+                    elif _market_distance.distance > 0:
                         if _market_distance.distance > _distance:
                             _percent = 100
                         else:
