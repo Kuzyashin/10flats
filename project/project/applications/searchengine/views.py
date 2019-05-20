@@ -613,7 +613,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
             step_4.save()
-            count = realty_objects.count()
+            count = len(step_4.result)
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,
                          "template": "step_5",
@@ -644,7 +644,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_5.result = ast.literal_eval(get_or_create_step(search=search, step_pos=4).result)
             step_5.save()
-            count = realty_objects.count()
+            count = len(step_5.result)
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 6,
                          "template": "step_6",
@@ -674,7 +674,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_6.result = ast.literal_eval(get_or_create_step(search=search, step_pos=5).result)
             step_6.save()
-            count = realty_objects.count()
+            count = len(step_6.result)
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 7,
                          "template": "step_7",
@@ -704,7 +704,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_7.result = ast.literal_eval(get_or_create_step(search=search, step_pos=6).result)
             step_7.save()
-            count = realty_objects.count()
+            count = len(step_7.result)
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 8,
                          "template": "step_8",
@@ -734,7 +734,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_8.result = ast.literal_eval(get_or_create_step(search=search, step_pos=7).result)
             step_8.save()
-            count = realty_objects.count()
+            count = len(step_8.result)
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 9,
                          "template": "step_9",
@@ -793,7 +793,9 @@ class SearchV2ViewSet(views.APIView):
             for realty_object in realty_objects:
                 try:
                     _distance = realty_object.realty_complex.gym_dist
-                    if _gym_distance.distance > 0:
+                    if _gym_distance.distance == 0:
+                        _percent = 100
+                    elif _gym_distance.distance > 0:
                         if _gym_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -817,7 +819,9 @@ class SearchV2ViewSet(views.APIView):
                 
                 try:
                     _distance = realty_object.realty_complex.school_dist
-                    if _school_distance.distance > 0:
+                    if _school_distance.distance == 0:
+                        _percent = 100
+                    elif _school_distance.distance > 0:
                         if _school_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -843,6 +847,8 @@ class SearchV2ViewSet(views.APIView):
                 try:
                     _distance = realty_object.realty_complex.pharmacy_dist
                     if _pharmacy_distance.distance > 0:
+                        _percent = 100
+                    elif _pharmacy_distance.distance > 0:
                         if _pharmacy_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -869,6 +875,8 @@ class SearchV2ViewSet(views.APIView):
                 try:
                     _distance = realty_object.realty_complex.nightclub_dist
                     if _night_distance.distance > 0:
+                        _percent = 100
+                    elif _night_distance.distance > 0:
                         if _night_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -895,6 +903,8 @@ class SearchV2ViewSet(views.APIView):
                 try:
                     _distance = realty_object.realty_complex.market_dist
                     if _market_distance.distance > 0:
+                        _percent = 100
+                    if _market_distance.distance > 0:
                         if _market_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -918,7 +928,9 @@ class SearchV2ViewSet(views.APIView):
                     
                 try:
                     _distance = realty_object.realty_complex.park_dist
-                    if _park_distance.distance > 0:
+                    if _park_distance.distance == 0:
+                        _percent = 100
+                    elif _park_distance.distance > 0:
                         if _park_distance.distance > _distance:
                             _percent = 100
                         else:
