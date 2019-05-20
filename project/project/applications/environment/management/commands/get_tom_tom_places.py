@@ -66,7 +66,24 @@ class Command(BaseCommand):
             raw_places = places_data.get('results')
             for raw_place in raw_places:
                 try:
-                    TomTomPlace.objects.get(tomtom_place_id=raw_place.get('id'))
+                    tom_place = TomTomPlace.objects.get(tomtom_place_id=raw_place.get('id'))
+                    try:
+                        TomTomDistanceMatrix.objects.get(complex=realty_complex, place=tom_place)
+                    except TomTomDistanceMatrix.DoesNotExist:
+                        remoteness = maps.get_route(realty_complex.lat, realty_complex.lng, tom_place.lat, tom_place.lng)
+                        try:
+                            route = remoteness.get('routes')[0]
+                            data = route.get('summary')
+                            dist_matrix = TomTomDistanceMatrix.objects.create(
+                                complex=realty_complex,
+                                place=tom_place,
+                                distance=data.get('lengthInMeters'),
+                                duration=data.get('travelTimeInSeconds')
+                            )
+                            dist_matrix.save()
+                        except Exception as e:
+                            logger.warning('No data for point {} and complex {} with err\n{}'.
+                                           format(tom_place.pk, realty_complex.pk, e))
                 except TomTomPlace.DoesNotExist:
                     tom_place = TomTomPlace.objects.create(
                         name=raw_place.get('poi').get('name'),

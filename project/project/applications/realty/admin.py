@@ -14,7 +14,7 @@ class RealtyComplexAdmin(admin.ModelAdmin):
     readonly_fields = ['lat', 'lng', 'get_nearest_supermarket', 'get_nearest_school',
                        'get_nearest_park',
                        'get_nearest_pharmacy',
-                       'get_nearest_nightclub'
+                       'get_nearest_nightclub',
                        ]
     fieldsets = (
         (None, {
