@@ -107,7 +107,6 @@ class RealtyComplex(models.Model):
         else:
             return None
 
-
     @property
     def park_dist(self):
         dist_list = DistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__type='park')

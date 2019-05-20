@@ -661,7 +661,7 @@ class SearchV2ViewSet(views.APIView):
             search.last_step = 7
             search.save()
             realty_objects = RealtyObject.objects.filter(
-                pk__in=ast.literal_eval(get_or_create_step(search=search, step_pos=6).result),
+                pk__in=ast.literal_eval(get_or_create_step(search=search, step_pos=5).result),
             )
             _market_distance = DistanceChoose.objects.get(pk=int(step_6.answer))
             percent = PercentPass.objects.last().percent
