@@ -6,7 +6,7 @@ deploy:
     - cd ~/10flats
     - git pull git@gitlab.com:Awakerr/10flats.git
     - docker-compose stop
-    - docker-compose up -d --force-recreate
+    - docker-compose up --build --force-recreate -d
   only:
     - master
   tags:
