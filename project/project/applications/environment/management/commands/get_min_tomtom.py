@@ -29,7 +29,7 @@ class Command(BaseCommand):
                     offset=0
                 )
                 raw_places = places_data.get('results')
-                for raw_place in raw_places[:1]:
+                for raw_place in raw_places[:2]:
                     try:
                         tom_place = TomTomPlace.objects.get(tomtom_place_id=raw_place.get('id'))
                         try:
@@ -43,7 +43,8 @@ class Command(BaseCommand):
                                     complex=realty_complex,
                                     place=tom_place,
                                     distance=data.get('lengthInMeters'),
-                                    duration=data.get('travelTimeInSeconds')
+                                    duration=data.get('travelTimeInSeconds'),
+                                    route=route.get('summary').get('legs')
                                 )
                                 dist_matrix.save()
                             except Exception as e:
