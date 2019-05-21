@@ -834,7 +834,10 @@ class SearchV2ViewSet(views.APIView):
                                 _percent = 0
                     _gym_json = {realty_object.pk: _percent}
                     _gym_percent_list.update(_gym_json)
-                except DistanceMatrix.DoesNotExist:
+                except AttributeError as e:
+                    logger.warning('Problem for complex {}\n\n{}\n{}'.format(realty_object,
+                                                                             realty_object.realty_complex.tom_gym_dist,
+                                                                             e))
                     _gym_json = {realty_object.pk: 0}
                     _gym_percent_list.update(_gym_json)
                 
@@ -858,7 +861,10 @@ class SearchV2ViewSet(views.APIView):
                                 _percent = 0
                     _school_json = {realty_object.pk: _percent}
                     _school_percent_list.update(_school_json)
-                except DistanceMatrix.DoesNotExist:
+                except AttributeError as e:
+                    logger.warning('Problem for complex {}\n\n{}\n{}'.format(realty_object,
+                                                                             realty_object.realty_complex.tom_school_dist,
+                                                                             e))
                     _gym_json = {realty_object.pk: 0}
                     _gym_percent_list.update(_gym_json)
                     ##
@@ -883,7 +889,10 @@ class SearchV2ViewSet(views.APIView):
                                 _percent = 0
                     _pharmacy_json = {realty_object.pk: _percent}
                     _pharmacy_percent_list.update(_pharmacy_json)
-                except DistanceMatrix.DoesNotExist:
+                except AttributeError as e:
+                    logger.warning('Problem for complex {}\n\n{}\n{}'.format(realty_object,
+                                                                             realty_object.realty_complex.tom_pharmacy_dist,
+                                                                             e))
                     _pharmacy_json = {realty_object.pk: 0}
                     _pharmacy_percent_list.update(_pharmacy_json)
                 
@@ -909,7 +918,10 @@ class SearchV2ViewSet(views.APIView):
                                 _percent = 0
                     _nightclub_json = {realty_object.pk: _percent}
                     _nightclub_percent_list.update(_nightclub_json)
-                except DistanceMatrix.DoesNotExist:
+                except AttributeError as e:
+                    logger.warning('Problem for complex {}\n\n{}\n{}'.format(realty_object,
+                                                                             realty_object.realty_complex.tom_nightclub_dist,
+                                                                             e))
                     _nightclub_json = {realty_object.pk: 0}
                     _nightclub_percent_list.update(_nightclub_json)
 
@@ -935,7 +947,10 @@ class SearchV2ViewSet(views.APIView):
                                 _percent = 0
                     _market_json = {realty_object.pk: _percent}
                     _market_percent_list.update(_market_json)
-                except DistanceMatrix.DoesNotExist:
+                except AttributeError as e:
+                    logger.warning('Problem for complex {}\n\n{}\n{}'.format(realty_object,
+                                                                             realty_object.realty_complex.tom_market_dist,
+                                                                             e))
                     _market_json = {realty_object.pk: 0}
                     _market_percent_list.update(_market_json)
                     
@@ -959,7 +974,10 @@ class SearchV2ViewSet(views.APIView):
                                 _percent = 0
                     _park_json = {realty_object.pk: _percent}
                     _park_percent_list.update(_park_json)
-                except DistanceMatrix.DoesNotExist:
+                except AttributeError as e:
+                    logger.warning('Problem for complex {}\n\n{}\n{}'.format(realty_object,
+                                                                             realty_object.realty_complex.tom_park_dist,
+                                                                             e))
                     _park_json = {realty_object.pk: 0}
                     _park_percent_list.update(_park_json)
                     
