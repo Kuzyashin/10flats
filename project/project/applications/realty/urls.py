@@ -14,6 +14,6 @@ urlpatterns = [
         name='area_name_lookup',
     ),
 
-    url(r'^api/realty_object/(?P<complex_pk>.+)/$', RealtyComplexViewSet().as_view())
+    url(r'^api/realty_object_v2/(?P<complex_pk>.+)/$', RealtyComplexViewSet().as_view())
 
 ]
