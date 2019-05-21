@@ -56,7 +56,7 @@ class SearchV2GetViewSet(views.APIView):
     def get(self, request, search_pk):
         search = get_object_or_404(SearchV2, pk=search_pk)
         resp_data = {
-            "result": search.result,
+            "result": json.loads(search.result),
             "search_id": search.pk,
             "search_start": search.created_at,
             "search_finish": search.finished_at
@@ -66,7 +66,7 @@ class SearchV2GetViewSet(views.APIView):
     def post(self, request, search_pk):
         search = get_object_or_404(SearchV2, pk=search_pk)
         resp_data = {
-            "result": search.result,
+            "result": json.loads(search.result),
             "search_id": search.pk,
             "search_start": search.created_at,
             "search_finish": search.finished_at
@@ -989,12 +989,12 @@ class SearchV2ViewSet(views.APIView):
                         },
                         "info": RealtyObjectShortSerializer(realty_object).data,
                         "nearby": {
-                            "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist),
-                            "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist),
-                            "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist),
-                            "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist),
-                            "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist),
-                            "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist),
+                            "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist).data,
+                            "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist).data,
+                            "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist).data,
+                            "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist).data,
+                            "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist).data,
+                            "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist).data,
                         }
                 }
                 _final_list.append(_object_json)
@@ -1006,7 +1006,7 @@ class SearchV2ViewSet(views.APIView):
                     return 0
 
             _final_list.sort(key=extract_score, reverse=True)
-            search.result = _final_list[:10]
+            search.result = json.dumps(_final_list[:10])
             search.save()
             resp_data = {"step": 10,
                          "template": "step_final",
