@@ -11,8 +11,8 @@ class TomTomPOISerializer(serializers.ModelSerializer):
 
 
 class TomTomPlaceSerializer(serializers.ModelSerializer):
-    place = TomTomPOISerializer()
+    place_type = TomTomPOISerializer()
 
     class Meta:
         model = TomTomPlace
-        fields = ('place', 'name', 'address', 'lat', 'lng', )
+        fields = ('place_type', 'name', 'address', 'lat', 'lng', )
