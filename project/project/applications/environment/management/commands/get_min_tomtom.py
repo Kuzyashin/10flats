@@ -19,8 +19,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         maps = TomTom(token=os.environ['TOMTOM_API_KEY'])
         for realty_complex in RealtyComplex.objects.filter(lat__isnull=False, lng__isnull=False):
+            logger.info('realty_complex PK = {}'.format(realty_complex.pk))
             maps.default_radius = '2000'
-            cat_list = [7372, 9362, 7332, 9361051, 9376, 7320002]
+            cat_list = [7372, 9362, 7332, 9361, 9376, 7320]
             for cat in cat_list:
                 places_data = maps.get_nearby(
                     lat=realty_complex.lat,
@@ -29,7 +30,7 @@ class Command(BaseCommand):
                     offset=0
                 )
                 raw_places = places_data.get('results')
-                for raw_place in raw_places[:2]:
+                for raw_place in raw_places[:3]:
                     try:
                         tom_place = TomTomPlace.objects.get(tomtom_place_id=raw_place.get('id'))
                         try:
