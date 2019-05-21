@@ -1006,7 +1006,7 @@ class SearchV2ViewSet(views.APIView):
                     return 0
 
             _final_list.sort(key=extract_score, reverse=True)
-            search.result = json.dumps(_final_list[:10])
+            search.result = _final_list[:10]
             search.save()
             resp_data = {"step": 10,
                          "template": "step_final",
