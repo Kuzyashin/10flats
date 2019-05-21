@@ -815,7 +815,7 @@ class SearchV2ViewSet(views.APIView):
 
             for realty_object in realty_objects:
                 try:
-                    _distance = realty_object.realty_complex.gym_dist
+                    _distance = realty_object.realty_complex.tom_gym_dist
                     if _gym_distance.distance == 0:
                         _percent = 100
                     elif _gym_distance.distance > 0:
@@ -839,7 +839,7 @@ class SearchV2ViewSet(views.APIView):
                     _gym_percent_list.update(_gym_json)
                 
                 try:
-                    _distance = realty_object.realty_complex.school_dist
+                    _distance = realty_object.realty_complex.tom_school_dist
                     if _school_distance.distance == 0:
                         _percent = 100
                     elif _school_distance.distance > 0:
@@ -864,7 +864,7 @@ class SearchV2ViewSet(views.APIView):
                     ##
                 
                 try:
-                    _distance = realty_object.realty_complex.pharmacy_dist
+                    _distance = realty_object.realty_complex.tom_pharmacy_dist
                     if _pharmacy_distance.distance == 0:
                         _percent = 100
                     elif _pharmacy_distance.distance > 0:
@@ -890,7 +890,7 @@ class SearchV2ViewSet(views.APIView):
                     ##
                 
                 try:
-                    _distance = realty_object.realty_complex.nightclub_dist
+                    _distance = realty_object.realty_complex.tom_nightclub_dist
                     if _night_distance.distance == 0:
                         _percent = 100
                     elif _night_distance.distance > 0:
@@ -916,7 +916,7 @@ class SearchV2ViewSet(views.APIView):
                     ##
                 
                 try:
-                    _distance = realty_object.realty_complex.market_dist
+                    _distance = realty_object.realty_complex.tom_market_dist
                     if _market_distance.distance == 0:
                         _percent = 100
                     elif _market_distance.distance > 0:
@@ -940,7 +940,7 @@ class SearchV2ViewSet(views.APIView):
                     _market_percent_list.update(_market_json)
                     
                 try:
-                    _distance = realty_object.realty_complex.park_dist
+                    _distance = realty_object.realty_complex.tom_park_dist
                     if _park_distance.distance == 0:
                         _percent = 100
                     elif _park_distance.distance > 0:
@@ -998,7 +998,7 @@ class SearchV2ViewSet(views.APIView):
                     return 0
 
             _final_list.sort(key=extract_score, reverse=True)
-            search.result = json.dumps(_final_list)
+            search.result = json.dumps(_final_list[:10])
             search.save()
             resp_data = {"step": 10,
                          "template": "step_final",
