@@ -815,10 +815,10 @@ class SearchV2ViewSet(views.APIView):
 
             for realty_object in realty_objects:
                 try:
-                    _distance = realty_object.realty_complex.tom_gym_dist.distance
                     if _gym_distance.distance == 0:
                         _percent = 100
                     elif _gym_distance.distance > 0:
+                        _distance = realty_object.realty_complex.tom_gym_dist.distance
                         if _gym_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -826,6 +826,7 @@ class SearchV2ViewSet(views.APIView):
                             if _percent < 0:
                                 _percent = 0
                     else:
+                        _distance = realty_object.realty_complex.tom_gym_dist.distance
                         if -_gym_distance.distance < _distance:
                             _percent = 100
                         else:
@@ -842,10 +843,10 @@ class SearchV2ViewSet(views.APIView):
                     _gym_percent_list.update(_gym_json)
                 
                 try:
-                    _distance = realty_object.realty_complex.tom_school_dist.distance
                     if _school_distance.distance == 0:
                         _percent = 100
                     elif _school_distance.distance > 0:
+                        _distance = realty_object.realty_complex.tom_school_dist.distance
                         if _school_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -853,6 +854,7 @@ class SearchV2ViewSet(views.APIView):
                             if _percent < 0:
                                 _percent = 0
                     else:
+                        _distance = realty_object.realty_complex.tom_school_dist.distance
                         if -_school_distance.distance < _distance:
                             _percent = 100
                         else:
@@ -870,10 +872,10 @@ class SearchV2ViewSet(views.APIView):
                     ##
                 
                 try:
-                    _distance = realty_object.realty_complex.tom_pharmacy_dist.distance
                     if _pharmacy_distance.distance == 0:
                         _percent = 100
                     elif _pharmacy_distance.distance > 0:
+                        _distance = realty_object.realty_complex.tom_pharmacy_dist.distance
                         if _pharmacy_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -881,6 +883,7 @@ class SearchV2ViewSet(views.APIView):
                             if _percent < 0:
                                 _percent = 0
                     else:
+                        _distance = realty_object.realty_complex.tom_pharmacy_dist.distance
                         if -_pharmacy_distance.distance < _distance:
                             _percent = 100
                         else:
@@ -899,10 +902,10 @@ class SearchV2ViewSet(views.APIView):
                     ##
                 
                 try:
-                    _distance = realty_object.realty_complex.tom_nightclub_dist.distance
                     if _night_distance.distance == 0:
                         _percent = 100
                     elif _night_distance.distance > 0:
+                        _distance = realty_object.realty_complex.tom_nightclub_dist.distance
                         if _night_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -913,6 +916,7 @@ class SearchV2ViewSet(views.APIView):
                         if -_night_distance.distance < _distance:
                             _percent = 100
                         else:
+                            _distance = realty_object.realty_complex.tom_nightclub_dist.distance
                             _percent = 100 - (- _night_distance.distance - _distance) / - _night_distance.distance * 100
                             if _percent < 0:
                                 _percent = 0
@@ -928,10 +932,10 @@ class SearchV2ViewSet(views.APIView):
                     ##
                 
                 try:
-                    _distance = realty_object.realty_complex.tom_market_dist.distance
                     if _market_distance.distance == 0:
                         _percent = 100
                     elif _market_distance.distance > 0:
+                        _distance = realty_object.realty_complex.tom_market_dist.distance
                         if _market_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -939,6 +943,7 @@ class SearchV2ViewSet(views.APIView):
                             if _percent < 0:
                                 _percent = 0
                     else:
+                        _distance = realty_object.realty_complex.tom_market_dist.distance
                         if -_market_distance.distance < _distance:
                             _percent = 100
                         else:
@@ -955,10 +960,10 @@ class SearchV2ViewSet(views.APIView):
                     _market_percent_list.update(_market_json)
                     
                 try:
-                    _distance = realty_object.realty_complex.tom_park_dist.distance
                     if _park_distance.distance == 0:
                         _percent = 100
                     elif _park_distance.distance > 0:
+                        _distance = realty_object.realty_complex.tom_park_dist.distance
                         if _park_distance.distance > _distance:
                             _percent = 100
                         else:
@@ -966,6 +971,7 @@ class SearchV2ViewSet(views.APIView):
                             if _percent < 0:
                                 _percent = 0
                     else:
+                        _distance = realty_object.realty_complex.tom_park_dist.distance
                         if -_park_distance.distance < _distance:
                             _percent = 100
                         else:
