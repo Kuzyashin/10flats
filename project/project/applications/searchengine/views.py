@@ -688,9 +688,11 @@ class SearchV2ViewSet(views.APIView):
             )
             _market_distance = DistanceChoose.objects.get(pk=int(step_6.answer))
             percent = PercentPass.objects.last().percent
+            for i in realty_objects:
+                logger.info('COMPLEX {} DIST {}'.format(i.realty_complex.pk, i.realty_complex.tom_market_dist))
             if _market_distance.distance > 0:
                 step_6.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_market_dist is not None
-                                and r_obj.realty_complex.tom_market_dist <= _market_distance.distance / percent * 100]
+                                 and r_obj.realty_complex.tom_market_dist <= _market_distance.distance / percent * 100]
             elif _market_distance.distance < 0:
                 step_6.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_market_dist is not None
                                  and r_obj.realty_complex.tom_market_dist >= (-_market_distance.distance) / percent * 100]
