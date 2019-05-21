@@ -243,3 +243,24 @@ class SearchV2step(models.Model):
         verbose_name = "Шаг поиска V2"
         verbose_name_plural = "Шаги поисков V2"
 
+
+class RequestViewing(models.Model):
+    user = models.ForeignKey(
+        User, models.CASCADE,
+        null=True, blank=True
+    )
+    user_identify = models.CharField(
+        null=True, blank=True, max_length=255,
+        verbose_name='Идентификатор юзера'
+    )
+    search = models.ForeignKey(
+        SearchV2, models.CASCADE,
+        null=True, blank=True
+    )
+    realty_object = models.ForeignKey(
+        'realty.RealtyObject', models.CASCADE,
+        null=True, blank=True
+    )
+    created_at = models.DateTimeField(
+        null=True, blank=True
+    )

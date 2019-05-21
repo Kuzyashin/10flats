@@ -17,13 +17,37 @@ from properites.models import Area
 from properites.serializers import AreaSerializer
 from realty.models import RealtyObject
 from realty.serializers import RealtyObjectShortSerializer
-from .models import DistanceChoose
+from .models import DistanceChoose, RequestViewing
 from .models import Search, PercentPass, SearchV2, SearchV2step
 from .serializers import DistanceChooseSerializer
 from core.serializers import TomTomDistanceMatrixSerializer
 
 logger = logging.getLogger(__name__)
 maps = TomTom.TomTom(token=os.environ['TOMTOM_API_KEY'])
+
+
+class TrackViewingViewSet(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        data = request.data
+        user_id = data.get('user_id')
+        realty_object = data.get('realty_object')
+        search_hashed = data.get('search_hashed', None)
+        if search_hashed:
+            RequestViewing.objects.create(
+                user_identify=user_id,
+                search=SearchV2.objects.get(hashed_id=search_hashed),
+                realty_object=RealtyObject.objects.get(pk=realty_object),
+                created_at=timezone.now()
+            )
+        else:
+            RequestViewing.objects.create(
+                user_identify=user_id,
+                realty_object=RealtyObject.objects.get(pk=realty_object),
+                created_at=timezone.now()
+            )
+        return Response(data="OK", status=200)
 
 
 class SearchGetViewSet(views.APIView):

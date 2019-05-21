@@ -19,7 +19,7 @@ from typeform.views import TypeformViewSet
 from realty import urls as realty_urls
 from profiles import urls as profiles_urls
 from django.conf.urls import url
-from searchengine.views import SearchViewSet, SearchGetViewSet, SearchV2ViewSet, SearchV2GetViewSet
+from searchengine.views import SearchViewSet, SearchGetViewSet, SearchV2ViewSet, SearchV2GetViewSet, TrackViewingViewSet
 
 admin.site.site_header = 'E-Mlak Tech Admin Panel'
 admin.site.site_title = 'E-Mlak Tech Admin Panel'
@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^auth/', include('djoser.urls.authtoken')),
     url(r'^api/search/$', SearchViewSet.as_view()),
     url(r'^api/search_v2/$', SearchV2ViewSet.as_view()),
+    url(r'^api/track_viewing_v2/$', TrackViewingViewSet.as_view()),
     url(r'^api/get_search/(?P<search_hashed>.+)/$', SearchGetViewSet.as_view()),
     url(r'^api/get_search_v2/(?P<search_hashed>.+)/$', SearchV2GetViewSet.as_view()),
     # url(r'^api/search/$', SearchView, basename= ''),
