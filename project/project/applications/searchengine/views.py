@@ -669,18 +669,32 @@ class SearchV2ViewSet(views.APIView):
 
             start_v2 = time.time()
             if _school_distance.distance > 0:
-                realty_objects = realty_objects.filter(school__lte=_school_distance.distance / percent * 100)
-                step_4.result = [r_obj.pk for r_obj in realty_objects]
-            elif _school_distance.distance < 0:
-                step_4.result = [r_obj.pk for r_obj in realty_objects if
+                step_4.result = (r_obj.pk for r_obj in realty_objects if
                                  r_obj.realty_complex.tom_school_dist is not None
-                                 and r_obj.realty_complex.tom_school_dist.distance >= (
-                                 -_school_distance.distance) / percent * 100]
+                                 and r_obj.realty_complex.tom_school_dist.distance <= _school_distance.distance / percent * 100)
+            elif _school_distance.distance < 0:
+                step_4.result = (r_obj.pk for r_obj in realty_objects if
+                                 r_obj.realty_complex.tom_school_dist is not None
+                                 and r_obj.realty_complex.tom_school_dist.distance >= (-_school_distance.distance) / percent * 100)
             else:
                 step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
             step_4.save()
             stop_v2 = time.time()
             logger.info('Second version {}'.format(stop_v2 - start_v2))
+
+            start_v3 = time.time()
+            if _school_distance.distance > 0:
+                step_4.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_school__distance__lte=_school_distance.distance / percent * 100)]
+            elif _school_distance.distance < 0:
+                step_4.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_school__distance__gte=(
+                                 -_school_distance.distance) / percent * 100)]
+            else:
+                step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
+            step_4.save()
+            stop_v3 = time.time()
+            logger.info('Third version {}'.format(stop_v3 - start_v3))
 
 
             count = len(step_4.result)

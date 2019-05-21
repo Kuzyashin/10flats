@@ -7,11 +7,6 @@ from core.mixins.model_mixins import ModelDiffMixin
 from profiles.models import RealtyAgency
 
 
-class PollManager(models.Manager):
-    def nearest_market(self):
-        return self.model.tom_school_dist
-
-
 class RealtyComplex(models.Model):
     user = models.ForeignKey(
         User, models.CASCADE,
@@ -61,8 +56,36 @@ class RealtyComplex(models.Model):
         null=True, blank=True, max_length=80,
         verbose_name='Количество Этажей'
     )
-
-    school = PollManager()
+    nearest_school = models.ForeignKey(
+        "core.TomTomDistanceMatrix", models.CASCADE,
+        related_name='nearest_school',
+        null=True, blank=True
+    )
+    nearest_park = models.ForeignKey(
+        "core.TomTomDistanceMatrix", models.CASCADE,
+        related_name='nearest_park',
+        null=True, blank=True
+    )
+    nearest_gym = models.ForeignKey(
+        "core.TomTomDistanceMatrix", models.CASCADE,
+        related_name='nearest_gym',
+        null=True, blank=True
+    )
+    nearest_market = models.ForeignKey(
+        "core.TomTomDistanceMatrix", models.CASCADE,
+        related_name='nearest_market',
+        null=True, blank=True
+    )
+    nearest_pharmacy = models.ForeignKey(
+        "core.TomTomDistanceMatrix", models.CASCADE,
+        related_name='nearest_pharmacy',
+        null=True, blank=True
+    )
+    nearest_nightclub = models.ForeignKey(
+        "core.TomTomDistanceMatrix", models.CASCADE,
+        related_name='nearest_nightclub',
+        null=True, blank=True
+    )
 
 
     @property
