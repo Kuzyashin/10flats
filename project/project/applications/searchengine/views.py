@@ -654,11 +654,11 @@ class SearchV2ViewSet(views.APIView):
             _school_distance = DistanceChoose.objects.get(pk=int(step_4.answer))
             percent = PercentPass.objects.last().percent
             if _school_distance.distance > 0:
-                step_4.result = (r_obj.pk for r_obj in realty_objects_2 if
+                step_4.result = list(r_obj.pk for r_obj in realty_objects_2 if
                                  r_obj.realty_complex.tom_school_dist is not None
                                  and r_obj.realty_complex.tom_school_dist.distance <= _school_distance.distance / percent * 100)
             elif _school_distance.distance < 0:
-                step_4.result = (r_obj.pk for r_obj in realty_objects_2 if
+                step_4.result = list(r_obj.pk for r_obj in realty_objects_2 if
                                  r_obj.realty_complex.tom_school_dist is not None
                                  and r_obj.realty_complex.tom_school_dist.distance >= (-_school_distance.distance) / percent * 100)
             else:
@@ -677,7 +677,7 @@ class SearchV2ViewSet(views.APIView):
             step_4.save()
             """
 
-            count = len(step_4.result)
+            count = len(list(step_4.result))
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,
                          "template": "step_5",
