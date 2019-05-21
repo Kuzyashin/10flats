@@ -56,7 +56,7 @@ class SearchV2GetViewSet(views.APIView):
     def get(self, request, search_pk):
         search = get_object_or_404(SearchV2, pk=search_pk)
         resp_data = {
-            "result": json.loads(search.result),
+            "result": search.result,
             "search_id": search.pk,
             "search_start": search.created_at,
             "search_finish": search.finished_at
@@ -66,7 +66,7 @@ class SearchV2GetViewSet(views.APIView):
     def post(self, request, search_pk):
         search = get_object_or_404(SearchV2, pk=search_pk)
         resp_data = {
-            "result": json.loads(search.result),
+            "result": search.result,
             "search_id": search.pk,
             "search_start": search.created_at,
             "search_finish": search.finished_at
