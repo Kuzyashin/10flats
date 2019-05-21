@@ -37,14 +37,14 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
         return ProfileSerializer(Profile.objects.get(user=obj.user)).data
 
     def get_nearest(self, obj):
-        data = {"nearby": {
-                            "school": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_school_dist).data,
-                            "gym": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_gym_dist).data,
-                            "park": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_park_dist).data,
-                            "pharmacy": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_pharmacy_dist).data,
-                            "cafe": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_nightclub_dist).data,
-                            "market": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_market_dist).data,
-                        }}
+        data = {
+            "school": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_school_dist).data,
+            "gym": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_gym_dist).data,
+            "park": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_park_dist).data,
+            "pharmacy": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_pharmacy_dist).data,
+            "cafe": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_nightclub_dist).data,
+            "market": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_market_dist).data,
+        }
         return data
 
 
