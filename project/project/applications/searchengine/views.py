@@ -2,6 +2,7 @@ import ast
 import json
 import os
 import logging
+import time
 
 from django.db.models import Max, Min
 from django.utils import timezone
@@ -9,7 +10,7 @@ from rest_framework import permissions
 from rest_framework import views
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-
+from django.db.models import F
 
 from core.utils import TomTom
 from core.models import DistanceMatrix
@@ -651,6 +652,9 @@ class SearchV2ViewSet(views.APIView):
             )
             _school_distance = DistanceChoose.objects.get(pk=int(step_4.answer))
             percent = PercentPass.objects.last().percent
+
+
+            start_v1 = time.time()
             if _school_distance.distance > 0:
                 step_4.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_school_dist is not None
                                  and r_obj.realty_complex.tom_school_dist.distance <= _school_distance.distance / percent * 100]
@@ -660,6 +664,25 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
             step_4.save()
+            stop_v1 = time.time()
+            logger.info('First version {}'.format(stop_v1-start_v1))
+
+            start_v2 = time.time()
+            if _school_distance.distance > 0:
+                realty_objects = realty_objects.filter(school__lte=_school_distance.distance / percent * 100)
+                step_4.result = [r_obj.pk for r_obj in realty_objects]
+            elif _school_distance.distance < 0:
+                step_4.result = [r_obj.pk for r_obj in realty_objects if
+                                 r_obj.realty_complex.tom_school_dist is not None
+                                 and r_obj.realty_complex.tom_school_dist.distance >= (
+                                 -_school_distance.distance) / percent * 100]
+            else:
+                step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
+            step_4.save()
+            stop_v2 = time.time()
+            logger.info('Second version {}'.format(stop_v2 - start_v2))
+
+
             count = len(step_4.result)
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,

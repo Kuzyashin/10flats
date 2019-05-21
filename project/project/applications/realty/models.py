@@ -7,6 +7,11 @@ from core.mixins.model_mixins import ModelDiffMixin
 from profiles.models import RealtyAgency
 
 
+class PollManager(models.Manager):
+    def nearest_market(self):
+        return self.model.tom_school_dist
+
+
 class RealtyComplex(models.Model):
     user = models.ForeignKey(
         User, models.CASCADE,
@@ -56,6 +61,8 @@ class RealtyComplex(models.Model):
         null=True, blank=True, max_length=80,
         verbose_name='Количество Этажей'
     )
+
+    school = PollManager()
 
 
     @property
