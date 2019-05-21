@@ -72,7 +72,7 @@ class RealtyComplex(models.Model):
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
-            return None
+            return 5000
 
     @property
     def market_dist(self):
@@ -88,7 +88,7 @@ class RealtyComplex(models.Model):
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
-            return None
+            return 5000
 
 
     @property
@@ -105,7 +105,7 @@ class RealtyComplex(models.Model):
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
-            return None
+            return 5000
 
     @property
     def park_dist(self):
@@ -121,7 +121,7 @@ class RealtyComplex(models.Model):
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
-            return None
+            return 5000
 
 
     @property
@@ -138,7 +138,7 @@ class RealtyComplex(models.Model):
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
-            return None
+            return 5000
 
 
     @property
@@ -155,7 +155,7 @@ class RealtyComplex(models.Model):
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
-            return None
+            return 5000
 
 
     def get_nearest_supermarket(self):
