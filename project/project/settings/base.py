@@ -25,7 +25,7 @@ PUBLIC_ROOT = os.path.join(BASE_DIR, "public")
 
 sys.path.append(os.path.join(PROJECT_ROOT, 'applications'))
 
-APPEND_SLASH = True
+APPEND_SLASH = False
 ROOT_URLCONF = 'project.urls'
 
 WSGI_APPLICATION = 'project.wsgi.application'
