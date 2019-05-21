@@ -29,21 +29,21 @@ maps = TomTom.TomTom(token=os.environ['TOMTOM_API_KEY'])
 class SearchGetViewSet(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, search_pk):
-        search = get_object_or_404(Search, pk=search_pk)
+    def get(self, request, search_hashed):
+        search = get_object_or_404(Search, hashed_id=search_hashed)
         resp_data = {
             "result": json.loads(search.result),
-            "search_id": search.pk,
+            "search_id": search.hashed_id,
             "search_start": search.created_at,
             "search_finish": search.finished_at
         }
         return Response(data=resp_data, status=200)
 
-    def post(self, request, search_pk):
-        search = get_object_or_404(Search, pk=search_pk)
+    def post(self, request, search_hashed):
+        search = get_object_or_404(Search, hashed_id=search_hashed)
         resp_data = {
             "result": json.loads(search.result),
-            "search_id": search.pk,
+            "search_id": search.hashed_id,
             "search_start": search.created_at,
             "search_finish": search.finished_at
         }
@@ -53,8 +53,8 @@ class SearchGetViewSet(views.APIView):
 class SearchV2GetViewSet(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, search_pk):
-        search = get_object_or_404(SearchV2, pk=search_pk)
+    def get(self, request, search_hashed):
+        search = get_object_or_404(SearchV2, hashed_id=search_hashed)
         resp_data = {
             "result": json.loads(search.result),
             "search_id": search.pk,
@@ -63,8 +63,8 @@ class SearchV2GetViewSet(views.APIView):
         }
         return Response(data=resp_data, status=200)
 
-    def post(self, request, search_pk):
-        search = get_object_or_404(SearchV2, pk=search_pk)
+    def post(self, request, search_hashed):
+        search = get_object_or_404(SearchV2, hashed_id=search_hashed)
         resp_data = {
             "result": json.loads(search.result),
             "search_id": search.pk,
@@ -913,6 +913,7 @@ class SearchV2ViewSet(views.APIView):
                             if _percent < 0:
                                 _percent = 0
                     else:
+                        _distance = realty_object.realty_complex.tom_nightclub_dist.distance
                         if -_night_distance.distance < _distance:
                             _percent = 100
                         else:
@@ -1030,11 +1031,12 @@ class SearchV2ViewSet(views.APIView):
                     return 0
 
             _final_list.sort(key=extract_score, reverse=True)
+            search.result_full = json.dumps(_final_list)
             search.result = json.dumps(_final_list[:10])
             search.save()
             resp_data = {"step": 10,
                          "template": "step_final",
-                         "search_id": search.pk,
+                         "search_id": search.hashed_id,
                          "count": len(_final_list)}
             return Response(data=resp_data, status=200)
         else:
