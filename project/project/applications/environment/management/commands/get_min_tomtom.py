@@ -14,11 +14,12 @@ class Command(BaseCommand):
     help = 'Create min tomtom places'
 
     def add_arguments(self, parser):
-        pass
+        parser.add_argument('complex_pk')
 
     def handle(self, *args, **options):
         maps = TomTom(token=os.environ['TOMTOM_API_KEY'])
-        for realty_complex in RealtyComplex.objects.filter(lat__isnull=False, lng__isnull=False):
+        complex_pk = options['complex_pk']
+        for realty_complex in RealtyComplex.objects.filter(lat__isnull=False, lng__isnull=False, pk__gt=complex_pk):
             logger.info('realty_complex PK = {}'.format(realty_complex.pk))
             maps.default_radius = '2000'
             cat_list = [7372, 9362, 7332, 9361, 9376, 7320]
