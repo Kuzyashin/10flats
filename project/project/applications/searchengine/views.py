@@ -662,7 +662,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
             step_4.save()
-            count = len(list(step_4.result))
+            count = len(step_4.result)
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,
                          "template": "step_5",
