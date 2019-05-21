@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import RealtyComplex, RealtyObject
 from profiles.serializers import RealtyAgencySerializer, ProfileSerializer
 from profiles.models import Profile
+from core.serializers import TomTomDistanceMatrixSerializer
 
 
 class RealtyComplexSerializer(serializers.ModelSerializer):
@@ -24,15 +25,27 @@ class RealtyObjectSerializer(serializers.ModelSerializer):
     realty_complex = RealtyComplexSerializer(read_only=True)
     agency = RealtyAgencySerializer(read_only=True)
     agent = serializers.SerializerMethodField()
+    nearest = serializers.SerializerMethodField()
 
     class Meta:
         model = RealtyObject
         fields = ('id', 'agent', 'realty_complex', 'photo', 'info', 'agency', 'site_url', 'custom_description',
                   'additional_info', 'kitchen', 'wc', 'heating', 'object_info', 'rooms_count',
-                  'square', 'floor', 'rent_price_eur')
+                  'square', 'floor', 'rent_price_eur', 'nearest')
 
     def get_agent(self, obj):
         return ProfileSerializer(Profile.objects.get(user=obj.user)).data
+
+    def get_nearest(self, obj):
+        data = {"nearby": {
+                            "school": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_school_dist).data,
+                            "gym": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_gym_dist).data,
+                            "park": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_park_dist).data,
+                            "pharmacy": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_pharmacy_dist).data,
+                            "cafe": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_nightclub_dist).data,
+                            "market": TomTomDistanceMatrixSerializer(obj.realty_complex.tom_market_dist).data,
+                        }}
+        return data
 
 
 class RealtyObjectShortSerializer(serializers.ModelSerializer):
