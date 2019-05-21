@@ -650,33 +650,18 @@ class SearchV2ViewSet(views.APIView):
             realty_objects = RealtyObject.objects.filter(
                 pk__in=ast.literal_eval(get_or_create_step(search=search, step_pos=3).result),
             )
-            realty_objects_2 = realty_objects
             _school_distance = DistanceChoose.objects.get(pk=int(step_4.answer))
             percent = PercentPass.objects.last().percent
             if _school_distance.distance > 0:
-                step_4.result = list(r_obj.pk for r_obj in realty_objects_2 if
-                                 r_obj.realty_complex.tom_school_dist is not None
-                                 and r_obj.realty_complex.tom_school_dist.distance <= _school_distance.distance / percent * 100)
-            elif _school_distance.distance < 0:
-                step_4.result = list(r_obj.pk for r_obj in realty_objects_2 if
-                                 r_obj.realty_complex.tom_school_dist is not None
-                                 and r_obj.realty_complex.tom_school_dist.distance >= (-_school_distance.distance) / percent * 100)
-            else:
-                step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
-            step_4.save()
-            """
-            if _school_distance.distance > 0:
                 step_4.result = [r_obj.pk for r_obj in
-                                 realty_objects_3.filter(realty_complex__nearest_school__distance__lte=_school_distance.distance / percent * 100)]
+                                 realty_objects.filter(realty_complex__nearest_school__distance__lte=_school_distance.distance / percent * 100)]
             elif _school_distance.distance < 0:
                 step_4.result = [r_obj.pk for r_obj in
-                                 realty_objects_3.filter(realty_complex__nearest_school__distance__gte=(
+                                 realty_objects.filter(realty_complex__nearest_school__distance__gte=(
                                  -_school_distance.distance) / percent * 100)]
             else:
                 step_4.result = ast.literal_eval(get_or_create_step(search=search, step_pos=3).result)
             step_4.save()
-            """
-
             count = len(list(step_4.result))
             choices_list = DistanceChooseSerializer(DistanceChoose.objects.all(), many=True)
             resp_data = {"step": 5,
@@ -700,11 +685,13 @@ class SearchV2ViewSet(views.APIView):
             _park_distance = DistanceChoose.objects.get(pk=int(step_5.answer))
             percent = PercentPass.objects.last().percent
             if _park_distance.distance > 0:
-                step_5.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_park_dist is not None
-                                 and r_obj.realty_complex.tom_park_dist.distance <= _park_distance.distance / percent * 100]
+                step_5.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_park__distance__lte=
+                                                       _park_distance.distance / percent * 100)]
             elif _park_distance.distance < 0:
-                step_5.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_park_dist is not None
-                                 and r_obj.realty_complex.tom_park_dist.distance >= (-_park_distance.distance) / percent * 100]
+                step_5.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_park__distance__lte=(
+                                 -_park_distance.distance) / percent * 100)]
             else:
                 step_5.result = ast.literal_eval(get_or_create_step(search=search, step_pos=4).result)
             step_5.save()
@@ -730,11 +717,13 @@ class SearchV2ViewSet(views.APIView):
             _market_distance = DistanceChoose.objects.get(pk=int(step_6.answer))
             percent = PercentPass.objects.last().percent
             if _market_distance.distance > 0:
-                step_6.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_market_dist is not None
-                                 and r_obj.realty_complex.tom_market_dist.distance <= _market_distance.distance / percent * 100]
+                step_6.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_market__distance__lte=
+                                                       _market_distance.distance / percent * 100)]
             elif _market_distance.distance < 0:
-                step_6.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_market_dist is not None
-                                 and r_obj.realty_complex.tom_market_dist.distance >= (-_market_distance.distance) / percent * 100]
+                step_6.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_market__distance__lte=(
+                                 -_market_distance.distance) / percent * 100)]
             else:
                 step_6.result = ast.literal_eval(get_or_create_step(search=search, step_pos=5).result)
             step_6.save()
@@ -760,11 +749,13 @@ class SearchV2ViewSet(views.APIView):
             _pharmacy_distance = DistanceChoose.objects.get(pk=int(step_7.answer))
             percent = PercentPass.objects.last().percent
             if _pharmacy_distance.distance > 0:
-                step_7.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_pharmacy_dist is not None
-                                and r_obj.realty_complex.tom_pharmacy_dist.distance <= _pharmacy_distance.distance / percent * 100]
+                step_7.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_pharmacy__distance__lte=
+                                                       _pharmacy_distance.distance / percent * 100)]
             elif _pharmacy_distance.distance < 0:
-                step_7.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_pharmacy_dist is not None
-                                 and r_obj.realty_complex.tom_pharmacy_dist.distance >= (-_pharmacy_distance.distance) / percent * 100]
+                step_7.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_pharmacy__distance__lte=(
+                                 -_pharmacy_distance.distance) / percent * 100)]
             else:
                 step_7.result = ast.literal_eval(get_or_create_step(search=search, step_pos=6).result)
             step_7.save()
@@ -790,11 +781,13 @@ class SearchV2ViewSet(views.APIView):
             _night_distance = DistanceChoose.objects.get(pk=int(step_8.answer))
             percent = PercentPass.objects.last().percent
             if _night_distance.distance > 0:
-                step_8.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_nightclub_dist is not None
-                                and r_obj.realty_complex.tom_nightclub_dist.distance <= _night_distance.distance / percent * 100]
+                step_8.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_nightclub__distance__lte=
+                                                       _night_distance.distance / percent * 100)]
             elif _night_distance.distance < 0:
-                step_8.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_nightclub_dist is not None
-                                 and r_obj.realty_complex.tom_nightclub_dist.distance >= (-_night_distance.distance) / percent * 100]
+                step_8.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_nightclub__distance__lte=(
+                                 -_night_distance.distance) / percent * 100)]
             else:
                 step_8.result = ast.literal_eval(get_or_create_step(search=search, step_pos=7).result)
             step_8.save()
@@ -820,15 +813,16 @@ class SearchV2ViewSet(views.APIView):
             _gym_distance = DistanceChoose.objects.get(pk=int(step_9.answer))
             percent = PercentPass.objects.last().percent
             if _gym_distance.distance > 0:
-                step_9.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_gym_dist is not None
-                                and r_obj.realty_complex.tom_gym_dist.distance <= _gym_distance.distance / percent * 100]
+                step_9.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_gym__distance__lte=
+                                                       _gym_distance.distance / percent * 100)]
             elif _gym_distance.distance < 0:
-                step_9.result = [r_obj.pk for r_obj in realty_objects if r_obj.realty_complex.tom_gym_dist is not None
-                                 and r_obj.realty_complex.tom_gym_dist.distance >= (-_gym_distance.distance) / percent * 100]
+                step_9.result = [r_obj.pk for r_obj in
+                                 realty_objects.filter(realty_complex__nearest_gym__distance__lte=(
+                                 -_gym_distance.distance) / percent * 100)]
             else:
                 step_9.result = ast.literal_eval(get_or_create_step(search=search, step_pos=8).result)
             step_9.save()
-            count = realty_objects.count()
             """
             _step_1 - Выбор районов
             _step_2 - Выбор кол-ва комнат
@@ -882,7 +876,7 @@ class SearchV2ViewSet(views.APIView):
                                                                              e))
                     _gym_json = {realty_object.pk: 0}
                     _gym_percent_list.update(_gym_json)
-                
+
                 try:
                     if _school_distance.distance == 0:
                         _percent = 100
@@ -911,7 +905,7 @@ class SearchV2ViewSet(views.APIView):
                     _gym_json = {realty_object.pk: 0}
                     _gym_percent_list.update(_gym_json)
                     ##
-                
+
                 try:
                     if _pharmacy_distance.distance == 0:
                         _percent = 100
@@ -939,9 +933,9 @@ class SearchV2ViewSet(views.APIView):
                                                                              e))
                     _pharmacy_json = {realty_object.pk: 0}
                     _pharmacy_percent_list.update(_pharmacy_json)
-                
+
                     ##
-                
+
                 try:
                     if _night_distance.distance == 0:
                         _percent = 100
@@ -972,7 +966,7 @@ class SearchV2ViewSet(views.APIView):
                     _nightclub_percent_list.update(_nightclub_json)
 
                     ##
-                
+
                 try:
                     if _market_distance.distance == 0:
                         _percent = 100
@@ -1000,7 +994,7 @@ class SearchV2ViewSet(views.APIView):
                                                                              e))
                     _market_json = {realty_object.pk: 0}
                     _market_percent_list.update(_market_json)
-                    
+
                 try:
                     if _park_distance.distance == 0:
                         _percent = 100
@@ -1028,7 +1022,7 @@ class SearchV2ViewSet(views.APIView):
                                                                              e))
                     _park_json = {realty_object.pk: 0}
                     _park_percent_list.update(_park_json)
-                    
+
             _school_percent_list = _school_percent_list
             _park_percent_list = _park_percent_list
             _pharmacy_percent_list = _pharmacy_percent_list
