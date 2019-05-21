@@ -68,7 +68,7 @@ class RealtyComplex(models.Model):
 
     @property
     def tom_school_dist(self):
-        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id='7372')
+        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id__startswith='7372')
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
@@ -84,7 +84,7 @@ class RealtyComplex(models.Model):
 
     @property
     def tom_market_dist(self):
-        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id='7332')
+        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id__startswith='7332')
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
@@ -101,7 +101,7 @@ class RealtyComplex(models.Model):
 
     @property
     def tom_pharmacy_dist(self):
-        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id='9361')
+        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id__startswith='9361')
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
@@ -117,7 +117,7 @@ class RealtyComplex(models.Model):
 
     @property
     def tom_park_dist(self):
-        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id='9362')
+        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id__startswith='9362')
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
@@ -134,7 +134,7 @@ class RealtyComplex(models.Model):
 
     @property
     def tom_nightclub_dist(self):
-        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id='9376')
+        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id__startswith='9376')
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
@@ -151,7 +151,7 @@ class RealtyComplex(models.Model):
 
     @property
     def tom_gym_dist(self):
-        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id='7320')
+        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id__startswith='7320')
         if dist_list.count() > 0:
             return dist_list.earliest('duration').distance
         else:
