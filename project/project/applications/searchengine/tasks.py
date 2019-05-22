@@ -1,6 +1,5 @@
 from celery.task import task
-from .models import DistanceChoose, SearchV2
-from .views import get_or_create_step
+from .models import DistanceChoose, SearchV2, SearchV2step
 from realty.models import RealtyObject
 from realty.serializers import RealtyObjectShortSerializer
 from core.serializers import TomTomDistanceMatrixSerializer
@@ -9,6 +8,18 @@ import json
 import ast
 
 logger = logging.getLogger(__name__)
+
+
+def get_or_create_step(search, step_pos):
+    try:
+        step = SearchV2step.objects.get(search=search, step_pos=step_pos)
+        return step
+    except SearchV2step.DoesNotExist:
+        step = SearchV2step.objects.create(
+            search=search,
+            step_pos=step_pos,
+        )
+        return step
 
 @task
 def prepafe_final_json(search_pk):
