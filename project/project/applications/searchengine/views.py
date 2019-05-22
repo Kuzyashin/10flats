@@ -847,9 +847,11 @@ class SearchV2ViewSet(views.APIView):
             _nightclub_percent_list = dict()
             _market_percent_list = dict()
             _gym_percent_list = dict()
-
+            logger.info('Start calculating percent list')
             for realty_object in realty_objects:
+                logger.info('Object {}'.format(realty_object))
                 try:
+                    logger.info('Object {} GYM'.format(realty_object))
                     if _gym_distance.distance == 0:
                         _percent = 100
                     elif _gym_distance.distance > 0:
@@ -878,6 +880,7 @@ class SearchV2ViewSet(views.APIView):
                     _gym_percent_list.update(_gym_json)
 
                 try:
+                    logger.info('Object {} SCHOOL'.format(realty_object))
                     if _school_distance.distance == 0:
                         _percent = 100
                     elif _school_distance.distance > 0:
@@ -907,6 +910,7 @@ class SearchV2ViewSet(views.APIView):
                     ##
 
                 try:
+                    logger.info('Object {} PHARMACY'.format(realty_object))
                     if _pharmacy_distance.distance == 0:
                         _percent = 100
                     elif _pharmacy_distance.distance > 0:
@@ -937,6 +941,7 @@ class SearchV2ViewSet(views.APIView):
                     ##
 
                 try:
+                    logger.info('Object {} NIGHT'.format(realty_object))
                     if _night_distance.distance == 0:
                         _percent = 100
                     elif _night_distance.distance > 0:
@@ -968,6 +973,7 @@ class SearchV2ViewSet(views.APIView):
                     ##
 
                 try:
+                    logger.info('Object {} MARKET'.format(realty_object))
                     if _market_distance.distance == 0:
                         _percent = 100
                     elif _market_distance.distance > 0:
@@ -996,6 +1002,7 @@ class SearchV2ViewSet(views.APIView):
                     _market_percent_list.update(_market_json)
 
                 try:
+                    logger.info('Object {} PARK'.format(realty_object))
                     if _park_distance.distance == 0:
                         _percent = 100
                     elif _park_distance.distance > 0:
@@ -1023,15 +1030,10 @@ class SearchV2ViewSet(views.APIView):
                     _park_json = {realty_object.pk: 0}
                     _park_percent_list.update(_park_json)
 
-            _school_percent_list = _school_percent_list
-            _park_percent_list = _park_percent_list
-            _pharmacy_percent_list = _pharmacy_percent_list
-            _nightclub_percent_list = _nightclub_percent_list
-            _market_percent_list = _market_percent_list
-            _gym_percent_list = _gym_percent_list
             _final_list = []
-
+            logger.info('Calculate completed. Preparing final JSON')
             for realty_object in realty_objects:
+                logger.info('Preparing final JSON for {}'.format(realty_object))
                 _object_json = {
                         "scoring": {
                             "gym": int(_gym_percent_list.get(realty_object.pk)),
@@ -1058,6 +1060,7 @@ class SearchV2ViewSet(views.APIView):
                         }
                 }
                 _final_list.append(_object_json)
+            logger.info('JSON prepared. Start SORT')
 
             def extract_score(json):
                 try:
@@ -1066,9 +1069,12 @@ class SearchV2ViewSet(views.APIView):
                     return 0
 
             _final_list.sort(key=extract_score, reverse=True)
+            logger.info('JSON Sorted. Save')
             search.result_full = json.dumps(_final_list)
+            logger.info('Full Saved')
             search.result = json.dumps(_final_list[:10])
             search.save()
+            logger.info('Short saved')
             resp_data = {"step": 10,
                          "template": "step_final",
                          "search_id": search.hashed_id,

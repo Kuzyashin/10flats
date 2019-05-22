@@ -131,7 +131,7 @@ class RealtyComplex(models.Model):
 
     @property
     def tom_pharmacy_dist(self):
-        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id__startswith='9361')
+        dist_list = TomTomDistanceMatrix.objects.filter(complex_id=self.pk, place__place_type__tom_id='9361051')
         if dist_list.count() > 0:
             return dist_list.earliest('duration')
         else:
