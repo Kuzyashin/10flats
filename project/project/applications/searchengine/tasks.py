@@ -513,9 +513,37 @@ def prepare_final_json_v2(search_pk):
             return 0
 
     _final_list.sort(key=extract_score, reverse=True)
+    _short_list = _final_list[:10]
     logger.info('JSON Sorted. Save')
-    search.result_full = json.dumps(_final_list)
-    logger.info('Full Saved')
-    search.result = json.dumps(_final_list[:10])
-    search.save()
+    for i in _short_list:
+        realty_object = RealtyObject.objects.get(pk=i.get('object_id'))
+        data = {"info": RealtyObjectShortSerializer(realty_object).data,
+                "nearby": {
+                    "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist).data,
+                    "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist).data,
+                    "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist).data,
+                    "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist).data,
+                    "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist).data,
+                    "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist).data,
+                }}
+        i.update(data)
+    search.result = json.dumps(_short_list)
     logger.info('Short saved')
+    search.save()
+    """
+    for i in _final_list:
+        realty_object = RealtyObject.objects.get(pk=i.get('object_id'))
+        data = {"info": RealtyObjectShortSerializer(realty_object).data,
+                "nearby": {
+                    "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist).data,
+                    "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist).data,
+                    "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist).data,
+                    "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist).data,
+                    "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist).data,
+                    "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist).data,
+                }}
+        i.update(data)
+    search.result_full = json.dumps(_final_list)
+    search.save()
+    logger.info('Full Saved')
+    """
