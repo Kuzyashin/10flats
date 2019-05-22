@@ -22,7 +22,7 @@ def get_or_create_step(search, step_pos):
         return step
 
 @task
-def prepafe_final_json(search_pk):
+def prepare_final_json(search_pk):
     search = SearchV2.objects.get(pk=search_pk)
     realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(get_or_create_step(search, 9).result))
     _school_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 4).answer))
@@ -271,7 +271,7 @@ def prepafe_final_json(search_pk):
 
 
 @task
-def prepafe_final_json_v2(search_pk):
+def prepare_final_json_v2(search_pk):
     search = SearchV2.objects.get(pk=search_pk)
     realty_objects = RealtyObject.objects.filter(pk__in=ast.literal_eval(get_or_create_step(search, 9).result))
     _school_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 4).answer))
