@@ -3,7 +3,7 @@ import json
 import os
 import logging
 
-from .tasks import prepafe_final_json, prepafe_final_json_v2
+from .tasks import prepare_final_json, prepare_final_json_v2
 
 from django.db.models import Max, Min
 from django.utils import timezone
