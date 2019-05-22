@@ -1033,33 +1033,36 @@ class SearchV2ViewSet(views.APIView):
             _final_list = []
             logger.info('Calculate completed. Preparing final JSON')
             for realty_object in realty_objects:
-                logger.info('Preparing final JSON for {}'.format(realty_object))
-                _object_json = {
-                        "scoring": {
-                            "gym": int(_gym_percent_list.get(realty_object.pk)),
-                            "school": int(_school_percent_list.get(realty_object.pk)),
-                            "park": int(_park_percent_list.get(realty_object.pk)),
-                            "pharmacy": int(_pharmacy_percent_list.get(realty_object.pk)),
-                            "cafe": int(_nightclub_percent_list.get(realty_object.pk)),
-                            "market": int(_market_percent_list.get(realty_object.pk)),
-                            "total": (int(_school_percent_list.get(realty_object.pk)) +
-                                      int(_park_percent_list.get(realty_object.pk)) +
-                                      int(_pharmacy_percent_list.get(realty_object.pk)) +
-                                      int(_nightclub_percent_list.get(realty_object.pk)) +
-                                      int(_gym_percent_list.get(realty_object.pk)) +
-                                      int(_market_percent_list.get(realty_object.pk))) / 6
-                        },
-                        "info": RealtyObjectShortSerializer(realty_object).data,
-                        "nearby": {
-                            "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist).data,
-                            "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist).data,
-                            "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist).data,
-                            "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist).data,
-                            "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist).data,
-                            "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist).data,
-                        }
-                }
-                _final_list.append(_object_json)
+                try:
+                    logger.info('Preparing final JSON for {}'.format(realty_object.pk))
+                    _object_json = {
+                            "scoring": {
+                                "gym": int(_gym_percent_list.get(realty_object.pk)),
+                                "school": int(_school_percent_list.get(realty_object.pk)),
+                                "park": int(_park_percent_list.get(realty_object.pk)),
+                                "pharmacy": int(_pharmacy_percent_list.get(realty_object.pk)),
+                                "cafe": int(_nightclub_percent_list.get(realty_object.pk)),
+                                "market": int(_market_percent_list.get(realty_object.pk)),
+                                "total": (int(_school_percent_list.get(realty_object.pk)) +
+                                          int(_park_percent_list.get(realty_object.pk)) +
+                                          int(_pharmacy_percent_list.get(realty_object.pk)) +
+                                          int(_nightclub_percent_list.get(realty_object.pk)) +
+                                          int(_gym_percent_list.get(realty_object.pk)) +
+                                          int(_market_percent_list.get(realty_object.pk))) / 6
+                            },
+                            "info": RealtyObjectShortSerializer(realty_object).data,
+                            "nearby": {
+                                "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist).data,
+                                "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist).data,
+                                "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist).data,
+                                "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist).data,
+                                "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist).data,
+                                "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist).data,
+                            }
+                    }
+                    _final_list.append(_object_json)
+                except Exception as e:
+                    logger.warning('Some shit happens \n{}'.format(e))
             logger.info('JSON prepared. Start SORT')
 
             def extract_score(json):
