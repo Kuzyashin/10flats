@@ -2,7 +2,8 @@ import ast
 import json
 import os
 import logging
-import time
+
+from .tasks import prepafe_final_json
 
 from django.db.models import Max, Min
 from django.utils import timezone
@@ -10,7 +11,6 @@ from rest_framework import permissions
 from rest_framework import views
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from django.db.models import F
 
 from core.utils import TomTom
 from core.models import DistanceMatrix
@@ -823,6 +823,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_9.result = ast.literal_eval(get_or_create_step(search=search, step_pos=8).result)
             step_9.save()
+            prepafe_final_json.apply_async(search_pk=search.pk)
             """
             _step_1 - Выбор районов
             _step_2 - Выбор кол-ва комнат
@@ -833,7 +834,7 @@ class SearchV2ViewSet(views.APIView):
             _step_7 - Аптеки
             _step_8 - Ночная жизнь
             _step_9 - Спортзалы
-            """
+            
             realty_objects = realty_objects.filter(pk__in=step_9.result)
             _school_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 4).answer))
             _park_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 5).answer))
@@ -1078,10 +1079,11 @@ class SearchV2ViewSet(views.APIView):
             search.result = json.dumps(_final_list[:10])
             search.save()
             logger.info('Short saved')
+"""
             resp_data = {"step": 10,
                          "template": "step_final",
                          "search_id": search.hashed_id,
-                         "count": len(_final_list)}
+                         "count": realty_objects.count()}
             return Response(data=resp_data, status=200)
         else:
             return Response(request.data)
