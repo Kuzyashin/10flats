@@ -3,7 +3,7 @@ import json
 import os
 import logging
 
-from .tasks import prepafe_final_json
+from .tasks import prepafe_final_json, prepafe_final_json_v2
 
 from django.db.models import Max, Min
 from django.utils import timezone
@@ -823,7 +823,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_9.result = ast.literal_eval(get_or_create_step(search=search, step_pos=8).result)
             step_9.save()
-            prepafe_final_json.apply_async(args=[search.pk])
+            prepare_final_json_v2.apply_async(args=[search.pk])
             """
             _step_1 - Выбор районов
             _step_2 - Выбор кол-ва комнат
