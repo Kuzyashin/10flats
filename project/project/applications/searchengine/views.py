@@ -823,7 +823,7 @@ class SearchV2ViewSet(views.APIView):
             else:
                 step_9.result = ast.literal_eval(get_or_create_step(search=search, step_pos=8).result)
             step_9.save()
-            prepafe_final_json().apply_async(kwargs={"search_pk": search.pk})
+            prepafe_final_json.apply_async(args=[search.pk])
             """
             _step_1 - Выбор районов
             _step_2 - Выбор кол-ва комнат
