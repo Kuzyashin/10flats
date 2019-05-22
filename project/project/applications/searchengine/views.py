@@ -3,7 +3,7 @@ import json
 import os
 import logging
 
-from .tasks import prepare_final_json, prepare_final_json_v2
+from .tasks import prepare_final_json
 
 from django.db.models import Max, Min
 from django.utils import timezone
@@ -834,7 +834,8 @@ class SearchV2ViewSet(views.APIView):
             _step_7 - Аптеки
             _step_8 - Ночная жизнь
             _step_9 - Спортзалы
-            
+            """
+
             realty_objects = realty_objects.filter(pk__in=step_9.result)
             _school_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 4).answer))
             _park_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 5).answer))
@@ -1037,30 +1038,21 @@ class SearchV2ViewSet(views.APIView):
                 try:
                     logger.info('Preparing final JSON for {}'.format(realty_object.pk))
                     _object_json = {
-                            "scoring": {
-                                "gym": int(_gym_percent_list.get(realty_object.pk)),
-                                "school": int(_school_percent_list.get(realty_object.pk)),
-                                "park": int(_park_percent_list.get(realty_object.pk)),
-                                "pharmacy": int(_pharmacy_percent_list.get(realty_object.pk)),
-                                "cafe": int(_nightclub_percent_list.get(realty_object.pk)),
-                                "market": int(_market_percent_list.get(realty_object.pk)),
-                                "total": (int(_school_percent_list.get(realty_object.pk)) +
-                                          int(_park_percent_list.get(realty_object.pk)) +
-                                          int(_pharmacy_percent_list.get(realty_object.pk)) +
-                                          int(_nightclub_percent_list.get(realty_object.pk)) +
-                                          int(_gym_percent_list.get(realty_object.pk)) +
-                                          int(_market_percent_list.get(realty_object.pk))) / 6
-                            },
-                            "info": RealtyObjectShortSerializer(realty_object).data,
-                            "nearby": {
-                                "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist).data,
-                                "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist).data,
-                                "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist).data,
-                                "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist).data,
-                                "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist).data,
-                                "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist).data,
-                            }
-                    }
+                        "object_id": realty_object.pk,
+                        "scoring": {
+                            "gym": int(_gym_percent_list.get(realty_object.pk)),
+                            "school": int(_school_percent_list.get(realty_object.pk)),
+                            "park": int(_park_percent_list.get(realty_object.pk)),
+                            "pharmacy": int(_pharmacy_percent_list.get(realty_object.pk)),
+                            "cafe": int(_nightclub_percent_list.get(realty_object.pk)),
+                            "market": int(_market_percent_list.get(realty_object.pk)),
+                            "total": (int(_school_percent_list.get(realty_object.pk)) +
+                                      int(_park_percent_list.get(realty_object.pk)) +
+                                      int(_pharmacy_percent_list.get(realty_object.pk)) +
+                                      int(_nightclub_percent_list.get(realty_object.pk)) +
+                                      int(_gym_percent_list.get(realty_object.pk)) +
+                                      int(_market_percent_list.get(realty_object.pk))) / 6
+                        }, }
                     _final_list.append(_object_json)
                 except Exception as e:
                     logger.warning('Some shit happens \n{}'.format(e))
@@ -1073,13 +1065,26 @@ class SearchV2ViewSet(views.APIView):
                     return 0
 
             _final_list.sort(key=extract_score, reverse=True)
+            _short_list = _final_list[:10]
             logger.info('JSON Sorted. Save')
-            search.result_full = json.dumps(_final_list)
-            logger.info('Full Saved')
-            search.result = json.dumps(_final_list[:10])
-            search.save()
+            for i in _short_list:
+                realty_object = RealtyObject.objects.get(pk=i.get('object_id'))
+                data = {"info": RealtyObjectShortSerializer(realty_object).data,
+                        "nearby": {
+                            "school": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_school_dist).data,
+                            "gym": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_gym_dist).data,
+                            "park": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_park_dist).data,
+                            "pharmacy": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_pharmacy_dist).data,
+                            "cafe": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_nightclub_dist).data,
+                            "market": TomTomDistanceMatrixSerializer(realty_object.realty_complex.tom_market_dist).data,
+                        }}
+                i.update(data)
+            search.result = json.dumps(_short_list)
             logger.info('Short saved')
-"""
+            search.save()
+            search.result_full = _final_list
+            search.save()
+            prepare_final_json.apply_async(args=[search.pk])
             resp_data = {"step": 10,
                          "template": "step_final",
                          "search_id": search.hashed_id,
