@@ -41,15 +41,8 @@ class Command(BaseCommand):
                                                             tom_place.lng)
                                 try:
                                     route = remoteness.get('routes')[0]
-                                    data = route.get('summary')
-                                    dist_matrix = TomTomDistanceMatrix.objects.create(
-                                        complex=realty_complex,
-                                        place=tom_place,
-                                        distance=data.get('lengthInMeters'),
-                                        duration=data.get('travelTimeInSeconds'),
-                                        route=route.get('legs')
-                                    )
-                                    dist_matrix.save()
+                                    distm.route = route.get('legs')
+                                    distm.save()
                                 except Exception as e:
                                     logger.warning('No data for point {} and complex {} with err\n{}'.
                                                    format(tom_place.pk, realty_complex.pk, e))
