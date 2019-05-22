@@ -1081,7 +1081,7 @@ class SearchV2ViewSet(views.APIView):
             search.result = json.dumps(_short_list)
             logger.info('Short saved')
             search.save()
-            search.result_full = _final_list
+            search.result_full = json.dumps(_final_list)
             search.save()
             prepare_final_json.apply_async(args=[search.pk])
             resp_data = {"step": 10,
