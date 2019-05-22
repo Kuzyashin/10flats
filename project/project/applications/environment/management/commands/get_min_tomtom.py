@@ -22,7 +22,7 @@ class Command(BaseCommand):
         for realty_complex in RealtyComplex.objects.filter(lat__isnull=False, lng__isnull=False, pk__gt=complex_pk):
             logger.info('realty_complex PK = {}'.format(realty_complex.pk))
             maps.default_radius = '2000'
-            cat_list = [7372, 9362, 7332, 9376, 7320, 9361051]
+            cat_list = [9361051]
             for cat in cat_list:
                 places_data = maps.get_nearby(
                     lat=realty_complex.lat,
