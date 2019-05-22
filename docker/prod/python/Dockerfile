@@ -4,6 +4,7 @@ MAINTAINER Alexey Kuzyashin <terr.kuzyashin@gmail.com>
 COPY ./project /project
 
 WORKDIR /project
+RUN rm pids/celer*
 
 RUN pip install -r requirements.txt
 
