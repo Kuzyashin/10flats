@@ -868,12 +868,13 @@ class SearchV2ViewSet(views.APIView):
             _step_8 - Ночная жизнь
             _step_9 - Спортзалы
             """
-            favorite_palce_data = ast.literal_eval(get_or_create_step(search=search, step_pos=2).result)
-            favorite_lat = favorite_palce_data[0]
-            favorite_lng = favorite_palce_data[1]
-            favorite_type_pk = favorite_palce_data[2]
+            favorite_place_data = ast.literal_eval(get_or_create_step(search=search, step_pos=2).result)
+            favorite_lat = favorite_place_data[0]
+            favorite_lng = favorite_place_data[1]
+            favorite_type_pk = favorite_place_data[2]
+            favorite_minutes = favorite_place_data[3]
+            logger.info('lat {} lng {} place {} minutes {}'.format(favorite_lat, favorite_lng, favorite_type_pk, favorite_minutes))
             favorite_type = TravelType.objects.get(pk=int(favorite_type_pk)).tomtom_type
-            favorite_minutes = favorite_palce_data[3]
             range_data = maps.get_range(favorite_lat, favorite_lng, favorite_type, favorite_minutes)
             range_data = range_data.get('reachableRange').get('boundary')
             prepared_polygon = []
