@@ -872,7 +872,7 @@ class SearchV2ViewSet(views.APIView):
             favorite_lat = favorite_palce_data[0]
             favorite_lng = favorite_palce_data[1]
             favorite_type_pk = favorite_palce_data[2]
-            favorite_type = TravelType.objects.get(pk=favorite_type_pk).tomtom_type
+            favorite_type = TravelType.objects.get(pk=int(favorite_type_pk)).tomtom_type
             favorite_minutes = favorite_palce_data[3]
             range_data = maps.get_range(favorite_lat, favorite_lng, favorite_type, favorite_minutes)
             range_data = range_data.get('reachableRange').get('boundary')
