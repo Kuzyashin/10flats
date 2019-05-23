@@ -79,5 +79,3 @@ class TomTomPlace(models.Model):
     class Meta:
         verbose_name = "Place"
         verbose_name_plural = "Places"
-
-
