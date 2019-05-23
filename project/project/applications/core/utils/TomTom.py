@@ -70,7 +70,7 @@ class TomTom:
                 return requests.get(url).json()
 
     def get_range(self, lat, lng, travel_type, max_time):
-        url = self.base_url + '/routing/1/calculateReachableRange/{},{}'.format(lat, lng) \
+        url = self.base_url + '/routing/1/calculateReachableRange/{},{}/'.format(lat, lng) \
            + self.default_format + '?timeBudgetInSec={}'.format(max_time*60) + '&routeType=fastest&travelMode=' \
            + travel_type + '&key=' + self.token
         data = requests.get(url)
