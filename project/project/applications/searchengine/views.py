@@ -880,14 +880,13 @@ class SearchV2ViewSet(views.APIView):
             logger.info(range_data)
             prepared_polygon = []
             for point_bound in range_data:
-                logger.info('{} {} {} {}'.format(type(point_bound.get('latitude')), point_bound.get('latitude'),
-                                                 type(point_bound.get('longitude')), point_bound.get('latitude')))
                 prepared_polygon.append((point_bound.get('latitude'), point_bound.get('longitude')))
             polygon = Polygon(prepared_polygon)
             realty_objects = realty_objects.filter(pk__in=step_10.result)
             realty_objects_pk = []
             for realty_object in realty_objects:
-                if polygon.contains(Point(realty_object.realty_complex.lat, realty_object.realty_complex.lng)):
+                if polygon.contains(Point(float(realty_object.realty_complex.lat),
+                                          float(realty_object.realty_complex.lng))):
                     realty_objects_pk.append(realty_object.pk)
             realty_objects = RealtyObject.objects.filter(pk__in=realty_objects_pk)
             _school_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 5).answer))
