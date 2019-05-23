@@ -178,6 +178,28 @@ class PercentPass(models.Model):
         return '{}'.format(self.percent)
 
 
+class TravelType(models.Model):
+    type = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='Тип средства передвижения'
+    )
+    tomtom_type = models.IntegerField(
+        null=True, blank=True,
+        verbose_name='Тип средства передвижения для запроса в tomtom'
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='Активен'
+    )
+
+    class Meta:
+        verbose_name = "Тип средства передвижения"
+        verbose_name_plural = "Типы средства передвижения"
+
+    def __str__(self):
+        return '{}'.format(self.type)
+
+
 class SearchV2(models.Model):
     user = models.ForeignKey(
         User, models.CASCADE,
