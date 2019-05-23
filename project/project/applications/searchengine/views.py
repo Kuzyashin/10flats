@@ -17,7 +17,6 @@ from django.shortcuts import get_object_or_404
 
 from core.utils import TomTom
 from core.models import DistanceMatrix
-from environment.models import Place
 from properites.models import Area
 from properites.serializers import AreaSerializer
 from realty.models import RealtyObject
@@ -603,7 +602,7 @@ class SearchV2ViewSet(views.APIView):
             step_2.answer = place_data
             step_2.result = get_or_create_step(search=search, step_pos=1).result
             step_2.save()
-            realty_objects = RealtyObject.objects.filter(realty_complex__area_id__in=
+            realty_objects = RealtyObject.objects.filter(pk__in=
                                                          ast.literal_eval(get_or_create_step(
                                                              search=search, step_pos=2).result))
             count = realty_objects.count()
