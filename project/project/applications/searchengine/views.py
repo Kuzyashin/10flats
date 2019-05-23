@@ -880,6 +880,8 @@ class SearchV2ViewSet(views.APIView):
             logger.info(range_data)
             prepared_polygon = []
             for point_bound in range_data:
+                logger.info('{} {} {} {}'.format(type(point_bound.get('latitude')), point_bound.get('latitude'),
+                                                 type(point_bound.get('longitude')), point_bound.get('latitude')))
                 prepared_polygon.append((point_bound.get('latitude'), point_bound.get('longitude')))
             polygon = Polygon(prepared_polygon)
             realty_objects = realty_objects.filter(pk__in=step_10.result)
