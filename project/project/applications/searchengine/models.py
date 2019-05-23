@@ -179,12 +179,12 @@ class PercentPass(models.Model):
 
 
 class TravelType(models.Model):
-    type = models.IntegerField(
-        null=True, blank=True,
+    type = models.CharField(
+        null=True, blank=True, max_length=80,
         verbose_name='Тип средства передвижения'
     )
-    tomtom_type = models.IntegerField(
-        null=True, blank=True,
+    tomtom_type = models.CharField(
+        null=True, blank=True, max_length=80,
         verbose_name='Тип средства передвижения для запроса в tomtom'
     )
     is_active = models.BooleanField(
