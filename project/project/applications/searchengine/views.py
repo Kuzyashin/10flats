@@ -574,7 +574,9 @@ class SearchV2ViewSet(views.APIView):
                 areas_pk = data.get('data')
             search.last_step = 2
             search.save()
-            realty_objects = RealtyObject.objects.filter(realty_complex__area_id__in=areas_pk)
+            realty_objects = RealtyObject.objects.filter(realty_complex__area_id__in=areas_pk,
+                                                         realty_complex__lat__isnull=False,
+                                                         realty_complex__lng__isnull=False)
             count = realty_objects.count()
             step_1 = get_or_create_step(search=search, step_pos=1)
             step_1.answer = areas_pk
