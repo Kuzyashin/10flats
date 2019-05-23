@@ -69,5 +69,20 @@ class TomTom:
                 time.sleep(3)
                 return requests.get(url).json()
 
-    def batch_search(self):
-         pass
+    def get_range(self, lat, lng, travel_type, max_time):
+        url = self.base_url + '/routing/1/calculateReachableRange/{},{}'.format(lat, lng) \
+           + self.default_format + '?timeBudgetInSec={}'.format(max_time*60) + '&routeType=fastest&travelMode=' \
+           + travel_type + '&key=' + self.token
+        data = requests.get(url)
+        try:
+            return data.json()
+        except Exception as e:
+            time.sleep(1)
+            logger.warning(e)
+            logger.warning(data)
+            try:
+                return json.loads(data)
+            except Exception as e:
+                logger.warning(e)
+                time.sleep(3)
+                return requests.get(url).json()

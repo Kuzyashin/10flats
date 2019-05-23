@@ -3,6 +3,9 @@ import json
 import os
 import logging
 
+from shapely.geometry import Point
+from shapely.geometry.polygon import Polygon
+
 from .tasks import prepare_final_json
 
 from django.db.models import Max, Min
@@ -865,7 +868,23 @@ class SearchV2ViewSet(views.APIView):
             _step_9 - Спортзалы
             """
             favorite_palce_data = ast.literal_eval(get_or_create_step(search=search, step_pos=2).result)
+            favorite_lat = favorite_palce_data[0]
+            favorite_lng = favorite_palce_data[1]
+            favorite_type_pk = favorite_palce_data[3]
+            favorite_type = TravelType.objects.get(pk=favorite_type_pk).tomtom_type
+            favorite_minutes = favorite_palce_data[4]
+            range_data = maps.get_range(favorite_lat, favorite_lng, favorite_type, favorite_minutes)
+            range_data = range_data.get('reachableRange').get('boundary')
+            prepared_polygon = []
+            for point_bound in range_data:
+                prepared_polygon.append((point_bound.get('latitude'), point_bound.get('longitude')))
+            polygon = Polygon(prepared_polygon)
             realty_objects = realty_objects.filter(pk__in=step_10.result)
+            realty_objects_pk = []
+            for realty_object in realty_objects:
+                if polygon.contains(Point(realty_object.realty_complex.lat, realty_object.realty_complex.lng)):
+                    realty_objects_pk.append(realty_object.pk)
+            realty_objects = RealtyObject.objects.filter(pk__in=realty_objects_pk)
             _school_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 5).answer))
             _park_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 6).answer))
             _pharmacy_distance = DistanceChoose.objects.get(pk=int(get_or_create_step(search, 8).answer))
