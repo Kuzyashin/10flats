@@ -875,7 +875,9 @@ class SearchV2ViewSet(views.APIView):
             favorite_minutes = favorite_place_data[3]
             favorite_type = TravelType.objects.get(pk=int(favorite_type_pk)).tomtom_type
             range_data = maps.get_range(favorite_lat, favorite_lng, favorite_type, favorite_minutes)
+            logger.info(range_data)
             range_data = range_data.get('reachableRange').get('boundary')
+            logger.info(range_data)
             prepared_polygon = []
             for point_bound in range_data:
                 prepared_polygon.append((point_bound.get('latitude'), point_bound.get('longitude')))
