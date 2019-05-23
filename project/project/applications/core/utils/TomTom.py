@@ -5,6 +5,7 @@ import time
 
 logger = logging.getLogger(__name__)
 
+
 class TomTom:
     def __init__(self, token):
         self.token = token
@@ -67,3 +68,6 @@ class TomTom:
                 logger.warning(e)
                 time.sleep(3)
                 return requests.get(url).json()
+
+    def batch_search(self):
+         pass

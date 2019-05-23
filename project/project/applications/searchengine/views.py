@@ -606,8 +606,8 @@ class SearchV2ViewSet(views.APIView):
             step_2.result = [realty_object.pk for realty_object in realty_objects]
             step_2.save()
             room_list = realty_objects.distinct('rooms_count').values('rooms_count')
-            resp_data = {"step": 2,
-                         "template": "step_2",
+            resp_data = {"step": 3,
+                         "template": "step_3",
                          "answers": room_list,
                          "count": count}
             return Response(data=resp_data, status=200)
