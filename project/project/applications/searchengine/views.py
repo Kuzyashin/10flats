@@ -121,14 +121,9 @@ class SearchV2ViewSet(views.APIView):
             search.save()
             area_list = Area.objects.all()
             serialized = AreaSerializer(area_list, many=True)
-            bounds_data = {
-                "topLeft": [59.509087, 24.527257],
-                "btmRight": [59.353837, 24.945407]
-            }
             resp_data = {"step": 1,
                          "template": "step_1",
                          "answers": serialized.data,
-                         "bounds": bounds_data,
                          "count": RealtyObject.objects.all().count()}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '1' or data.get('step') == 1:
@@ -152,9 +147,14 @@ class SearchV2ViewSet(views.APIView):
             step_1.save()
             travel_types = TravelType.objects.filter(is_active=True)
             serialized = TravelTypeSerializer(travel_types, many=True)
+            bounds_data = {
+                "topLeft": [59.509087, 24.527257],
+                "btmRight": [59.353837, 24.945407]
+            }
             resp_data = {"step": 2,
                          "template": "step_2",
                          "answers": serialized.data,
+                         "bounds": bounds_data,
                          "count": count}
             return Response(data=resp_data, status=200)
         elif data.get('step') == '2' or data.get('step') == 2:
