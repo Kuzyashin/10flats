@@ -21,8 +21,8 @@ from profiles import urls as profiles_urls
 from django.conf.urls import url
 from searchengine.views import SearchV2ViewSet, SearchV2GetViewSet, TrackViewingViewSet
 
-admin.site.site_header = 'E-Mlak Tech Admin Panel'
-admin.site.site_title = 'E-Mlak Tech Admin Panel'
+admin.site.site_header = 'Admin Panel'
+admin.site.site_title = 'Admin Panel'
 
 
 urlpatterns = [
