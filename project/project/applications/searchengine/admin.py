@@ -6,10 +6,11 @@ from .models import DistanceChoose, SearchV2, SearchV2step, PercentPass, TravelT
 
 class SearchV2StepInline(admin.StackedInline):
     model = SearchV2step
+    extra = 0
 
 
 class SearchV2Admin(admin.ModelAdmin):
-    inlines = ['SearchV2StepInline', ]
+    inlines = [SearchV2StepInline, ]
 
 
 admin.site.register(SearchV2, SearchV2Admin)
