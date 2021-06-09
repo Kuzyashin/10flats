@@ -14,7 +14,7 @@ constantly==15.1.0
 coreapi==2.3.3
 coreschema==0.0.4
 daphne==2.3.0
-Django==2.2.10
+Django==2.2.22
 django-admin-autocomplete-filter==0.2
 django-autocomplete-light==3.3.4
 django-celery==3.2.2
